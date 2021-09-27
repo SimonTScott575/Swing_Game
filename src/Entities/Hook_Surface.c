@@ -11,7 +11,7 @@ Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale) {
   mFrame2D* frame = new_mFrame2D(position, 0, scale);
 
   grColour_Render* cr = grCreate_Colour_Render(
-    (float[4]){204/255.0, 88/255.0, 3/255.0, 1},
+    (float[4]){226/256.0, 113/256.0, 29/256.0, 1},
     grRect2D_Mesh
   );
   grRenderer* renderer = grCreate_Renderer_2D(frame, cr->_model, cr->_shader);

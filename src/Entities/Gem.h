@@ -16,7 +16,7 @@ struct Gem {
   grSprite* sprite;
   grRenderer* renderer;
 
-  phAABB_Collider2D*  aabb_c;
+  phCircle_Collider2D*  circle_c;
   phRigid_Body2D* rb;
 
   Gem_Controller* gc;

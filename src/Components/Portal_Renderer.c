@@ -7,10 +7,10 @@ Portal_Renderer* Create_Portal_Renderer() {
   Portal_Renderer* pr = malloc(sizeof(Portal_Renderer));
 
   *pr = (Portal_Renderer){
-    .grey_t = grCreate_Texture("../Resources/Textures/ring_grey_256.png"),
-    .white_t = grCreate_Texture("../Resources/Textures/ring_white_256.png"),
+    .grey_t = grCreate_Texture("../Resources/Textures/ring_grey_512.png"),
+    .white_t = grCreate_Texture("../Resources/Textures/ring_white_blur_512.png"),
 
-    .model = grCreate_Model_From_Mesh(grRect2D_Mesh),
+    .model = grCreate_Model_From_Mesh(grRect2D_2_Mesh),
     .shader = grCreate_Shader("../include/Game_Engine/Graphics/Shaders/grTexture_2D_vert.glsl",
                               "../include/Game_Engine/Graphics/Shaders/grTexture_2D_frag.glsl")
   };

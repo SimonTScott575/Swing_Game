@@ -37,15 +37,15 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   UI_Camera* ui_camera = Create_UI_Camera();
 
-  Menu_Button* prev_button       = Create_Menu_Button(-1,0, 0.15,0, 0.1,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Prev_Level);
-  Menu_Button* next_button       = Create_Menu_Button(1,0, -0.15,0, 0.1,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Next_Level);
+  Menu_Button* prev_button       = Create_Menu_Button(-1,0, 0.15,0, 0.1,0.3, "../Resources/Textures/left_arrow_white_256.png", On_Click_Prev_Level);
+  Menu_Button* next_button       = Create_Menu_Button(1,0, -0.15,0, 0.1,0.3, "../Resources/Textures/right_arrow_white_256.png", On_Click_Next_Level);
   Menu_Button* play_level_button = Create_Menu_Button(0,-1, 0,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Play_Level);
   Menu_Button* main_menu_button  = Create_Menu_Button(-1,-1, 0.4,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Main_Menu);
 
-  Menu_Text* play_level_text = Create_Menu_Text("START",  0,-1,  0,  0.15,  0.6);
-  Menu_Text* main_menu_text  = Create_Menu_Text("MENU",  -1,-1,  0.4,0.15,  0.6);
+  Menu_Text* play_level_text = Create_Menu_Text("START", NULL, 0,-1,  0,  0.15,  0.6);
+  Menu_Text* main_menu_text  = Create_Menu_Text("MENU", NULL, -1,-1,  0.4,0.15,  0.6);
 
-  Menu_Text* level_name_text = Create_Menu_Text("",   0,0,-15, 13, 15);
+  Menu_Text* level_name_text = Create_Menu_Text("", "../Resources/Fonts/Fira/FiraSans-HeavyItalic.ttf",  0,0,-15, 13, 15);
   Level_Title* level_title = Create_Level_Title(-15, level_name_text->text_r);
   geAdd_Component(level_title->_super, level_name_text->_super);
 
@@ -53,8 +53,8 @@ void Load_Level_Select_Menu(geScene* scene) {
     = GR_ALIGN_LEFT;
 
 
-  Menu_Text* best_time_text = Create_Menu_Text("BEST TIME:", 0,0, 15, 13, 10);
-  Menu_Text* par_time_text = Create_Menu_Text("PAR:",        0,0, 15,-12, 10);
+  Menu_Text* best_time_text = Create_Menu_Text("BEST TIME:", NULL, 0,0, 15, 13, 10);
+  Menu_Text* par_time_text = Create_Menu_Text("PAR:", NULL,        0,0, 15,-12, 10);
   Display_Time* dt_par = Create_Display_Time("PAR: ", par_times, par_time_text->text_r, 15);
   geAdd_Component(dt_par->_super, par_time_text->_super);
   Display_Time* dt_best = Create_Display_Time("BEST: ", best_times, best_time_text->text_r, 15);

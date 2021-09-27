@@ -10,9 +10,9 @@ Level_Select_Camera* Create_Level_Select_Camera(float x_length) {
 
   float inv_ar = geGet_Active_Window()->_Y_pixels/(float)geGet_Active_Window()->_X_pixels;
   grCamera2D* camera2D = grCreate_Camera2D(frame, x_length, inv_ar*x_length);
-  camera2D->background_colour[0] = 204/255.0;
-  camera2D->background_colour[1] = 88/255.0;
-  camera2D->background_colour[2] = 3/255.0;
+  camera2D->background_colour[0] = 226/256.0;
+  camera2D->background_colour[1] = 113/255.0;
+  camera2D->background_colour[2] = 29/255.0;
   camera2D->background_colour[3] = 1;
 
   Level_Select_Camera_Controller* lscc = Create_Level_Select_Camera_Controller(frame, x_length);

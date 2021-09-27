@@ -24,6 +24,7 @@ struct Portal {
 
 };
 
+//NOTE: radius changes scale, not model dimensions
 Portal* Create_Portal(mVector2f position, float radius);
 
 void Destroy_Portal_Sub_Entity(geEntity* entity);

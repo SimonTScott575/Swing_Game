@@ -5,11 +5,11 @@ void Load_Entities_Level_UI_Build(Level_UI_Build* build) {
   //
   build->ui_camera = Create_UI_Camera();
 
-  build->timer_sec_mt = Create_Menu_Text("0",    1,1,-0.4,-0.2, 0.8);
-  build->timer_msec_mt = Create_Menu_Text(".00", 1,1,-0.4,-0.2, 0.8);
+  build->timer_sec_mt = Create_Menu_Text("0", NULL,    1,1,-0.4,-0.2, 0.8);
+  build->timer_msec_mt = Create_Menu_Text(".00", NULL, 1,1,-0.4,-0.2, 0.8);
 
-  build->score_num_mt = Create_Menu_Text("", -1,1, 0.2,-0.2, 0.8);
-  build->score_den_mt = Create_Menu_Text("", -1,1, 0.2,-0.2, 0.8);
+  build->score_num_mt = Create_Menu_Text("", NULL, -1,1, 0.2,-0.2, 0.8);
+  build->score_den_mt = Create_Menu_Text("", NULL, -1,1, 0.2,-0.2, 0.8);
 
   build->timer = Create_Timer(build->timer_sec_mt->text, build->timer_msec_mt->text);
   build->score = Create_Score(build->score_num_mt->text, build->score_num_mt->text_r,

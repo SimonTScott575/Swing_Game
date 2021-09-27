@@ -10,11 +10,11 @@ Gem* Create_Gem(mVector2f position) {
 
   mFrame2D* frame = new_mFrame2D(position, 0, (mVector2f){{0.4,0.4}});
 
-  grSprite* sprite = grCreate_Sprite("../Resources/Textures/circle_white_256.png", 1, 1);
+  grSprite* sprite = grCreate_Sprite("../Resources/Textures/circle_white_blur_512.png", 2, 2);
   grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
 
-  phAABB_Collider2D* aabb_c = new_phAABB_Collider2D(frame, 1, 1);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &aabb_c->_super);
+  phCircle_Collider2D* circle_c = new_phCircle_Collider2D(frame, 0.5);
+  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &circle_c->_super);
   rb->is_static = rb->is_static_rotation = true;
   rb->is_transparent = true;
 
@@ -26,7 +26,7 @@ Gem* Create_Gem(mVector2f position) {
     .frame = frame,
     .sprite = sprite,
     .renderer = renderer,
-    .aabb_c = aabb_c,
+    .circle_c = circle_c,
     .rb = rb,
     .gc = gc
   };
@@ -34,7 +34,7 @@ Gem* Create_Gem(mVector2f position) {
   geAdd_Component(frame->_super, entity);
   geAdd_Component(sprite->_super, entity);
   geAdd_Component(renderer->_super, entity);
-  geAdd_Component(aabb_c->_super._super, entity);
+  geAdd_Component(circle_c->_super._super, entity);
   geAdd_Component(rb->_super, entity);
   geAdd_Component(gc->_super, entity);
 

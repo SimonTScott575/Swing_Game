@@ -18,9 +18,9 @@ void Load_Main_Menu(geScene* scene) {
   // Entities
   // --------
 
-  Menu_Text* title = Create_Menu_Text("TITLE", 0,0, 0,0.4, 1.5);
-  Menu_Text* play_text = Create_Menu_Text("PLAY", 0,0, 0,0.05, 0.7);
-  Menu_Text* quit_text = Create_Menu_Text("QUIT", 0,0, 0,-0.2, 0.7);
+  Menu_Text* title = Create_Menu_Text("SWING", "../Resources/Fonts/Fira/FiraSans-HeavyItalic.ttf", 0,0, 0,0.4, 1.5);
+  Menu_Text* play_text = Create_Menu_Text("PLAY", NULL, 0,0, 0,0.05, 0.7);
+  Menu_Text* quit_text = Create_Menu_Text("QUIT", NULL, 0,0, 0,-0.2, 0.7);
 
   Menu_Camera* menu_camera = Create_Menu_Camera(50);
 

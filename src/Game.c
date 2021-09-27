@@ -20,7 +20,7 @@ int main() {
   // Load Game
   // #########
 
-  geWindow* window = geCreate_Window(1200,1200,"Game");
+  geWindow* window = geCreate_Window(1200,1200,"Swing");
   geGame* game = geCreate_Game(window);
 
   Init_Scenes();

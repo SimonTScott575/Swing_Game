@@ -2,11 +2,14 @@
 
 #include <stdbool.h>
 
-Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale, int res) {
+Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale, int res) {
 
   geEntity* entity = geCreate_Entity();
 
-  grFont* font = grCreate_Font("../Resources/Fonts/Fira/FiraSans-Heavy.ttf", res); // MomcakeBold-WyonA
+  if (font_path == NULL) {
+    font_path = "../Resources/Fonts/Fira/FiraSans-Heavy.ttf";
+  }
+  grFont* font = grCreate_Font(font_path, res);
   grText* text = grCreate_Text(contents, font);
   text->alignment = GR_ALIGN_CENTRE;
 
@@ -37,9 +40,9 @@ Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, float rel_X, f
 
 }
 
-Menu_Text* Create_Menu_Text(const char* contents, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale) {
+Menu_Text* Create_Menu_Text(const char* contents, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale) {
 
-  return Create_Menu_Text_With_Resolution(contents, rel_X, rel_Y, abs_X, abs_Y, scale, 256);
+  return Create_Menu_Text_With_Resolution(contents, font_path,  rel_X, rel_Y, abs_X, abs_Y, scale, 256);
 
 }
 

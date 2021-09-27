@@ -4,11 +4,11 @@ void Load_Entities_End_Level_Menu_Build(Portal_Catcher* pc, Timer_Clock* clock, 
 
   build->uic = Create_UI_Camera();
 
-  build->cd_menu_text = Create_Menu_Text_With_Resolution("3", 0,0,0,-0.15, 1.5, 512);
+  build->cd_menu_text = Create_Menu_Text_With_Resolution("3", NULL, 0,0,0,-0.15, 1.5, 512);
 
-  build->back_mt       = Create_Menu_Text("MENU",    -1,-1,  0.4,0.15, 0.6);
-  build->restart_mt    = Create_Menu_Text("RESTART",  0,-1,  0,  0.15, 0.6);
-  build->next_level_mt = Create_Menu_Text("NEXT",     1,-1, -0.4,0.15, 0.6);
+  build->back_mt       = Create_Menu_Text("MENU", NULL,   -1,-1,  0.4,0.15, 0.6);
+  build->restart_mt    = Create_Menu_Text("RESTART", NULL, 0,-1,  0,  0.15, 0.6);
+  build->next_level_mt = Create_Menu_Text("NEXT", NULL,    1,-1, -0.4,0.15, 0.6);
 
   build->back_b       = Create_Menu_Button( -1,-1,  0.4,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Back_Button);
   build->restart_b    = Create_Menu_Button(  0,-1,  0,0.2,   0.7,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Restart_Button);
