@@ -6,7 +6,7 @@ Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, float rel_X, f
 
   geEntity* entity = geCreate_Entity();
 
-  grFont* font = grCreate_Font("../Resources/Fonts/arial.ttf", res); // MomcakeBold-WyonA
+  grFont* font = grCreate_Font("../Resources/Fonts/Fira/FiraSans-Heavy.ttf", res); // MomcakeBold-WyonA
   grText* text = grCreate_Text(contents, font);
   text->alignment = GR_ALIGN_CENTRE;
 

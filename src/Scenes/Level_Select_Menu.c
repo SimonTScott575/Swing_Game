@@ -34,7 +34,7 @@ void Load_Level_Select_Menu(geScene* scene) {
   Load_Entities_Level_2_Basic_Build(60, lsc->camera2D->frame, &level_2_basic_build);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
-  
+
   UI_Camera* ui_camera = Create_UI_Camera();
 
   Menu_Button* prev_button       = Create_Menu_Button(-1,0, 0.15,0, 0.1,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Prev_Level);
@@ -42,8 +42,8 @@ void Load_Level_Select_Menu(geScene* scene) {
   Menu_Button* play_level_button = Create_Menu_Button(0,-1, 0,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Play_Level);
   Menu_Button* main_menu_button  = Create_Menu_Button(-1,-1, 0.4,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Main_Menu);
 
-  Menu_Text* play_level_text = Create_Menu_Text("START",  0,-1,  0,  0.15,  0.7);
-  Menu_Text* main_menu_text  = Create_Menu_Text("MENU",  -1,-1,  0.4,0.15,  0.7);
+  Menu_Text* play_level_text = Create_Menu_Text("START",  0,-1,  0,  0.15,  0.6);
+  Menu_Text* main_menu_text  = Create_Menu_Text("MENU",  -1,-1,  0.4,0.15,  0.6);
 
   Menu_Text* level_name_text = Create_Menu_Text("",   0,0,-15, 13, 15);
   Level_Title* level_title = Create_Level_Title(-15, level_name_text->text_r);
