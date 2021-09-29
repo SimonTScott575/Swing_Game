@@ -10,6 +10,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stbi_image.h>
 
+#include <Game_Engine/ge_common.h>
+
 // ====================
 // Creation/Destruction
 // ====================
@@ -17,10 +19,24 @@
 grTexture* grCreate_Texture(const char* path) {
 
   grImage* image = grCreate_Image(path);
+  if (image == NULL) {
+    GE_DEBUG_LOG("\n%s",
+                 "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture\n"
+                 "        Failed to grCreate_Image.");
+    return NULL;
+  }
 
   grTexture* texture = grCreate_Texture_From_Image(image);
 
   grDestroy_Image(image);
+
+  #ifdef GE_DEBUG_MODE
+    if (texture == NULL) {
+      GE_DEBUG_LOG("\n%s",
+                   "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture\n"
+                   "        Failed to grCreate_Texture_From_Image.");
+    }
+  #endif
 
   return texture;
 
@@ -30,6 +46,13 @@ grTexture* grCreate_Texture_NULL(int X_pixels, int Y_pixels) {
   grImage image = init_grImage_Data(X_pixels, Y_pixels, 4, grColours.RGBA, NULL);
 
   grTexture* texture = grCreate_Texture_From_Image(&image);
+  #ifdef GE_DEBUG_MODE
+    if (texture == NULL) {
+      GE_DEBUG_LOG("\n%s",
+                   "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture_NULL\n"
+                   "        Failed to grCreate_Texture_From_Image.");
+    }
+  #endif
 
   return texture;
 
@@ -38,10 +61,14 @@ grTexture* grCreate_Texture_NULL(int X_pixels, int Y_pixels) {
 grTexture* grCreate_Texture_From_Image(grImage* image) {
 
   grTexture* texture = malloc(sizeof(grTexture));
+
   if (texture == NULL) {
-    printf("\nERROR : Unable to malloc grTexture.\n");
+    GE_DEBUG_LOG("\n%s",
+                 "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture_From_Image\n"
+                 "        Failed to malloc grTexture.");
     return NULL;
   }
+
   texture->_colour_format = image->_colour_format;
   texture->_X_pixels = image->_width;
   texture->_Y_pixels = image->_height;
@@ -75,7 +102,9 @@ grTexture* grCreate_Texture_From_Image(grImage* image) {
 
 // Removes texture from GPU memory and frees grTexture pointer.
 void grDestroy_Texture(grTexture* texture) {
+  
   glDeleteTextures(1, &texture->_OpenGL_ID);
 
   free(texture);
+  
 }

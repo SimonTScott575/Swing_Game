@@ -1,6 +1,13 @@
 #include "Level_Transitioner.h"
 
+#include <math.h>
+
 #include "../Scenes.h"
+
+#define INTRO_TIME2 0.5
+#define INTRO_TIME 0.8
+#define INTRO_TIME3 0.2
+#define CD_TIME 3
 
 Level_Transitioner* Create_Level_Transitioner(
   Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
@@ -53,8 +60,11 @@ Level_Transitioner* Create_Level_Transitioner(
   lt->next_level_r->_super->is_active = false;
   lt->next_level_tr->_super->_super->is_active = false;
 
+  lt->level_start_time = 0;
+  lt->cd_first_frame = 1;
   lt->cd_over = 0;
 
+  lt->cd_text_r->_super->_super->is_active = false;
   lt->cd_text->alignment = GR_ALIGN_CENTRE;
 
   return lt;
@@ -65,15 +75,31 @@ void Update_Level_Transitioner(geComponent* component) {
 
   Level_Transitioner* lt = component->_sub;
 
-  float level_time = geGet_Active_Game()->time - lt->clock->time_start;
-  int cd = 3 - (int)level_time;
-  char level_time_s[100];
-  sprintf(level_time_s, "%d", cd);
+  if (lt->cd_first_frame) {
+    lt->level_start_time = geGet_Active_Game()->time;
+    lt->cd_first_frame = 0;
+  }
 
-  if (level_time < 3) {
+  float level_time = geGet_Active_Game()->time - lt->level_start_time;
+
+  if (level_time < INTRO_TIME2+INTRO_TIME) {
+    lt->player_controller->rb->frame->scale.i[0]
+      = lt->player_controller->rb->frame->scale.i[1]
+      = (-(level_time-INTRO_TIME2)/INTRO_TIME + 2) * 0.5*sin( 5/4.0 * 2*M_PI * (level_time-INTRO_TIME2)/INTRO_TIME - M_PI/2 ) + 1;
+  }
+  else
+  if (level_time < CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3) {
+
+    int cd = 1 + INTRO_TIME2+INTRO_TIME+CD_TIME - level_time;
+    char level_time_s[100];
+    sprintf(level_time_s, "%d", cd);
 
     grSet_Text_Contents(level_time_s, lt->cd_text);
-  } else if (!lt->cd_over) {
+    lt->cd_text_r->_super->_super->is_active = true;
+
+  }
+  else
+  if (!lt->cd_over) {
 
     lt->player_controller->rb->_super->is_active = true;
 

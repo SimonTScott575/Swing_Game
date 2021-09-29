@@ -30,6 +30,8 @@ struct Level_Transitioner {
   grText_Renderer* restart_tr;
   grText_Renderer* next_level_tr;
 
+  float level_start_time;
+  int cd_first_frame;
   int cd_over;
 
   grText* cd_text;

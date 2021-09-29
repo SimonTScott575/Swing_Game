@@ -24,6 +24,7 @@ struct grMesh {
 extern const grMesh* const grRect2D_Mesh;
 extern const grMesh* const grRect2D_2_Mesh;
 
+// MUST be called before globals in grMesh accessed.
 void grInit_Mesh();
 
 #endif

@@ -16,21 +16,14 @@ struct grModel {
   } _OpenGL_IDs;
 };
 
-// ====================
-// Creation/Destruction
-// ====================
+// ==========================
+// Initialization/Termination
+// ==========================
 
-// // Upload Mesh at path to GPU
-// // Valid file formats: .obj (partially supported)
-// grModel* grCreate_Model(const char* path);
-
-// Combine meshs into one and upload to GPU memory
+// Uploads mesh to GPU RAM.
 grModel* grCreate_Model_From_Mesh(const grMesh* meshes);
-/*** LEGACY ***/
-// #define grCreate_Model_From_Meshes(A,B) grCreate_Model_From_Mesh(*A)
-/**************/
 
-// Deletes model from GPU, frees model pointer
+// Frees all model data from CPU/GPU RAM.
 void grDestroy_Model(grModel* model);
 
 #endif

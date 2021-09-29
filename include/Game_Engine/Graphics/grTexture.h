@@ -1,3 +1,5 @@
+//TODO: find init valeus for grCreate_Texture_NULL
+
 #ifndef GR_TEXTURE_H
 #define GR_TEXTURE_H
 
@@ -19,14 +21,19 @@ struct grTexture {
   unsigned int _OpenGL_ID;
 };
 
-// ====================
-// Creation/Destruction
-// ====================
+// ==========================
+// Initializaiton/Termination
+// ==========================
 
+// Imports image from file path.  Stored in GPU RAM.
+// Imported as per grCreate_Image.
 grTexture* grCreate_Texture(const char* path);
+// Uploads image to GPU RAM
 grTexture* grCreate_Texture_From_Image(grImage* image);
+// Uploads image to GPU RAM with dimensions (X_pixels, Y_pixels) with values //...!!!???
 grTexture* grCreate_Texture_NULL(int X_pixels, int Y_pixels);
 
+// Frees all texture data (from RAM/GPU).
 void grDestroy_Texture(grTexture* texture);
 
 #endif

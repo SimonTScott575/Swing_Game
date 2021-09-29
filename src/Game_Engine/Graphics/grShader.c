@@ -9,7 +9,6 @@
 #include <GLFW/glfw3.h>
 
 #include <Game_Engine/dATUM/dFile.h>
-// #include <Game_Engine/System/sysFile_IO.h>
 
 grShader* grCreate_Shader(const char* vertex_path, const char* fragment_path) {
 

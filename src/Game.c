@@ -8,6 +8,8 @@
 #include "Scenes/Level_2.h"
 #include "Scenes.h"
 
+#define GE_DEBUG_MODE 
+
 int main() {
 
   // ######################

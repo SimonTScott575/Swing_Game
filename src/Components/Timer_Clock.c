@@ -11,6 +11,7 @@ Timer_Clock* Create_Timer_Clock(grText* text_sec, grText* text_msec) {
     .text_sec = text_sec,
     .text_msec = text_msec,
     .time_start = geGet_Active_Game()->time, //! should be set by level_transitioner
+    .timer_val = 0,
     .is_first_frame = true,
     .is_started = false,
     .is_ended = false
@@ -26,11 +27,11 @@ void Update_Timer_Clock(geComponent* component) {
 
   Timer_Clock* clock = component->_sub;
 
-  //TODO: better way to "trigger" the start of the countdown timer, prefferably a short delay after first frame
-  if (clock->is_first_frame) {
-    clock->time_start = geGet_Active_Game()->time;
-    clock->is_first_frame = false;
-  }
+  // //TODO: better way to "trigger" the start of the countdown timer, prefferably a short delay after first frame
+  // if (clock->is_first_frame) {
+  //   clock->time_start = geGet_Active_Game()->time;
+  //   clock->is_first_frame = false;
+  // }
 
   if (!clock->is_started || clock->is_ended) { return; }
 

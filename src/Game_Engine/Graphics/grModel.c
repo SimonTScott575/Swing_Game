@@ -8,9 +8,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-// ====================
-// Creation/Destruction
-// ====================
+// ==========================
+// Initialization/Termination
+// ==========================
 
 grModel* grCreate_Model_From_Mesh(const grMesh* mesh) {
 
