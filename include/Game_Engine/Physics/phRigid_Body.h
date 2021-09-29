@@ -42,10 +42,6 @@ struct phRigid_Body2D {
 
   float restitution;
 
-  bool _is_resting; //! These not used, could remove
-  mVector2f _resting_normal;
-  float _resting_f_dot_rn;
-
   bool _force_applied; //!TODO: should be with RB_System ?
 
 };

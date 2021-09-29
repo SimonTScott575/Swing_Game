@@ -70,6 +70,10 @@ phCollision_Solver2D* new_phCollision_Solver2D() {
   result->_rigid_bodies = new_dLList(phRigid_Body2D_ptr)(0,NULL);
   result->_joints = new_dLList(phJoint2D_ptr)(0,NULL);
 
+  for (int i = 0; i < 100; i++) {
+    result->_collisions[i].accum_lambda = 0;
+  }
+
   return result;
 
 }
@@ -149,6 +153,7 @@ uint64_t phDetect_Collisions(phRigid_Body2D* a, phRigid_Body2D* b, phCollision2D
     for (uint64_t i = 0; i < result; i++) {
       collisions[i].normal = mMul_f_V2f(-1, collisions[i].normal);
       collisions[i].sep_vel = mMul_f_V2f(-1, collisions[i].sep_vel);
+      collisions[i].accum_lambda = 0;
     }
 
     return result;
@@ -484,11 +489,11 @@ float phGet_Collision_Lambda(phCollision2D collision) {
   mVector2f rel_vel = mSub_V2f(rb1.velocity, rb2.velocity);
 
   float lambda =
-    mDot_V2f( rel_vel, collision.normal )
+      mDot_V2f( rel_vel, collision.normal )
     + rb1.angular_velocity*r1_cross_n
     - rb2.angular_velocity*r2_cross_n;
   lambda *= -(1 + (rb1.restitution + rb2.restitution)/2 ); // coefficient of restitution used here
-  // lambda -= 0.2/phDELTA_T * (collision.distance > 0.01 ? collision.distance-0.01 : 0); // Baumgaute // +/- ?
+  lambda += 0.2/phDELTA_T * (collision.distance > 0.01 ? collision.distance-0.01 : 0); // Baumgaute // +/- ?
   lambda /=
     inv_mass1
     + inv_mass2

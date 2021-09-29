@@ -12,6 +12,8 @@ struct Player_Controller {
 
   phRigid_Body2D* rb;
 
+  float last_pos;
+
 };
 
 Player_Controller* Create_Player_Controller();

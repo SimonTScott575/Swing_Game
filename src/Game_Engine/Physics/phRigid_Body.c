@@ -43,10 +43,7 @@ phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational
     .is_transparent = false,
 
     .restitution = 1,
-
-    ._is_resting = false,
-    ._resting_normal = mVector2f_ZERO,
-    ._resting_f_dot_rn = 0,
+    
     ._force_applied = false
 
   };

@@ -10,6 +10,8 @@ Player_Controller* Create_Player_Controller(phRigid_Body2D* rb) {
   pc->rb = rb;
   pc->rb->_super->is_active = false;
 
+  pc->last_pos = rb->frame->position.i[0];
+
   return pc;
 
 }
@@ -22,6 +24,10 @@ void Update_Player_Controller(geComponent* component) {
     3*( glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_D) - glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_A) ),
     150*( geKey_Down_Stroke(geGet_Active_Game(), GLFW_KEY_SPACE) ) //TEMP
   }};
+
+  printf("%f\n",pc->rb->frame->position.i[0] - pc->last_pos);
+  // printf("%f\n", pc->rb->velocity.i[0]);
+  pc->last_pos = pc->rb->frame->position.i[0];
 
 }
 
