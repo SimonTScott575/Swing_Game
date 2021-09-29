@@ -61,7 +61,7 @@ Level_Transitioner* Create_Level_Transitioner(
   lt->next_level_tr->_super->_super->is_active = false;
 
   lt->level_start_time = 0;
-  lt->cd_first_frame = 1;
+  lt->cd_first_frame = 0;
   lt->cd_over = 0;
 
   lt->cd_text_r->_super->_super->is_active = false;
@@ -75,41 +75,46 @@ void Update_Level_Transitioner(geComponent* component) {
 
   Level_Transitioner* lt = component->_sub;
 
-  if (lt->cd_first_frame) {
+  if (lt->cd_first_frame >= 0) { lt->cd_first_frame += 1; }
+
+  if (lt->cd_first_frame > 1) {
     lt->level_start_time = geGet_Active_Game()->time;
-    lt->cd_first_frame = 0;
+    lt->cd_first_frame = -1;
   }
 
   float level_time = geGet_Active_Game()->time - lt->level_start_time;
 
-  if (level_time < INTRO_TIME2+INTRO_TIME) {
-    lt->player_controller->rb->frame->scale.i[0]
-      = lt->player_controller->rb->frame->scale.i[1]
-      = (-(level_time-INTRO_TIME2)/INTRO_TIME + 2) * 0.5*sin( 5/4.0 * 2*M_PI * (level_time-INTRO_TIME2)/INTRO_TIME - M_PI/2 ) + 1;
-  }
-  else
-  if (level_time < CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3) {
+  if (lt->cd_first_frame < 0) {
+    if (level_time < INTRO_TIME2+INTRO_TIME) {
+      lt->player_controller->rb->frame->scale.i[0]
+        = lt->player_controller->rb->frame->scale.i[1]
+        = (-(level_time-INTRO_TIME2)/INTRO_TIME + 2) * 0.5*sin( 5/4.0 * 2*M_PI * (level_time-INTRO_TIME2)/INTRO_TIME - M_PI/2 ) + 1;
+    }
+    else
+    if (level_time < CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3) {
 
-    int cd = 1 + INTRO_TIME2+INTRO_TIME+CD_TIME - level_time;
-    char level_time_s[100];
-    sprintf(level_time_s, "%d", cd);
+      int cd = 1 + INTRO_TIME2+INTRO_TIME+CD_TIME - level_time;
+      if (cd == 0) { goto exit_cd; }
+      char level_time_s[100];
+      sprintf(level_time_s, "%d", cd);
 
-    grSet_Text_Contents(level_time_s, lt->cd_text);
-    lt->cd_text_r->_super->_super->is_active = true;
+      grSet_Text_Contents(level_time_s, lt->cd_text);
+      lt->cd_text_r->_super->_super->is_active = true;
 
-  }
-  else
-  if (!lt->cd_over) {
+    }
+    else
+    if (!lt->cd_over) {
 
-    lt->player_controller->rb->_super->is_active = true;
+      lt->player_controller->rb->_super->is_active = true;
 
-    lt->clock->time_start = geGet_Active_Game()->time;
-    lt->clock->is_started = true;
+      lt->clock->time_start = geGet_Active_Game()->time;
+      lt->clock->is_started = true;
 
-    lt->cd_text_r->_super->_super->is_active = false;
+      lt->cd_text_r->_super->_super->is_active = false;
 
-    lt->cd_over = 1;
-  }
+      lt->cd_over = 1;
+    }
+  } exit_cd:
 
   if (lt->pc->is_caught) {
     lt->back_r->_super->is_active = true;

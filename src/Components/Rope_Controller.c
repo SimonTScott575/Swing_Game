@@ -46,6 +46,25 @@ void Update_Rope_Controller(geComponent* component) {
     rc->rod_j->_super._super->is_active = false;
     rc->spring_j->_super._super->is_active = false;
 
+
+    source_rb->velocity = mMul_f_V2f(1/phDELTA_T, mSub_V2f(source_rb->frame->position , rc->last_pos));
+
+  }
+
+  if ( rc->is_hitting && rc->rod_phase && glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_W) ) {
+
+    rc->rod_j->length -= 0.1;
+    rc->last_pos = source_rb->frame->position;
+
+  } else if ( rc->is_hitting && rc->spring_phase && glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_W) ) {
+
+    rc->spring_j->rest_length -= 0.1;
+    rc->last_pos = source_rb->frame->position;
+
+  } else {
+
+    rc->last_pos = source_rb->frame->position;
+
   }
 
   if ( !rc->is_hitting ) {

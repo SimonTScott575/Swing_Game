@@ -7,14 +7,6 @@
 
 D_SOURCE_dLList(phRigid_Body2D*, phRigid_Body2D_ptr);
 
-// ======
-// static
-// ======
-
-// static void del_phRigid_Body2D_void(void* arg) {
-//   del_phRigid_Body2D(arg);
-// }
-
 // =============
 // Initalization
 // =============
@@ -43,7 +35,7 @@ phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational
     .is_transparent = false,
 
     .restitution = 1,
-    
+
     ._force_applied = false
 
   };

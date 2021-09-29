@@ -25,6 +25,8 @@ struct Rope_Controller {
 
   phRB_System2D* rb_sys;
 
+  mVector2f last_pos;
+
 };
 
 Rope_Controller* Create_Rope_Controller(mFrame2D* frame, grRenderer* renderer, phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j);

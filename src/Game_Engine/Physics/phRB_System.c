@@ -153,7 +153,7 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
 
   phSolve_Collisions(rb_sys->_cs);
 
-  for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
+  // for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
     for (uint64_t i = 0; i < rb_sys->_cs->_collisions_count; i++) {
 
       phCollision2D collision = rb_sys->_cs->_collisions[i];
@@ -168,15 +168,14 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
       // colliding force
       if ( mDot_V2f(collision.sep_vel, collision.normal) < 0 ) {
 
-        // move to TOI
         phApply_Velocity_On_Position_dt( rb1, -phDELTA_T );
         phApply_Velocity_On_Position_dt( rb2, -phDELTA_T );
 
-        float old_accum = collision.accum_lambda;
-        float new_accum = old_accum + phGet_Collision_Lambda(collision);
-        new_accum = (new_accum > 0 ? new_accum : 0);
+        // float old_accum = collision.accum_lambda;
+        // float new_accum = old_accum + phGet_Collision_Lambda(collision);
+        // new_accum = (new_accum > 0 ? new_accum : 0);
         float impulse = phGet_Collision_Lambda(collision); // new_accum - old_accum;
-        rb_sys->_cs->_collisions[i].accum_lambda = new_accum;
+        // rb_sys->_cs->_collisions[i].accum_lambda = new_accum;
 
         rb1->force = mMul_f_V2f(
           impulse,
@@ -193,7 +192,7 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
       }
 
     }
-  }
+  // }
 
   for (uint64_t i = 0; i < rb_sys->_cs->_collisions_count; i++) {
 
