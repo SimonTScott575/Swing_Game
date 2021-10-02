@@ -11,7 +11,7 @@ Rope* Create_Rope(phRigid_Body2D* source_rb) {
 
   phRod_Joint2D* rod_j = new_phRod_Joint2D(1, frame->position, source_rb, mVector2f_ZERO, NULL);
   rod_j->_super._super->is_active = false;
-  phSpring_Joint2D* spring_j = new_phSpring_Joint2D(10, 1, frame->position, source_rb, mVector2f_ZERO, NULL);
+  phSpring_Joint2D* spring_j = new_phSpring_Joint2D(50, 5, frame->position, source_rb, mVector2f_ZERO, NULL);
   spring_j->_super._super->is_active = false;
 
   Rope_Controller* rc = Create_Rope_Controller(frame, renderer, rod_j, spring_j);

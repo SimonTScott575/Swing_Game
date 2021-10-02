@@ -27,7 +27,9 @@ struct Rope_Controller {
 
   phRB_System2D* rb_sys;
 
-  mVector2f last_pos;
+  mVector2f delta_pos;
+  mVector2f prev_pos;
+  float r_v;
 
 };
 
