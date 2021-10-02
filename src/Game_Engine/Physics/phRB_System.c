@@ -130,6 +130,28 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
   phSolve_Collisions(rb_sys->_cs);
 
   for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
+  for (
+    dNode_LL(phJoint2D_ptr)* joint_node = rb_sys->_cs->_joints->start;
+    joint_node != NULL;
+    joint_node = joint_node->next
+  ) {
+
+    phJoint2D* joint = joint_node->element;
+    phRigid_Body2D* rb1 = joint->rigid_body1;
+
+    if (joint->_super != NULL && !geComponent_Is_Active(joint->_super)) {
+      continue;
+    }
+    if (rb1 == NULL || rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) {
+      continue;
+    }
+
+    phApply_Joint2D(joint);
+
+  }
+  }
+
+  for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
   for (uint64_t i = 0; i < rb_sys->_cs->_collisions_count; i++) {
 
     phCollision2D collision = rb_sys->_cs->_collisions[i];
@@ -168,25 +190,6 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
       // rb1->_force_applied = rb2->_force_applied = true;
 
     }
-
-  }
-  }
-  for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
-  for (
-    dNode_LL(phJoint2D_ptr)* joint_node = rb_sys->_cs->_joints->start;
-    joint_node != NULL;
-    joint_node = joint_node->next
-  ) {
-
-    phJoint2D* joint = joint_node->element;
-    phRigid_Body2D* rb1 = joint->rigid_body1;
-
-    // if (rb1->_force_applied) { continue; };
-
-    if (joint->_super != NULL && !geComponent_Is_Active(joint->_super)) { continue; }
-    if (rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) { continue; }
-
-    phApply_Joint2D(joint);
 
   }
   }

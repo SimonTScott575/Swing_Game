@@ -117,11 +117,9 @@ void Update_Rope_Controller(geComponent* component) {
 
       rc->rod_j->_super.rigid_body2 = rc->dest_rb;
       rc->rod_j->_super.position1 = mInv_Transform_2D(rc->dest_pos ,
-                                                      *rc->spring_j->_super.rigid_body1->frame);
+                                                      *rc->rod_j->_super.rigid_body1->frame);
       rc->rod_j->_super.position2 = mInv_Transform_2D(rc->dest_pos ,
-                                                      *rc->spring_j->_super.rigid_body2->frame);
-
-      // printf("%f %f\n", rc->rod_j->_super.position1.i[0],rc->rod_j->_super.position1.i[1]);
+                                                      *rc->rod_j->_super.rigid_body2->frame);
 
       rc->rod_j->length = length;
 

@@ -246,8 +246,8 @@
     float c = cos(r);
 
     mMatrix3f SRT = {.i={
-      { scale.i[0]*c,           -1*s, scale.i[0]*( c*p.i[0] - s*p.i[1] )},
-      {            s,   scale.i[1]*c, scale.i[1]*( s*p.i[0] + c*p.i[1] )},
+      { scale.i[0]*c,  -scale.i[0]*s, scale.i[0]*( c*p.i[0] - s*p.i[1] )},
+      { scale.i[1]*s,   scale.i[1]*c, scale.i[1]*( s*p.i[0] + c*p.i[1] )},
       {0,0,1}
     }};
 

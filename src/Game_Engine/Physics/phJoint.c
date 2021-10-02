@@ -119,8 +119,6 @@ void phApply_Rod_Joint2D(phJoint2D* joint) {
   phRigid_Body2D* rb1 = joint->rigid_body1;
   phRigid_Body2D* rb2 = joint->rigid_body2;
 
-  mGenerate_transform_2D(rb1->frame);
-  mGenerate_transform_2D(rb2->frame);
   mVector2f r1 = mTransform_RS_2D(joint->position1, *rb1->frame); // local -> world -> CoM to joint position in world
   mVector2f r2 = mTransform_RS_2D(joint->position2, *rb2->frame); // local -> world -> CoM to joint position in world
 
@@ -128,7 +126,7 @@ void phApply_Rod_Joint2D(phJoint2D* joint) {
   mVector2f r1_perp = {{r1.i[1],-r1.i[0]}};
   float rot_vel = rb1->angular_velocity; // mDot_V2f(rb1->velocity,r1); // rb1->angular_velocity;
   mVector2f rot_vel_cross_r1 = {{-rot_vel*r1.i[1], rot_vel*r1.i[0]}};
-  mVector2f delta_vel = mAdd_V2f(rb1->velocity,rot_vel_cross_r1); // mMul_f_V2f(fabs(rot_vel),r1_perp)); //??? SIGN ?
+  mVector2f delta_vel = mAdd_V2f(rb1->velocity,rot_vel_cross_r1);
 
   // K matrix
   float mass_factor = 1/rb1->mass;
@@ -160,64 +158,5 @@ void phApply_Rod_Joint2D(phJoint2D* joint) {
   // apply
   phSet_Force(mMul_f_V2f(1/phDELTA_T,impulse), mAdd_V2f(rb1->frame->position,r1), rb1);
   phApply_Force_On_Velocity(rb1);
-
-  // printf("%f\n", rb1->torque);
-
-  // phRod_Joint2D* rod = joint->_sub;
-  // phRigid_Body2D* rb1 = joint->rigid_body1;
-  //
-  // mGenerate_transform_2D(rb1->frame);
-  // mVector2f pos1_world = mTransform_2D(joint->position1, rb1->frame->transform);
-  // mVector2f pos2_world = joint->position2;
-  //
-  // mVector2f pos12 = mSub_V2f(pos1_world, pos2_world);
-  // float pos12_norm = mNorm_V2f(pos12);
-  //
-  // if ( pos12_norm > 0.001 && rod->length > 0.001 ) {
-  //
-  //   mVector2f direction = mMul_f_V2f(1/pos12_norm, pos12);
-  //
-  //   // move if not at length apart
-  //   if (pos12_norm < rod->length - 0.01 || pos12_norm > rod->length + 0.01) {
-  //
-  //     mVector2f correction = mMul_f_V2f( (rod->length - pos12_norm), direction );
-  //     if (!rb1->is_static) {
-  //       rb1->frame->position = mAdd_V2f(rb1->frame->position, correction);
-  //     }
-  //
-  //     mGenerate_transform_2D(rb1->frame);
-  //     pos1_world = mTransform_2D(joint->position1, rb1->frame->transform);
-  //
-  //     pos12 = mSub_V2f(pos1_world, pos2_world);
-  //
-  //   }
-  //
-  //   //NOTE: (see TODO) here now ONLY allowing position1 at rb1 centre and only applying forces to rb1
-  //   if ( !rb1->is_static ) {
-  //
-  //     mVector2f direction_perp = (mVector2f){{-direction.i[1],direction.i[0]}};
-  //     float angular_vel = mDot_V2f(rb1->velocity, direction_perp) / rod->length;
-  //
-  //     float force_perp = mDot_V2f(rb1->force, direction_perp);
-  //
-  //     angular_vel += force_perp * phDELTA_T / rod->length;
-  //     float delta_angle = angular_vel * phDELTA_T;
-  //
-  //     mMatrix2f rot_mat = { .i = {
-  //       {cos(delta_angle), -sin(delta_angle)},
-  //       {sin(delta_angle),  cos(delta_angle)}
-  //     }};
-  //     rb1->frame->position = mAdd_V2f( pos2_world , mMul_M2f_V2f(rot_mat, pos12) );
-  //
-  //     mVector2f final_velocity = mMul_f_V2f(rod->length*delta_angle / phDELTA_T, direction_perp);
-  //
-  //     // rb1->force = mMul_f_V2f( 1/phDELTA_T, mSub_V2f(final_velocity, rb1->velocity) );
-  //     rb1->velocity = final_velocity;
-  //
-  //   }
-  //
-  // }
-  //
-  // // phApply_Force_On_Velocity(rb1);
 
 }
