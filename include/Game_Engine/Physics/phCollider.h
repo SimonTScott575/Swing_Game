@@ -20,7 +20,7 @@ typedef struct phAABB_Collider2D phAABB_Collider2D;
 typedef struct phCircle_Collider2D phCircle_Collider2D;
 typedef struct phPolygon_Collider2D phPolygon_Collider2D;
 
-D_HEADER_dLList(phCollider2D*, phCollider2D_ptr);
+D_HEADER_LLIST(phCollider2D*, phCollider2D_ptr);
 
 struct phCollider2D {
 
@@ -67,17 +67,14 @@ struct phPolygon_Collider2D {
 
 };
 
-// ==============
-// Initialization
-// ==============
+// ==========================
+// Initialization/Termination
+// ==========================
 
 phCollider2D init_phCollider2D(mFrame2D* frame, uint64_t collider_id);
 
 phAABB_Collider2D* new_phAABB_Collider2D(mFrame2D* frame, float X_length, float Y_length);
 phCircle_Collider2D* new_phCircle_Collider2D(mFrame2D* frame,  float radius);
-// phPolygon_Collider2D* new_phPolygon_Collider2D(mFrame2D* frame, float* vertices, uint64_t n);
-
-// void del_phCollider2D(phCollider2D* collider);
 
 void del_phCollider2D_Sub_Component(geComponent* component);
 

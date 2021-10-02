@@ -23,6 +23,8 @@ struct Rope_Controller {
   phRod_Joint2D* rod_j;
   phSpring_Joint2D* spring_j;
 
+  phRigid_Body2D* dest_rb;
+
   phRB_System2D* rb_sys;
 
   mVector2f last_pos;

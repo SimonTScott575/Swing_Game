@@ -59,13 +59,15 @@
   M__Frame_SCOPE__ mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
   M__Frame_SCOPE__ void del_mFrame2D_Sub_Component(geComponent* component);
   M__Frame_SCOPE__ void del_mFrame3D_Sub_Component(geComponent* component);
-  // M__Frame_SCOPE__ void del_mFrame2D(mFrame2D* frame);
-  // M__Frame_SCOPE__ void del_mFrame3D(mFrame3D* frame);
-  // M__Frame_SCOPE__ void del_mFrame2D_void(void* frame);
-  // M__Frame_SCOPE__ void del_mFrame3D_void(void* frame);
 
   M__Frame_SCOPE__ void mGenerate_transform_2D(mFrame2D* frame);
   M__Frame_SCOPE__ void mGenerate_transform_3D(mFrame3D* frame);
+
+  M__Frame_SCOPE__ mVector2f mTransform_2D(mVector2f v, mMatrix3f transform);
+  M__Frame_SCOPE__ mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame);
+  M__Frame_SCOPE__ mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame);
+  M__Frame_SCOPE__ mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame);
+  M__Frame_SCOPE__ mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame);
 
   M__Frame_SCOPE__ mVector2f mAxis_X_2D(mFrame2D* frame);
   M__Frame_SCOPE__ mVector3f mAxis_X_3D(mFrame3D* frame);
@@ -150,15 +152,6 @@
 
   };
 
-  // M__Frame_SCOPE__ void del_mFrame2D(mFrame2D* frame) {
-  //   geDestroy_Component(frame->_super);
-  //   free(frame);
-  // }
-  // M__Frame_SCOPE__ void del_mFrame3D(mFrame3D* frame) {
-  //   geDestroy_Component(frame->_super);
-  //   free(frame);
-  // }
-
   M__Frame_SCOPE__ void del_mFrame2D_Sub_Component(geComponent* component) {
     mFrame2D* frame = component->_sub;
     free(frame);
@@ -167,13 +160,6 @@
     mFrame3D* frame = component->_sub;
     free(frame);
   }
-
-  // M__Frame_SCOPE__ void del_mFrame2D_void(void* frame) {
-  //   del_mFrame2D(frame);
-  // }
-  // M__Frame_SCOPE__ void del_mFrame3D_void(void* frame) {
-  //   del_mFrame3D(frame);
-  // }
 
   // ===
 
@@ -222,6 +208,53 @@
     frame->transform.i[3][3] = 1;
   }
 
+  M__Frame_SCOPE__ mVector2f mTransform_2D(mVector2f v, mMatrix3f transform) {
+    mVector3f v3 = mMul_M3f_V3f(transform, (mVector3f){{v.i[0],v.i[1],1}});
+    v = (mVector2f){{v3.i[0],v3.i[1]}};
+    return v;
+  }
+  M__Frame_SCOPE__ mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame) {
+    frame.scale = mVector2f_ONE;
+    mGenerate_transform_2D(&frame);
+    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+    return (mVector2f){{v3.i[0],v3.i[1]}};
+  }
+  M__Frame_SCOPE__ mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame) {
+    frame.position.i[0] = frame.position.i[1] = 0;
+    mGenerate_transform_2D(&frame);
+    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+    return (mVector2f){{v3.i[0],v3.i[1]}};
+  }
+  M__Frame_SCOPE__ mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame) {
+    frame.scale = mVector2f_ONE;
+    frame.position = mVector2f_ZERO;
+    mGenerate_transform_2D(&frame);
+    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+    return (mVector2f){{v3.i[0],v3.i[1]}};
+  }
+  #include <stdio.h> //DEBUG
+  M__Frame_SCOPE__ mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame) {
+    if (frame.scale.i[0] < 0.001 || frame.scale.i[1] < 0.001) {
+      printf("\nDEBUG : ATTEMPT DIV 0\n");
+      return v;
+    }
+    mVector2f scale = (mVector2f){{1/frame.scale.i[0],1/frame.scale.i[1]}};
+    float r = -frame.rotation;
+    mVector2f p = mMul_f_V2f(-1,frame.position);
+
+    float s = sin(r);
+    float c = cos(r);
+
+    mMatrix3f SRT = {.i={
+      { scale.i[0]*c,           -1*s, scale.i[0]*( c*p.i[0] - s*p.i[1] )},
+      {            s,   scale.i[1]*c, scale.i[1]*( s*p.i[0] + c*p.i[1] )},
+      {0,0,1}
+    }};
+
+    mVector3f v3 = mMul_M3f_V3f(SRT,(mVector3f){{v.i[0],v.i[1],1}});
+    return (mVector2f){{v3.i[0],v3.i[1]}};
+  }
+
   // ====
   // Axis
   // ====
@@ -230,6 +263,8 @@
     mVector2f result;
     result.i[0] = frame->transform.i[0][0];
     result.i[1] = frame->transform.i[1][0];
+
+    return result;
   }
   M__Frame_SCOPE__ mVector3f mAxis_X_3D(mFrame3D* frame) {
     mVector3f result;

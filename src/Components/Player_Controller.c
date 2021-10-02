@@ -21,11 +21,13 @@ void Update_Player_Controller(geComponent* component) {
   Player_Controller* pc = component->_sub;
 
   pc->rb->force = (mVector2f){{
-    3*( glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_D) - glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_A) ),
+    10*( glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_D) - glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_A) ),
     150*( geKey_Down_Stroke(geGet_Active_Game(), GLFW_KEY_SPACE) ) //TEMP
   }};
-  
+
   pc->last_pos = pc->rb->frame->position.i[0];
+
+  // printf("%f\n", pc->rb->angular_velocity);
 
 }
 

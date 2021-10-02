@@ -39,6 +39,8 @@ void geSet_Sub_Entity(void* sub, geDestroy_Entity_fn destroy, geEntity* entity);
 
 // ===
 
+bool geComponent_Is_Active(geComponent* component);
+
 void geUnload_Entity(geEntity* entity); //! needs remove ! //? put in scene ?
 
 void geUpdate_Entity(geEntity* entity);

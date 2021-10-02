@@ -50,6 +50,13 @@ void geSet_Sub_Entity(void* sub, geDestroy_Entity_fn destroy, geEntity* entity) 
 
 // ===
 
+bool geComponent_Is_Active(geComponent* component) {
+  if (component->_entity != NULL) {
+    return component->is_active && component->_entity->is_active;
+  }
+  return component->is_active;
+}
+
 void geUnload_Entity(geEntity* entity) {
 
   dNode_LL(geComponent_ptr)* component_node = entity->_components->start;

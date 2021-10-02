@@ -1,7 +1,8 @@
-#ifndef PH_Joint_H
-#define PH_Joint_H
+#ifndef PH_JOINT_H
+#define PH_JOINT_H
 
 #include <Game_Engine/ECS/geComponent.h>
+#include <Game_Engine/ECS/geEntity.h>
 
 #include "phRigid_Body.h"
 
@@ -11,7 +12,7 @@ typedef struct phRod_Joint2D phRod_Joint2D;
 
 typedef void (*phApply_Joint2D_fn)(phJoint2D* joint);
 
-D_HEADER_dLList(phJoint2D*, phJoint2D_ptr);
+D_HEADER_LLIST(phJoint2D*, phJoint2D_ptr);
 
 struct phJoint2D {
 
@@ -46,16 +47,16 @@ struct phRod_Joint2D {
 
 };
 
-// ==============
-// Initialization
-// ==============
+// ==========================
+// Initialization/Termination
+// ==========================
+
+//IMPORTANT: rb1 MUST NOT be NULL, rb2 MUST be NULL
 
 phJoint2D init_phJoint2D(mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2, phApply_Joint2D_fn apply_fn);
 
 phSpring_Joint2D* new_phSpring_Joint2D(float k, float rest_length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2);
 phRod_Joint2D* new_phRod_Joint2D(float length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2);
-
-// void del_phJoint2D(phJoint2D* joint);
 
 void del_phJoint2D_Sub_Component(geComponent* component);
 

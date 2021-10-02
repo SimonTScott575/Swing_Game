@@ -45,9 +45,10 @@ void Update_Rope_Controller(geComponent* component) {
     rc->spring_phase = false;
     rc->rod_j->_super._super->is_active = false;
     rc->spring_j->_super._super->is_active = false;
+    rc->dest_rb = NULL;
 
-
-    source_rb->velocity = mMul_f_V2f(1/phDELTA_T, mSub_V2f(source_rb->frame->position , rc->last_pos));
+    source_rb->angular_velocity = 0; //?
+    // source_rb->velocity = mMul_f_V2f(1/phDELTA_T, mSub_V2f(source_rb->frame->position , rc->last_pos));
 
   }
 
@@ -90,6 +91,7 @@ void Update_Rope_Controller(geComponent* component) {
 
       rc->is_hitting = phRay_Cast_Solver_Masked(source_f->position, mSub_V2f(mouse_pos, source_pos), &collision, 0, HOOK_SURFACE_LAYER, rc->rb_sys->_cs);
       rc->dest_pos = collision.position;
+      rc->dest_rb = (collision.rigid_body1 == source_rb ? collision.rigid_body2 : collision.rigid_body1); //!!!
 
     }
 
@@ -113,16 +115,29 @@ void Update_Rope_Controller(geComponent* component) {
       //???
     } else if (rc->spring_phase && mDot_V2f(source_rb->velocity, direction) > 0) {
 
-      rc->rod_j->_super.position2 = rc->dest_pos;
+      rc->rod_j->_super.rigid_body2 = rc->dest_rb;
+      rc->rod_j->_super.position1 = mInv_Transform_2D(rc->dest_pos ,
+                                                      *rc->spring_j->_super.rigid_body1->frame);
+      rc->rod_j->_super.position2 = mInv_Transform_2D(rc->dest_pos ,
+                                                      *rc->spring_j->_super.rigid_body2->frame);
+
+      // printf("%f %f\n", rc->rod_j->_super.position1.i[0],rc->rod_j->_super.position1.i[1]);
+
       rc->rod_j->length = length;
 
       rc->rod_phase = true;
+      rc->spring_phase = false;
+
       rc->spring_j->_super._super->is_active = false;
       rc->rod_j->_super._super->is_active = true;
 
     } else if (!rc->spring_phase && !rc->rod_phase) {
 
-      rc->spring_j->_super.position2 = rc->dest_pos;
+      rc->spring_j->_super.rigid_body2 = rc->dest_rb;
+      rc->spring_j->_super.position1 = mVector2f_ZERO;
+      rc->spring_j->_super.position2 = mInv_Transform_2D(rc->dest_pos,
+                                                         *rc->spring_j->_super.rigid_body2->frame);
+
       rc->spring_j->rest_length = length;
 
       rc->spring_j->_super._super->is_active = true;

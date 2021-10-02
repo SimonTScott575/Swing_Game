@@ -43,10 +43,6 @@ static void phSave_Collisions_In_Collider(phCollider2D* c, phCollision2D* collis
 
   if (c->_save_collisions) {
 
-    // if (c->_n_collisions >= c->_max_collisions) {
-    //   return;
-    // }
-
     uint64_t save_n = (new_n_collisions > (c->_max_collisions - c->_n_collisions) ? c->_max_collisions - c->_n_collisions : new_n_collisions);
 
     phCollision2D* c_collisions = (phCollision2D*) c->_collisions + c->_n_collisions;
@@ -90,43 +86,44 @@ void del_phCollision_Solver2D(phCollision_Solver2D* cs) {
 
 void phSolve_Collisions(phCollision_Solver2D* cs) {
 
-  dNode_LL(phRigid_Body2D_ptr)* rb1_node = cs->_rigid_bodies->start;
-
   //
-  while (rb1_node != NULL) {
-
-    //... callbacks !
-
+  for (
+    dNode_LL(phRigid_Body2D_ptr)* rb1_node = cs->_rigid_bodies->start;
+    rb1_node != NULL;
+    rb1_node = rb1_node->next
+  ) {
     rb1_node->element->collider->_n_collisions = 0;
-
-    rb1_node = rb1_node->next;
-
   }
 
   //
-  rb1_node = cs->_rigid_bodies->start;
-
   cs->_collisions_count = 0;
   phCollision2D* current_collision = cs->_collisions;
 
-  for ( ; rb1_node != NULL; rb1_node = rb1_node->next) {
+  for (
+    dNode_LL(phRigid_Body2D_ptr)* rb1_node = cs->_rigid_bodies->start;
+    rb1_node != NULL;
+    rb1_node = rb1_node->next
+  ) {
 
-    dNode_LL(phRigid_Body2D_ptr)* rb2_node = rb1_node->next;
+    for (
+      dNode_LL(phRigid_Body2D_ptr)* rb2_node = rb1_node->next;
+      rb2_node != NULL;
+      rb2_node = rb2_node->next
+    ) {
 
-    for ( ; rb2_node != NULL; rb2_node = rb2_node->next) {
+      phRigid_Body2D* rb1 = rb1_node->element;
+      phRigid_Body2D* rb2 = rb2_node->element;
 
-      if (rb1_node->element->_super != NULL && !rb1_node->element->_super->is_active) { continue; }
-      if (rb1_node->element->_super != NULL && rb1_node->element->_super->_entity != NULL && !rb1_node->element->_super->_entity->is_active) { continue; }
-      if (rb2_node->element->_super != NULL && !rb2_node->element->_super->is_active) { continue; }
-      if (rb2_node->element->_super != NULL && rb2_node->element->_super->_entity != NULL && !rb2_node->element->_super->_entity->is_active) { continue; }
+      if (rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) { continue; }
+      if (rb2->_super != NULL && !geComponent_Is_Active(rb2->_super)) { continue; }
 
-      uint64_t current_collision_count = phDetect_Collisions(rb1_node->element, rb2_node->element, current_collision);
+      uint64_t current_collision_count = phDetect_Collisions(rb1, rb2, current_collision);
 
-      phSave_Collisions_In_Collider(rb1_node->element->collider, current_collision, current_collision_count);
-      phSave_Collisions_In_Collider(rb2_node->element->collider, current_collision, current_collision_count);
+      phSave_Collisions_In_Collider(rb1->collider, current_collision, current_collision_count);
+      phSave_Collisions_In_Collider(rb2->collider, current_collision, current_collision_count);
 
-      rb1_node->element->collider->_n_collisions += current_collision_count;
-      rb2_node->element->collider->_n_collisions += current_collision_count;
+      rb1->collider->_n_collisions += current_collision_count;
+      rb2->collider->_n_collisions += current_collision_count;
 
       current_collision += current_collision_count;
       cs->_collisions_count += current_collision_count;

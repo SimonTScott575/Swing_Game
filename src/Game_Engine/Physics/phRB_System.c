@@ -88,29 +88,6 @@ void phAdd_Globals_RB_System2D(phRB_System2D* rb_sys) {
 
 void phApply_Joint2Ds(phRB_System2D* rb_sys) {
 
-  dNode_LL(phJoint2D_ptr)* joint_node = rb_sys->_cs->_joints->start;
-
-  for ( ; joint_node != NULL; joint_node = joint_node->next) {
-
-    phRigid_Body2D* rb1 = joint_node->element->rigid_body1;
-    phRigid_Body2D* rb2 = joint_node->element->rigid_body2;
-
-    if (rb1 != NULL && rb1->_super != NULL && !rb1->_super->is_active) { continue; }
-    if (rb1 != NULL && rb1->_super != NULL && rb1->_super->_entity != NULL && !rb1->_super->_entity->is_active) { continue; }
-    if (rb2 != NULL && rb2->_super != NULL && !rb2->_super->is_active) { continue; }
-    if (rb2 != NULL && rb2->_super != NULL && rb2->_super->_entity != NULL && !rb2->_super->_entity->is_active) { continue; }
-
-    if (!joint_node->element->active) { continue; }
-    if (joint_node->element->_super != NULL && !joint_node->element->_super->is_active) { continue; }
-
-    phApply_Joint2D(joint_node->element);
-
-    // if (joint_node->element->active) {
-    //   phApply_Joint2D(joint_node->element);
-    // }
-
-  }
-
 }
 
 void phZero_RB_System2D(phRB_System2D* rb_sys) { //TODO: should use phZero_RB
@@ -119,8 +96,7 @@ void phZero_RB_System2D(phRB_System2D* rb_sys) { //TODO: should use phZero_RB
 
   for ( ; rb_node != NULL ; rb_node = rb_node->next) {
 
-    if (rb_node->element->_super != NULL && !rb_node->element->_super->is_active) { continue; }
-    if (rb_node->element->_super != NULL && rb_node->element->_super->_entity != NULL && !rb_node->element->_super->_entity->is_active) { continue; }
+    if (rb_node->element->_super != NULL && !geComponent_Is_Active(rb_node->element->_super)) { continue; }
 
     rb_node->element->force = mVector2f_ZERO;
     rb_node->element->torque = 0;
@@ -133,67 +109,27 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
 
   phAdd_Globals_RB_System2D(rb_sys);
 
-  phApply_Joint2Ds(rb_sys);
+  for (
+    dNode_LL(phRigid_Body2D_ptr)* rb_node = rb_sys->_cs->_rigid_bodies->start;
+    rb_node != NULL;
+    rb_node = rb_node->next
+  ) {
 
-  dNode_LL(phRigid_Body2D_ptr)* rbA_node = rb_sys->_cs->_rigid_bodies->start;
-  if (rbA_node == NULL) { return; }
+    phRigid_Body2D* rb = rb_node->element;
 
-  for ( ; rbA_node != NULL; rbA_node = rbA_node->next ) {
-
-    if (rbA_node->element->_super != NULL && !rbA_node->element->_super->is_active) { continue; }
-    if (rbA_node->element->_super != NULL && rbA_node->element->_super->_entity != NULL && !rbA_node->element->_super->_entity->is_active) { continue; }
-
-    if ( ! rbA_node->element->_force_applied ) {
-      phApply_Force(rbA_node->element);
-    } else {
-      rbA_node->element->_force_applied = false;
+    if (rb->_super != NULL && !geComponent_Is_Active(rb->_super)) {
+      continue;
     }
+
+    phApply_Force_On_Velocity(rb);
+
+    // rb->_force_applied = false;
 
   }
 
   phSolve_Collisions(rb_sys->_cs);
 
-  // for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
-    for (uint64_t i = 0; i < rb_sys->_cs->_collisions_count; i++) {
-
-      phCollision2D collision = rb_sys->_cs->_collisions[i];
-
-      phRigid_Body2D* rb1 = collision.rigid_body1;
-      phRigid_Body2D* rb2 = collision.rigid_body2;
-
-      if (rb1->is_transparent || rb2->is_transparent) {
-        continue;
-      }
-
-      // colliding force
-      if ( mDot_V2f(collision.sep_vel, collision.normal) < 0 ) {
-
-        phApply_Velocity_On_Position_dt( rb1, -phDELTA_T );
-        phApply_Velocity_On_Position_dt( rb2, -phDELTA_T );
-
-        // float old_accum = collision.accum_lambda;
-        // float new_accum = old_accum + phGet_Collision_Lambda(collision);
-        // new_accum = (new_accum > 0 ? new_accum : 0);
-        float impulse = phGet_Collision_Lambda(collision); // new_accum - old_accum;
-        // rb_sys->_cs->_collisions[i].accum_lambda = new_accum;
-
-        rb1->force = mMul_f_V2f(
-          impulse,
-          collision.normal
-        );
-        rb2->force = mMul_f_V2f(
-          -impulse,
-          collision.normal
-        );
-
-        phApply_Force_On_Velocity(rb1);
-        phApply_Force_On_Velocity(rb2);
-
-      }
-
-    }
-  // }
-
+  for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
   for (uint64_t i = 0; i < rb_sys->_cs->_collisions_count; i++) {
 
     phCollision2D collision = rb_sys->_cs->_collisions[i];
@@ -207,9 +143,67 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
 
     // colliding force
     if ( mDot_V2f(collision.sep_vel, collision.normal) < 0 ) {
-      phApply_Velocity_On_Position_dt( rb1, phDELTA_T );
-      phApply_Velocity_On_Position_dt( rb2, phDELTA_T );
+
+      // phApply_Velocity_On_Position_dt( rb1, -phDELTA_T );
+      // phApply_Velocity_On_Position_dt( rb2, -phDELTA_T );
+
+      float old_accum = collision.accum_lambda;
+      float new_accum = old_accum + phGet_Collision_Lambda(collision);
+      new_accum = (new_accum > 0 ? new_accum : 0);
+      float impulse = phGet_Collision_Lambda(collision); // new_accum - old_accum;
+      rb_sys->_cs->_collisions[i].accum_lambda = new_accum;
+
+      rb1->force = mMul_f_V2f(
+        impulse,
+        collision.normal
+      );
+      rb2->force = mMul_f_V2f(
+        -impulse,
+        collision.normal
+      );
+
+      phApply_Force_On_Velocity(rb1);
+      phApply_Force_On_Velocity(rb2);
+
+      // rb1->_force_applied = rb2->_force_applied = true;
+
     }
+
+  }
+  }
+  for (uint64_t iter_n = 0; iter_n < 1; iter_n++) {
+  for (
+    dNode_LL(phJoint2D_ptr)* joint_node = rb_sys->_cs->_joints->start;
+    joint_node != NULL;
+    joint_node = joint_node->next
+  ) {
+
+    phJoint2D* joint = joint_node->element;
+    phRigid_Body2D* rb1 = joint->rigid_body1;
+
+    // if (rb1->_force_applied) { continue; };
+
+    if (joint->_super != NULL && !geComponent_Is_Active(joint->_super)) { continue; }
+    if (rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) { continue; }
+
+    phApply_Joint2D(joint);
+
+  }
+  }
+
+  for (
+    dNode_LL(phRigid_Body2D_ptr)* rb_node = rb_sys->_cs->_rigid_bodies->start;
+    rb_node != NULL;
+    rb_node = rb_node->next
+  ) {
+
+    phRigid_Body2D* rb = rb_node->element;
+
+    if (rb->_super != NULL && !geComponent_Is_Active(rb->_super)) {
+      continue;
+    }
+
+    phApply_Velocity_On_Position( rb );
 
   }
 

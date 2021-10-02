@@ -53,10 +53,6 @@ phRigid_Body2D* new_phRigid_Body2D(mFrame2D* frame, float mass, float rotational
 
 }
 
-// void del_phRigid_Body2D(phRigid_Body2D* rb) {
-//   geDestroy_Component(rb->_super);
-//   free(rb);
-// }
 void del_phRigid_Body2D_Sub_Component(geComponent* component) {
 
   phRigid_Body2D* rb = component->_sub;
@@ -85,10 +81,10 @@ void phSet_Force(mVector2f force, mVector2f position, phRigid_Body2D* rb) {
 void phApply_Force_On_Velocity_dt(phRigid_Body2D* rb, float delta_time) {
   if (rb->is_kinetic) {
     if (!rb->is_static) {
-      rb->velocity = mAdd_V2f( rb->velocity, mMul_f_V2f( delta_time / rb->mass, rb->force ) );
+      rb->velocity = mAdd_V2f( rb->velocity, mMul_f_V2f( phDELTA_T / rb->mass, rb->force ) );
     }
     if (!rb->is_static_rotation) {
-      rb->angular_velocity += delta_time/rb->rotational_inertia * rb->torque;
+      rb->angular_velocity += phDELTA_T/rb->rotational_inertia * rb->torque;
     }
   }
 }

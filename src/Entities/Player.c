@@ -14,7 +14,7 @@ Player* Create_Player() {
   grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
 
   phCircle_Collider2D* circle_c = new_phCircle_Collider2D(frame, 0.5);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &circle_c->_super);
+  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.5 * 0.5*0.5, &circle_c->_super);
   rb->restitution = 0.25;
 
   Player_Controller* pc = Create_Player_Controller(rb);

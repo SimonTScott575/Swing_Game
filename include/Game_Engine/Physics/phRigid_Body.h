@@ -1,3 +1,5 @@
+//TODO: what if phDELTA_T = 0 ?
+
 #ifndef PH_Rigid_Body_H
 #define PH_Rigid_Body_H
 
@@ -14,7 +16,7 @@
 
 typedef struct phRigid_Body2D phRigid_Body2D;
 
-D_HEADER_dLList(phRigid_Body2D*, phRigid_Body2D_ptr);
+D_HEADER_LLIST(phRigid_Body2D*, phRigid_Body2D_ptr);
 
 struct phRigid_Body2D {
 
@@ -50,11 +52,10 @@ struct phRigid_Body2D {
 // Initalization
 // =============
 
-phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider); // set frame AS collider frame ?
+phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
 
 phRigid_Body2D* new_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
 
-// void del_phRigid_Body2D(phRigid_Body2D* rb);
 void del_phRigid_Body2D_Sub_Component(geComponent* component);
 
 // ==============
