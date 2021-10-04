@@ -50,7 +50,8 @@ phSpring_Joint2D* new_phSpring_Joint2D(float k, float rest_length, mVector2f pos
 phRod_Joint2D* new_phRod_Joint2D(float length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2) {
 
   phRod_Joint2D* rod = malloc(sizeof(phRod_Joint2D));
-  rod->length = length;
+  rod->radial_velocity = 0;
+  rod->_is_radial_motion = false;
 
   rod->_super = init_phJoint2D(position1, rb1, position2, rb2, phApply_Rod_Joint2D);
   phSet_Sub_Joint2D(rod, &rod->_super);
@@ -112,18 +113,16 @@ void phApply_Spring_Joint2D(phJoint2D* joint) {
 
 void phApply_Rod_Joint2D(phJoint2D* joint) {
   //TODO: allow position1 to not be at centre of rb1 (more complicated than you think, rewrite!)
-  // return;
-  // printf("YES\n");
 
   phRod_Joint2D* rod = joint->_sub;
   phRigid_Body2D* rb1 = joint->rigid_body1;
   phRigid_Body2D* rb2 = joint->rigid_body2;
 
-  mVector2f r1 = mTransform_RS_2D(joint->position1, *rb1->frame); // local -> world -> CoM to joint position in world
-  mVector2f r2 = mTransform_RS_2D(joint->position2, *rb2->frame); // local -> world -> CoM to joint position in world
+  mVector2f r1 = mTransform_RS_2D(joint->position1, *rb1->frame); // local -> world CoM to joint position
+  mVector2f r2 = mTransform_RS_2D(joint->position2, *rb2->frame); // local -> world CoM to joint position
+  mVector2f r1_perp = {{r1.i[1],-r1.i[0]}};
 
   // relative/delta velocity
-  mVector2f r1_perp = {{r1.i[1],-r1.i[0]}};
   float rot_vel = rb1->angular_velocity; // mDot_V2f(rb1->velocity,r1); // rb1->angular_velocity;
   mVector2f rot_vel_cross_r1 = {{-rot_vel*r1.i[1], rot_vel*r1.i[0]}};
   mVector2f delta_vel = mAdd_V2f(rb1->velocity,rot_vel_cross_r1);

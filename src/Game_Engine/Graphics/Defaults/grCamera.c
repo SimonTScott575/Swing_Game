@@ -16,6 +16,8 @@ grCamera2D* grCreate_Camera2D(mFrame2D* frame, float width, float height) { //TO
   grCamera2D* camera = malloc(sizeof(grCamera2D));
   camera->frame = frame;
   camera->_X_length = 2;
+  camera->_sub = NULL;
+  camera->_prepare = grPrepare_Camera;
   memcpy(camera->background_colour, (float[4]){0,0,0,1}, 4*sizeof(float));
 
   camera->_super = geCreate_Component();
@@ -37,9 +39,14 @@ void grDestroy_Camera2D_Sub_Component(geComponent* component) {
   free(camera);
 }
 
-// ====
-// View
-// ====
+void grSet_Sub_Camera2D(void* sub, grPrepare_Camera_fn prepare, grCamera2D* camera) {
+  camera->_sub = sub;
+  camera->_prepare = prepare;
+}
+
+// ===================
+// View and Projection
+// ===================
 
 void grSet_View_2D(mFrame2D* frame, grCamera2D* camera) {
 
@@ -62,10 +69,6 @@ void grSet_View_2D(mFrame2D* frame, grCamera2D* camera) {
 
 }
 
-// ==========
-// Projection
-// ==========
-
 void grSet_Projection_2D(float width, float height, grCamera2D* camera) {
   camera->_X_length = width;
 
@@ -77,4 +80,18 @@ void grSet_Projection_2D(float width, float height, grCamera2D* camera) {
 
   camera->Projection3x3.i[2][0] = camera->Projection3x3.i[2][1] = 0;
   camera->Projection3x3.i[2][2] = 1;
+}
+
+// ======
+// Update
+// ======
+
+void grPrepare_Camera(grCamera2D* camera, grScreen* screen) {
+
+  grSet_View_2D(camera->frame, camera);
+  grSet_Clear_Screen_Colour(camera->background_colour, screen);
+  if (camera->background_colour[3] != 0) {
+    grClear_Screen(screen);
+  }
+
 }

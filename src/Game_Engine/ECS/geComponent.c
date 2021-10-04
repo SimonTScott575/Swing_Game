@@ -12,6 +12,24 @@ D_SOURCE_dLList(geComponent*, geComponent_ptr);
 // Creation/Destruction
 // ====================
 
+geComponent geComponent_init() { //? id ?
+
+  return (geComponent){
+    ._entity = NULL,
+    ._component_node = NULL,
+
+    .is_active = true,
+    .name = NULL,
+    .layer_mask = 0,
+    .ID = 0,
+
+    ._sub = NULL,
+    ._update = NULL,
+    ._destroy = NULL
+  };
+
+}
+
 geComponent* geCreate_Component() { //? id ?
 
   geComponent* component = malloc(sizeof(geComponent));

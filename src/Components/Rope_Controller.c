@@ -42,16 +42,14 @@ void Update_Rope_Controller(geComponent* component) {
   int climb_sign =   glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_W)
                    - glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_S);
 
-  mVector2f r = mSub_V2f(rc->dest_pos,source_rb->frame->position);
-  float r_norm = mNorm_V2f(r);
-  r = mMul_f_V2f(1/r_norm, r);
+  mVector2f r_unit = mSub_V2f(rc->dest_pos,source_pos); // source to dest, normalized
+  float r_norm = mNorm_V2f(r_unit);
+  if (r_norm < 0.001) { return; }
+  r_unit = mMul_f_V2f(1/r_norm, r_unit);
 
   if ( rc->is_hitting && !glfwGetMouseButton(geGet_Active_Window()->_window_ID, GLFW_MOUSE_BUTTON_1) ) {
 
     source_rb->angular_velocity = 0; //?
-    if ( climb_sign ) {
-      source_rb->velocity = mMul_f_V2f(1/phDELTA_T/2,rc->delta_pos);
-    }
 
     rc->is_hitting = false;
 
@@ -74,30 +72,28 @@ void Update_Rope_Controller(geComponent* component) {
       goto EXIT_CLIMBING;
     }
 
-    rc->r_v += ( (-0.1 < rc->r_v || rc->r_v < 0.1) ? climb_sign*0.01 : 0 );
-    r = mMul_f_V2f(rc->r_v,r);
+    rc->r_v += ( (-0.1 < rc->r_v || rc->r_v < 0.1) ? climb_sign*0.1 : 0 );
 
-    mVector2f temp = rc->prev_pos;
-    rc->prev_pos = source_rb->frame->position;
-    source_rb->frame->position = mAdd_V2f(source_rb->frame->position, r); // somehow acceleratory ?
-    rc->delta_pos = mSub_V2f(source_rb->frame->position, temp);
-
-    source_pos = source_rb->frame->position;
+    mVector2f r_unit_perp = {{-r_unit.i[1], r_unit.i[0]}};
+    mVector2f v_perp = mMul_f_V2f( mDot_V2f(source_rb->velocity, r_unit_perp), r_unit_perp);
+    source_rb->velocity = mAdd_V2f(v_perp, mMul_f_V2f(rc->r_v, r_unit));
 
     if ( rc->rod_phase ) {
+      rc->rod_j->_super._super->is_active = false;
       rc->rod_j->_super.position1 = mInv_Transform_2D(rc->dest_pos ,
                                                       *rc->rod_j->_super.rigid_body1->frame);
     }
     else
     if ( rc->spring_phase ) {
-      // rc->spring_j->rest_length += rc->r_v; //! move towards velocity !
       start_rod_phase = true;
     }
 
   } else {
 
-    rc->r_v = 0; // mDot_V2f(r, source_rb->velocity);
+    rc->r_v = 0;
     rc->delta_pos = mVector2f_ZERO;
+
+    if ( rc->rod_phase ) { rc->rod_j->_super._super->is_active = true; }
 
   } EXIT_CLIMBING:
 

@@ -1,6 +1,8 @@
 #ifndef PH_JOINT_H
 #define PH_JOINT_H
 
+#include <stdbool.h>
+
 #include <Game_Engine/ECS/geComponent.h>
 #include <Game_Engine/ECS/geEntity.h>
 
@@ -43,7 +45,8 @@ struct phRod_Joint2D {
 
   phJoint2D _super;
 
-  float length;
+  float radial_velocity;
+  bool _is_radial_motion;
 
 };
 

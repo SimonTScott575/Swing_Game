@@ -16,12 +16,13 @@ struct Camera_Controller {
   float x_length;
 
   grRendering_System2D* rs;
+  grCamera2D* camera2D;
 
 };
 
-Camera_Controller* Create_Camera_Controller(mFrame2D* camera_frame, mFrame2D* player_frame, float x_length);
+Camera_Controller* Create_Camera_Controller(mFrame2D* camera_frame, mFrame2D* player_frame, float x_length, grCamera2D* camera);
 
-void Update_Camera_Controller(geComponent* component);
+void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen);
 
 void Destroy_Camera_Controller_Sub_Component(geComponent* component);
 

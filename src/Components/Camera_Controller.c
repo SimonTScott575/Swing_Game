@@ -1,6 +1,6 @@
 #include "Camera_Controller.h"
 
-Camera_Controller* Create_Camera_Controller(mFrame2D* camera_frame, mFrame2D* player_frame, float x_length) {
+Camera_Controller* Create_Camera_Controller(mFrame2D* camera_frame, mFrame2D* player_frame, float x_length, grCamera2D* camera2D) {
 
   Camera_Controller* cc = malloc(sizeof(Camera_Controller));
 
@@ -8,18 +8,20 @@ Camera_Controller* Create_Camera_Controller(mFrame2D* camera_frame, mFrame2D* pl
     ._super = geCreate_Component(),
     .frame = camera_frame,
     .player_frame = player_frame,
-    .x_length = x_length
+    .x_length = x_length,
+    .camera2D = camera2D
   };
 
-  geSet_Sub_Component(cc, Update_Camera_Controller, Destroy_Camera_Controller_Sub_Component, cc->_super);
+  geSet_Sub_Component(cc, NULL, Destroy_Camera_Controller_Sub_Component, cc->_super);
+  grSet_Sub_Camera2D(cc, Prepare_Camera_Sub_Camera2D, camera2D);
 
   return cc;
 
 }
 
-void Update_Camera_Controller(geComponent* component) {
+void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen) {
 
-  Camera_Controller* cc = component->_sub;
+  Camera_Controller* cc = camera2D->_sub;
 
   float origianl_x = cc->x_length;
   // if (origianl_x == 0) {
@@ -38,6 +40,8 @@ void Update_Camera_Controller(geComponent* component) {
   }
 
   cc->frame->position = cc->player_frame->position;
+
+  grPrepare_Camera(camera2D, screen);
 
 }
 

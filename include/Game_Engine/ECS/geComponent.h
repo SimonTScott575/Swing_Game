@@ -37,6 +37,8 @@ struct geComponent {
 // Initialization
 // ==============
 
+geComponent geComponent_init();
+
 geComponent* geCreate_Component();
 
 void geDestroy_Component(geComponent* component);

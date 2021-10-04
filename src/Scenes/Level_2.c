@@ -88,8 +88,8 @@ void Load_Level_2(geScene* scene) {
   // Scene
   // -----
 
-  geAdd_System(rb_sys->_super, scene);
   geAdd_System(rs->_super, scene);
+  geAdd_System(rb_sys->_super, scene);
 
   Add_Systems_Level_UI_Build(scene, &level_ui_build);
 
