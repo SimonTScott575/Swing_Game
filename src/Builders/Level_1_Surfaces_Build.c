@@ -21,7 +21,7 @@ void Load_Entity_Player_Level_1_Surfaces_Build(float x, Level_1_Surfaces_Build* 
 
 }
 
-void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Level_1_Surfaces_Build* build) {
+void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Camera_Controller* cc, Level_1_Surfaces_Build* build) {
 
   if (build->build_with_physics) { build->rope = Create_Rope(build->player->rb); }
 
@@ -57,7 +57,13 @@ void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Level_1_Surf
   // build->hs5 = Create_Hook_Surface((mVector2f){{ x + 10+1.5,  2.5-1.5/2   }}, (mVector2f){{3,1.5}});
   // build->hs6 = Create_Hook_Surface((mVector2f){{ x + 19+5,  0   }}, (mVector2f){{10,25}});
 
-  build->gem  = Create_Gem((mVector2f){{x + LENGTH_A/2 + LENGTH_B + LENGTH_C/2,0}});
+  mVector2f gem_positions[1] = {
+    (mVector2f){{x + LENGTH_A/2 + LENGTH_B + LENGTH_C/2,0}}
+  };
+  build->gem  = Create_Gem(gem_positions[0]);
+  if (cc != NULL) {
+    Set_Gem_Positions(gem_positions, 1, cc);
+  }
 
   gems_count = 1;
   gems_caught_count = 0;

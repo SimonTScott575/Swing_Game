@@ -1,4 +1,5 @@
 #include "Level_1.h"
+#include "../Glow.h"
 
 #include "../Builders/End_Level_Menu_Build.h"
 #include "../Builders/Level_UI_Build.h"
@@ -25,7 +26,7 @@ void Load_Scene_1(geScene* scene) {
 
   Camera* camera = Create_Camera(level_1_surfaces_build.player->frame, 20);
 
-  Load_Entities_Level_1_Surfaces_Build(0, camera->frame, &level_1_surfaces_build);
+  Load_Entities_Level_1_Surfaces_Build(0, camera->frame, camera->cc, &level_1_surfaces_build);
 
   //
   Load_Entities_Level_UI_Build(&level_ui_build);
@@ -51,6 +52,8 @@ void Load_Scene_1(geScene* scene) {
   // ===
   // Set
   // ===
+
+  rs->post_process = Glow_PP;
 
   Set_Level_1_Surfaces_Build(camera->camera2D, rs, rb_sys, &level_1_surfaces_build);
 

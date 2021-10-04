@@ -96,7 +96,11 @@ void Update_Level_Transitioner(geComponent* component) {
 
   }
   else
-  if (INTRO_TIME2+INTRO_TIME < level_time && level_time < CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3) {
+  if (INTRO_TIME2+INTRO_TIME+INTRO_TIME3 < level_time && level_time < CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3) {
+
+    lt->player_controller->rb->frame->scale.i[0]
+      = lt->player_controller->rb->frame->scale.i[1]
+      = 1;
 
     int cd = 1 + (INTRO_TIME2+INTRO_TIME+CD_TIME - level_time);
     if (cd == 0) { goto EXIT_CD; }
@@ -108,7 +112,8 @@ void Update_Level_Transitioner(geComponent* component) {
 
   }
   else
-  if (!lt->cd_over) {
+  if (   CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3 < level_time 
+      && !lt->cd_over) {
 
     lt->player_controller->rb->_super->is_active = true;
 

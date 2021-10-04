@@ -7,6 +7,7 @@
 #include "Scenes/Level_1.h"
 #include "Scenes/Level_2.h"
 #include "Scenes.h"
+#include "Glow.h"
 
 int main() {
 
@@ -21,6 +22,8 @@ int main() {
   // #########
 
   geWindow* window = geCreate_Window(1200,1200,"Swing");
+  grInit(); //!!!TODO: put this somewhere better, currently needed here for window's screen models needing an OpenGL context (I think)
+
   geGame* game = geCreate_Game(window);
 
   Init_Scenes();
@@ -40,7 +43,7 @@ int main() {
   level_order[0] = level_1;
   level_order[1] = level_2;
 
-  grInit(); //!!!TODO: put this somewhere better, currently needed here for window's screen models needing an OpenGL context (I think)
+  Init_Glow_PP();
 
   // #########
   // Game Loop

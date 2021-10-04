@@ -100,40 +100,6 @@ struct grActions grActions = {
 
 void grInit_Screen() {
 
-  // grTests.ALWAYS = GL_ALWAYS;
-  // grTests.NEVER  = GL_NEVER;
-  // grTests.E      = GL_EQUAL;
-  // grTests.NE     = GL_NOTEQUAL;
-  // grTests.LT     = GL_LESS;
-  // grTests.GT     = GL_GREATER;
-  // grTests.LTE    = GL_LEQUAL;
-  // grTests.GTE    = GL_GEQUAL;
-
-  // grActions.KEEP     = GL_KEEP;
-  // grActions.ZERO     = GL_ZERO;
-  // grActions.REPLACE  = GL_REPLACE;
-  // grActions.INC      = GL_INCR;
-  // grActions.INC_WRAP = GL_INCR_WRAP;
-  // grActions.DEC      = GL_DECR;
-  // grActions.DEC_WRAP = GL_DECR_WRAP;
-  // grActions.INVERT   = GL_INVERT;
-
-  // grFront_Screen->_colour_texture = NULL;
-  // grFront_Screen->_stencil_test = grTests.ALWAYS;
-  // grFront_Screen->_sFAIL       = grActions.KEEP;
-  // grFront_Screen->_sPASS_dFAIL = grActions.KEEP;
-  // grFront_Screen->_sPASS_dPASS = grActions.KEEP;
-  // grFront_Screen->_X_pixels = X_pixels;
-  // grFront_Screen->_Y_pixels = Y_pixels;
-  // grBack_Screen->_colour_texture = NULL;
-  // grBack_Screen->_stencil_test = grTests.ALWAYS;
-  // grBack_Screen->_sFAIL       = grActions.KEEP;
-  // grBack_Screen->_sPASS_dFAIL = grActions.KEEP;
-  // grBack_Screen->_sPASS_dPASS = grActions.KEEP;
-  // grBack_Screen->_X_pixels = X_pixels;
-  // grBack_Screen->_Y_pixels = Y_pixels;
-  // grSet_Active_Screen(grBack_Screen);
-
   float mesh_data[] = { -1, -1,   0, 0,
                          1,  1,   1, 1,
                         -1,  1,   0, 1,

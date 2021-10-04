@@ -9,6 +9,7 @@
 #include "../Entities/Gem.h"
 #include "../Entities/Background.h"
 #include "../Entities/Portal.h"
+#include "../Entities/Camera.h"
 
 typedef
 struct Level_1_Surfaces_Build {
@@ -35,7 +36,7 @@ struct Level_1_Surfaces_Build {
 Level_1_Surfaces_Build Level_1_Surfaces_Build_init(int build_with_physics);
 
 void Load_Entity_Player_Level_1_Surfaces_Build(float x, Level_1_Surfaces_Build* build);
-void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Level_1_Surfaces_Build* build);
+void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Camera_Controller* cc, Level_1_Surfaces_Build* build);
 void Set_Level_1_Surfaces_Build(grCamera2D* camera2D, grRendering_System2D* rs, phRB_System2D* rs_sys, Level_1_Surfaces_Build* build);
 void Add_Entities_Level_1_Surfaces_Build(geScene* scene, Level_1_Surfaces_Build* build);
 

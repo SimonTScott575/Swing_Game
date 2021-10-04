@@ -30,7 +30,7 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Level_Select_Camera* lsc = Create_Level_Select_Camera(40);
 
-  Load_Entities_Level_1_Surfaces_Build(-9, lsc->camera2D->frame, &level_1_surfaces_build);
+  Load_Entities_Level_1_Surfaces_Build(-9, lsc->camera2D->frame, NULL, &level_1_surfaces_build);
   Load_Entities_Level_2_Basic_Build(60, lsc->camera2D->frame, &level_2_basic_build);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
