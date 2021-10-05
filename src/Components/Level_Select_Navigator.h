@@ -5,6 +5,16 @@
 
 #include "../Components/Level_Select_Camera_Controller.h"
 
+#define L1_OFFSET -9.0f
+
+#define L1_MAX_X_LENGTH ( L1_A*2 + 2*L1_B + L1_C ) // distance level select camera 0 to edge
+#define L2_MAX_X_LENGTH L2_TOTAL
+#define L3_MAX_X_LENGTH L3_WIDTH
+
+#define L1_MENU_POS L1_OFFSET
+#define L2_MENU_POS (L1_MENU_POS + (L1_A*3/2.0 + 2*L1_B + L1_C) + L1_BUFFER + L2_BUFFER + L2_MAX_X_LENGTH/2)
+#define L3_MENU_POS (L2_MENU_POS + L2_MAX_X_LENGTH/2            + L2_BUFFER + L3_BUFFER + L3_MAX_X_LENGTH/2)
+
 typedef struct Level_Select_Navigator Level_Select_Navigator;
 
 struct Level_Select_Navigator {

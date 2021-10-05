@@ -11,8 +11,9 @@ struct Level_Select_Camera_Controller {
 
   mFrame2D* frame;
   mVector2f target_position;
+  float target_x_length;
 
-  float x_length;
+  float x_length; //TODO: target_x_length instead with smooth transition
 
   grRendering_System2D* rs;
 

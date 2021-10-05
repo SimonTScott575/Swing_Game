@@ -1,11 +1,16 @@
 #include <Game_Engine/Game_Engine.h>
 
-#define LEVELS_COUNT 2
+#include "Builders/Level_1_Surfaces_Build.h"
+#include "Builders/Level_2_Basic_Build.h"
+#include "Builders/Level_2_Basic_Build.h"
+
+#define LEVELS_COUNT 3
 
 extern geScene* main_menu;
 extern geScene* level_select_menu;
 extern geScene* level_1;
 extern geScene* level_2;
+extern geScene* level_3;
 
 extern geScene* level_order[LEVELS_COUNT];
 extern int focused_level_num;

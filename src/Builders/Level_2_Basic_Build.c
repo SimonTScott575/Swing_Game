@@ -1,11 +1,5 @@
 #include "Level_2_Basic_Build.h"
 
-#define LENGTH_A 5
-#define LENGTH_B 5
-#define LENGTH_C 3
-#define LENGTH_CLEARANCE 55
-#define LENGTH_TOTAL (LENGTH_A + LENGTH_B)
-
 Level_2_Basic_Build Level_2_Basic_Build_init(int build_with_physics) {
   return (Level_2_Basic_Build){
     .build_with_physics = build_with_physics
@@ -26,62 +20,47 @@ void Load_Entities_Level_2_Basic_Build(float x, mFrame2D* frame, Level_2_Basic_B
     build->rope = Create_Rope(build->player->rb);
   }
 
-  build->gem1 = Create_Gem((mVector2f){{x +  LENGTH_A, 0}});
-  build->gem2 = Create_Gem((mVector2f){{x + -LENGTH_A, 0}});
-  build->gem3 = Create_Gem((mVector2f){{x +  0, LENGTH_A}});
-  build->gem4 = Create_Gem((mVector2f){{x +  0,-LENGTH_A}});
+  build->gem1 = Create_Gem((mVector2f){{x +  L2_A, 0}});
+  build->gem2 = Create_Gem((mVector2f){{x + -L2_A, 0}});
+  build->gem3 = Create_Gem((mVector2f){{x +  0, L2_A}});
+  build->gem4 = Create_Gem((mVector2f){{x +  0,-L2_A}});
 
   build->portal = Create_Portal((mVector2f){{x,0}}, 1);
 
   build->hs1 = Create_Hook_Surface(
-    (mVector2f){{ x, -LENGTH_TOTAL - (LENGTH_CLEARANCE/2-LENGTH_TOTAL)/2 }},
-    (mVector2f){{ LENGTH_CLEARANCE, (LENGTH_CLEARANCE/2-LENGTH_TOTAL) }}
+    (mVector2f){{ x, -L2_HW-L2_BUFFER/2 }},
+    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }}
   );
   build->hs2 = Create_Hook_Surface(
-    (mVector2f){{ x, LENGTH_TOTAL + (LENGTH_CLEARANCE/2-LENGTH_TOTAL)/2 }},
-    (mVector2f){{ LENGTH_CLEARANCE, (LENGTH_CLEARANCE/2-LENGTH_TOTAL) }}
+    (mVector2f){{ x, L2_HW+L2_BUFFER/2 }},
+    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }}
   );
   build->hs3 = Create_Hook_Surface(
-    (mVector2f){{ x - LENGTH_TOTAL - (LENGTH_CLEARANCE/2-LENGTH_TOTAL)/2 , 0 }},
-    (mVector2f){{ (LENGTH_CLEARANCE/2-LENGTH_TOTAL), 2*LENGTH_TOTAL }}
+    (mVector2f){{ x -L2_HW-L2_BUFFER/2,  0 }},
+    (mVector2f){{ L2_BUFFER, L2_HW*2 }}
   );
   build->hs4 = Create_Hook_Surface(
-    (mVector2f){{ x + LENGTH_TOTAL + (LENGTH_CLEARANCE/2-LENGTH_TOTAL)/2, 0 }},
-    (mVector2f){{ (LENGTH_CLEARANCE/2-LENGTH_TOTAL), 2*LENGTH_TOTAL }}
+    (mVector2f){{ x + L2_HW+L2_BUFFER/2, 0 }},
+    (mVector2f){{ L2_BUFFER, L2_HW*2 }}
   );
   build->hs5 = Create_Hook_Surface(
-    (mVector2f){{ x + LENGTH_A,   LENGTH_A }},
-    (mVector2f){{ LENGTH_C, LENGTH_C }}
+    (mVector2f){{ x + L2_C+L2_B/2, L2_C+L2_B/2 }},
+    (mVector2f){{ L2_B, L2_B }}
   );
   build->hs6 = Create_Hook_Surface(
-    (mVector2f){{ x - LENGTH_A, LENGTH_A }},
-    (mVector2f){{ LENGTH_C, LENGTH_C }}
+    (mVector2f){{ x - (L2_C+L2_B/2), L2_C+L2_B/2 }},
+    (mVector2f){{ L2_B, L2_B }}
   );
   build->hs7 = Create_Hook_Surface(
-    (mVector2f){{ x - LENGTH_A, -LENGTH_A }},
-    (mVector2f){{ LENGTH_C, LENGTH_C }});
+    (mVector2f){{ x - (L2_C+L2_B/2), -(L2_C+L2_B/2) }},
+    (mVector2f){{ L2_B, L2_B }}
+  );
   build->hs8 = Create_Hook_Surface(
-    (mVector2f){{ x + LENGTH_A, -LENGTH_A }},
-    (mVector2f){{ LENGTH_C, LENGTH_C }}
+    (mVector2f){{ x + L2_C+L2_B/2, -(L2_C+L2_B/2) }},
+    (mVector2f){{ L2_B, L2_B }}
   );
 
-  // build->gem1 = Create_Gem((mVector2f){{x +  5, 0}});
-  // build->gem2 = Create_Gem((mVector2f){{x + -5, 0}});
-  // build->gem3 = Create_Gem((mVector2f){{x +  0, 5}});
-  // build->gem4 = Create_Gem((mVector2f){{x +  0,-5}});
-  //
-  // build->portal = Create_Portal((mVector2f){{x,0}}, 1);
-  //
-  // build->hs1 = Create_Hook_Surface((mVector2f){{x + 0,    -10-5}}, (mVector2f){{20+10*2, 10}});
-  // build->hs2 = Create_Hook_Surface((mVector2f){{x + 0,     10+5}}, (mVector2f){{20+10*2, 10}});
-  // build->hs3 = Create_Hook_Surface((mVector2f){{x + -10-5, 0}},    (mVector2f){{10,      20}});
-  // build->hs4 = Create_Hook_Surface((mVector2f){{x +  10+5, 0}},    (mVector2f){{10,      20}});
-  // build->hs5 = Create_Hook_Surface((mVector2f){{x +  -5,   5 }}, (mVector2f){{2.5, 2.5}});
-  // build->hs6 = Create_Hook_Surface((mVector2f){{x +   5,   5 }}, (mVector2f){{2.5, 2.5}});
-  // build->hs7 = Create_Hook_Surface((mVector2f){{x +   5,  -5 }}, (mVector2f){{2.5, 2.5}});
-  // build->hs8 = Create_Hook_Surface((mVector2f){{x +  -5,  -5 }}, (mVector2f){{2.5, 2.5}});
-
-  build->bg = Create_Background(frame);
+  build->bg = Create_Background(L2_TOTAL,L2_TOTAL);
   build->bg->frame->position.i[0] = x;
 
 }

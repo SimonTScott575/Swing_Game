@@ -24,7 +24,7 @@ void Load_Main_Menu(geScene* scene) {
 
   Menu_Camera* menu_camera = Create_Menu_Camera(50);
 
-  Background* bg = Create_Background(menu_camera->frame);
+  Background* bg = Create_Background(50,50);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(menu_camera->camera2D);
 

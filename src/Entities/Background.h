@@ -15,7 +15,7 @@ struct Background {
 
 } Background;
 
-Background* Create_Background(mFrame2D* camera_frame);
+Background* Create_Background(float x_length, float y_length);
 
 void Destroy_Background_Sub_Entity(geEntity* entity);
 

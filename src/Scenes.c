@@ -4,23 +4,27 @@ geScene* main_menu;
 geScene* level_select_menu;
 geScene* level_1;
 geScene* level_2;
+geScene* level_3;
 
 geScene* level_order[LEVELS_COUNT] = {0};
 int focused_level_num = 0;
 
 float par_times[LEVELS_COUNT] = {
-  20,
-  10
+  30,
+  30,
+  30
 };
 
 float best_times[LEVELS_COUNT] = {
+  -1,
   -1,
   -1
 };
 
 char* level_names[LEVELS_COUNT] = {
   "LEVEL 1",
-  "LEVEL 2"
+  "LEVEL 2",
+  "LEVEL 3"
 };
 
 char* level_name_TEST = "LEVEL 1";

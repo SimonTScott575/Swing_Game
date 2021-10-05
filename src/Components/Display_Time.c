@@ -40,7 +40,7 @@ void Update_Display_Time(geComponent* component) {
 
   grSet_Text_Contents(to_set, dt->text_r->text);
 
-  dt->text_r->frame->position.i[0] = dt->x + focused_level_num*60;
+  // dt->text_r->frame->position.i[0] = dt->x + focused_level_num*60;
 
 };
 

@@ -1,13 +1,5 @@
 #include "Level_1_Surfaces_Build.h"
 
-#define LENGTH_A 8.0f
-#define LENGTH_B 4.0f
-#define LENGTH_C 2.0f
-#define LENGTH_D 1.5F
-#define LENGTH_E 5.0f
-#define LENGTH_CLEARANCE 55.0f
-#define LENGTH_TOTAL (2*LENGTH_A + 2*LENGTH_B + LENGTH_C)
-
 Level_1_Surfaces_Build Level_1_Surfaces_Build_init(int build_with_physics) {
   return (Level_1_Surfaces_Build){
     .build_with_physics = build_with_physics
@@ -26,39 +18,32 @@ void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Camera_Contr
   if (build->build_with_physics) { build->rope = Create_Rope(build->player->rb); }
 
   build->hs1 = Create_Hook_Surface(
-    (mVector2f){{ x, -LENGTH_E/2 - (LENGTH_CLEARANCE/2-LENGTH_E/2)/2 }},
-    (mVector2f){{LENGTH_CLEARANCE, LENGTH_CLEARANCE/2-LENGTH_E/2}}
+    (mVector2f){{ x, -L1_E/2-L1_D - L1_BUFFER/2 }},
+    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}}
   );
   build->hs2 = Create_Hook_Surface(
-    (mVector2f){{ x,  LENGTH_E/2 + (LENGTH_CLEARANCE/2-LENGTH_E/2)/2 }},
-    (mVector2f){{LENGTH_CLEARANCE, LENGTH_CLEARANCE/2-LENGTH_E/2}}
+    (mVector2f){{ x, L1_E/2+L1_D + L1_BUFFER/2 }},
+    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}}
   );
   build->hs3 = Create_Hook_Surface(
-    (mVector2f){{ x - LENGTH_A/2 - (LENGTH_CLEARANCE/2-LENGTH_A/2)/2, 0 }},
-    (mVector2f){{LENGTH_CLEARANCE/2-LENGTH_A/2, LENGTH_E}}
+    (mVector2f){{ x - L1_A/2 - L1_BUFFER/2, 0 }},
+    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}}
   );
   build->hs4 = Create_Hook_Surface(
-    (mVector2f){{ x + (LENGTH_TOTAL - LENGTH_A/2) + (LENGTH_CLEARANCE/2 - (LENGTH_TOTAL - LENGTH_A/2))/2, 0 }},
-    (mVector2f){{(LENGTH_CLEARANCE/2 - (LENGTH_TOTAL - LENGTH_A/2)), LENGTH_E}}
+    (mVector2f){{ x + L1_TOTAL-L1_A/2 + L1_BUFFER/2, 0 }},
+    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}}
   );
   build->hs5 = Create_Hook_Surface(
-    (mVector2f){{ x + LENGTH_A/2 + LENGTH_B/2, -LENGTH_E/2 + LENGTH_D/2 }},
-    (mVector2f){{LENGTH_B, LENGTH_D}}
+    (mVector2f){{ x + L1_A/2 + L1_B/2, -L1_E/2 - L1_D/2 }},
+    (mVector2f){{L1_B, L1_D}}
   );
   build->hs6 = Create_Hook_Surface(
-    (mVector2f){{ x + LENGTH_A/2 + LENGTH_B + LENGTH_C + LENGTH_B/2, LENGTH_E/2 - LENGTH_D/2 }},
-    (mVector2f){{LENGTH_B, LENGTH_D}}
+    (mVector2f){{ x + L1_A/2 + L1_B + L1_C + L1_B/2, L1_E/2 + L1_D/2 }},
+    (mVector2f){{L1_B, L1_D}}
    );
 
-  // build->hs1 = Create_Hook_Surface((mVector2f){{ x + 9,-5-2.5 }}, (mVector2f){{44,10}});
-  // build->hs2 = Create_Hook_Surface((mVector2f){{ x + 9, 5+2.5 }}, (mVector2f){{44,10}});
-  // build->hs3 = Create_Hook_Surface((mVector2f){{ x + -5-3,  0   }}, (mVector2f){{10,10}});
-  // build->hs4 = Create_Hook_Surface((mVector2f){{ x + 5+1.5,  -2.5+1.5/2   }}, (mVector2f){{3,1.5}});
-  // build->hs5 = Create_Hook_Surface((mVector2f){{ x + 10+1.5,  2.5-1.5/2   }}, (mVector2f){{3,1.5}});
-  // build->hs6 = Create_Hook_Surface((mVector2f){{ x + 19+5,  0   }}, (mVector2f){{10,25}});
-
   mVector2f gem_positions[1] = {
-    (mVector2f){{x + LENGTH_A/2 + LENGTH_B + LENGTH_C/2,0}}
+    (mVector2f){{x + L1_A/2 + L1_B + L1_C/2,0}}
   };
   build->gem  = Create_Gem(gem_positions[0]);
   if (cc != NULL) {
@@ -68,9 +53,9 @@ void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Camera_Contr
   gems_count = 1;
   gems_caught_count = 0;
 
-  build->portal = Create_Portal((mVector2f){{x + LENGTH_TOTAL-LENGTH_A,0}}, 1);
+  build->portal = Create_Portal((mVector2f){{x + L1_TOTAL-L1_A,0}}, 1);
 
-  build->bg = Create_Background(frame);
+  build->bg = Create_Background((L1_TOTAL-L1_A/2)*2,(L1_TOTAL-L1_A/2)*2);
   build->bg->frame->position.i[0] = x;
 
 }

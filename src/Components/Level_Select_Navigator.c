@@ -1,6 +1,21 @@
 #include "Level_Select_Navigator.h"
 
 #include "../Scenes.h"
+#include "../Scenes/Level_1.h"
+#include "../Scenes/Level_2.h"
+#include "../Scenes/Level_3.h"
+#include "../Builders/Level_3_Basic_Build.h"
+
+static float level_target_x_pos[LEVELS_COUNT] = {
+  0,
+  L2_MENU_POS,
+  L3_MENU_POS
+};
+static float level_target_x_length[LEVELS_COUNT] = {
+  L1_MAX_X_LENGTH + 2,
+  L2_MAX_X_LENGTH + 10,
+  L3_MAX_X_LENGTH
+};
 
 static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
 
@@ -24,7 +39,8 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   lsn->prev_level_r = prev_level_r;
 
   lsn->lscc = lscc;
-  lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
+  // lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
+  // lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
 
   Set_Selected_Level(focused_level_num, lsn);
 
@@ -81,7 +97,8 @@ void On_Click_Next_Level(geUI_Element* uie) {
     Set_Selected_Level(++focused_level_num, active_lsn);
   }
 
-  active_lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
+  // active_lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
+  // active_lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
 
 }
 
@@ -90,8 +107,6 @@ void On_Click_Prev_Level(geUI_Element* uie) {
   if (focused_level_num > 0) {
     Set_Selected_Level(--focused_level_num, active_lsn);
   }
-
-  active_lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
 
 }
 
@@ -121,6 +136,15 @@ static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn) {
 
     active_lsn->prev_level_b->_super._super->is_active = true;
     active_lsn->prev_level_r->_super->is_active = true;
+  } else {
+    active_lsn->next_level_b->_super._super->is_active = true;
+    active_lsn->next_level_r->_super->is_active = true;
+
+    active_lsn->prev_level_b->_super._super->is_active = true;
+    active_lsn->prev_level_r->_super->is_active = true;
   }
+
+  active_lsn->lscc->target_position = (mVector2f){{level_target_x_pos[focused_level_num],0}};
+  active_lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
 
 }

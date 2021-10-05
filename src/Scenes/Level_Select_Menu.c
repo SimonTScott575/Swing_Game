@@ -4,6 +4,7 @@
 
 #include "../Builders/Level_1_Surfaces_Build.h"
 #include "../Builders/Level_2_Basic_Build.h"
+#include "../Builders/Level_3_Basic_Build.h"
 
 #include "../Entities/UI_Camera.h"
 #include "../Entities/Menu_Button.h"
@@ -20,18 +21,21 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Level_1_Surfaces_Build level_1_surfaces_build = Level_1_Surfaces_Build_init(0);
   Level_2_Basic_Build level_2_basic_build = Level_2_Basic_Build_init(0);
+  Level_3_Basic_Build level_3_basic_build = Level_3_Basic_Build_init(0);
 
   // ---
   // ECS
   // ---
 
-  Load_Entity_Player_Level_1_Surfaces_Build(-8, &level_1_surfaces_build);
+  Load_Entity_Player_Level_1_Surfaces_Build(L1_MENU_POS, &level_1_surfaces_build);
   Load_Entity_Player_Level_2_Basic_Build(&level_2_basic_build);
+  Load_Entity_Player_Level_3_Basic_Build(&level_3_basic_build);
 
   Level_Select_Camera* lsc = Create_Level_Select_Camera(40);
 
-  Load_Entities_Level_1_Surfaces_Build(-9, lsc->camera2D->frame, NULL, &level_1_surfaces_build);
-  Load_Entities_Level_2_Basic_Build(60, lsc->camera2D->frame, &level_2_basic_build);
+  Load_Entities_Level_1_Surfaces_Build(L1_MENU_POS, lsc->camera2D->frame, NULL, &level_1_surfaces_build);
+  Load_Entities_Level_2_Basic_Build(L2_MENU_POS, lsc->camera2D->frame, &level_2_basic_build);
+  Load_Entities_Level_3_Basic_Build(L3_MENU_POS, lsc->camera2D->frame, &level_3_basic_build);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
 
@@ -39,13 +43,13 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Menu_Button* prev_button       = Create_Menu_Button(-1,0, 0.15,0, 0.1,0.3, "../Resources/Textures/left_arrow_white_256.png", On_Click_Prev_Level);
   Menu_Button* next_button       = Create_Menu_Button(1,0, -0.15,0, 0.1,0.3, "../Resources/Textures/right_arrow_white_256.png", On_Click_Next_Level);
-  Menu_Button* play_level_button = Create_Menu_Button(0,-1, 0,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Play_Level);
-  Menu_Button* main_menu_button  = Create_Menu_Button(-1,-1, 0.4,0.2, 0.5,0.2, "../Resources/Textures/square_orange_256.png", On_Click_Main_Menu);
+  Menu_Button* play_level_button = Create_Menu_Button(0,-1, 0,0.2, 0.5,0.2, "../Resources/Textures/clear_1.png", On_Click_Play_Level);
+  Menu_Button* main_menu_button  = Create_Menu_Button(-1,-1, 0.4,0.2, 0.5,0.2, "../Resources/Textures/clear_1.png", On_Click_Main_Menu);
 
   Menu_Text* play_level_text = Create_Menu_Text("START", NULL, 0,-1,  0,  0.15,  0.6);
   Menu_Text* main_menu_text  = Create_Menu_Text("MENU", NULL, -1,-1,  0.4,0.15,  0.6);
 
-  Menu_Text* level_name_text = Create_Menu_Text("", "../Resources/Fonts/Fira/FiraSans-HeavyItalic.ttf",  0,0,-15, 13, 15);
+  Menu_Text* level_name_text = Create_Menu_Text("LEVEL_TITLE", "../Resources/Fonts/Fira/FiraSans-HeavyItalic.ttf",-1, 1, 0.1,-0.25, 1);
   Level_Title* level_title = Create_Level_Title(-15, level_name_text->text_r);
   geAdd_Component(level_title->_super, level_name_text->_super);
 
@@ -53,8 +57,8 @@ void Load_Level_Select_Menu(geScene* scene) {
     = GR_ALIGN_LEFT;
 
 
-  Menu_Text* best_time_text = Create_Menu_Text("BEST TIME:", NULL, 0,0, 15, 13, 10);
-  Menu_Text* par_time_text = Create_Menu_Text("PAR:", NULL,        0,0, 15,-12, 10);
+  Menu_Text* best_time_text = Create_Menu_Text("BEST TIME:", NULL, 1, 1,-0.1,-0.25, 0.6);
+  Menu_Text* par_time_text  = Create_Menu_Text("PAR:",       NULL, 1,-1,-0.1, 0.35, 0.6);
   Display_Time* dt_par = Create_Display_Time("PAR: ", par_times, par_time_text->text_r, 15);
   geAdd_Component(dt_par->_super, par_time_text->_super);
   Display_Time* dt_best = Create_Display_Time("BEST: ", best_times, best_time_text->text_r, 15);
@@ -80,12 +84,13 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Set_Level_1_Surfaces_Build(lsc->camera2D, rs, NULL, &level_1_surfaces_build);
   Set_Level_2_Basic_Build(lsc->camera2D, rs, NULL, &level_2_basic_build);
+  Set_Level_3_Basic_Build(lsc->camera2D, rs, NULL, &level_3_basic_build);
 
   lsc->lscc->rs = rs;
 
-  dAppend_LL(grRenderer_ptr)(level_name_text->text_r->_super, rs->_renderers);
-  dAppend_LL(grRenderer_ptr)(best_time_text->text_r->_super, rs->_renderers);
-  dAppend_LL(grRenderer_ptr)(par_time_text->text_r->_super, rs->_renderers);
+  dAppend_LL(grRenderer_ptr)(level_name_text->text_r->_super, ui_rs->_renderers);
+  dAppend_LL(grRenderer_ptr)(best_time_text->text_r->_super, ui_rs->_renderers);
+  dAppend_LL(grRenderer_ptr)(par_time_text->text_r->_super, ui_rs->_renderers);
 
   dAppend_LL(grRenderer_ptr)(prev_button->ui_r->_super, ui_rs->_renderers);
   dAppend_LL(grRenderer_ptr)(next_button->ui_r->_super, ui_rs->_renderers);
@@ -106,6 +111,7 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Add_Entities_Level_1_Surfaces_Build(scene, &level_1_surfaces_build);
   Add_Entities_Level_2_Basic_Build(scene, &level_2_basic_build);
+  Add_Entities_Level_3_Basic_Build(scene, &level_3_basic_build);
 
   geAdd_Entity(lsc->_super, scene);
 

@@ -24,7 +24,7 @@ void Update_Level_Title(geComponent* component) {
 
   grSet_Text_Contents(level_names[focused_level_num], lt->text_r->text);
 
-  lt->text_r->frame->position.i[0] = lt->x + focused_level_num*60;
+  // lt->text_r->frame->position.i[0] = lt->x + focused_level_num*60;
 
 }
 

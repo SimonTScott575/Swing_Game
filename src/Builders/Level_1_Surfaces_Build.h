@@ -11,6 +11,20 @@
 #include "../Entities/Portal.h"
 #include "../Entities/Camera.h"
 
+#define L1_A 8.0f
+#define L1_B 4.0f
+#define L1_C 2.0f
+#define L1_D 1.5f
+#define L1_E 5.0f
+#define L1_BUFFER 20.0f
+#define L1_TOTAL (2*L1_A + 2*L1_B + L1_C)
+
+// <---A---><--B--><C><--B--><---A--->
+//  __________________       ________
+// |                  |_____|        | D
+// |   B     _____  *           E    | E
+// |________|     |__________________| D
+//
 typedef
 struct Level_1_Surfaces_Build {
 

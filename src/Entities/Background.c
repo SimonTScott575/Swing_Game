@@ -1,12 +1,12 @@
 #include "Background.h"
 
-Background* Create_Background(mFrame2D* camera_frame) {
+Background* Create_Background(float x_length, float y_length) {
 
   geEntity* entity = geCreate_Entity();
 
   mFrame2D* frame = new_mFrame2D(mVector2f_ZERO, 0, mVector2f_ONE);
 
-  grSprite* sprite = grCreate_Sprite("../Resources/Textures/gradient_orange_256.png", 50,50);
+  grSprite* sprite = grCreate_Sprite("../Resources/Textures/gradient_orange_256.png", x_length,y_length);
   grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
 
   geAdd_Component(frame->_super, entity);

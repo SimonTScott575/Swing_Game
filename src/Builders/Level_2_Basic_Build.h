@@ -10,6 +10,24 @@
 #include "../Entities/Portal.h"
 #include "../Entities/Background.h"
 
+#define L2_A 10.0f
+#define L2_B 10.0f
+#define L2_C 5.0f
+#define L2_BUFFER 30.0f
+#define L2_HW (L2_A+L2_B+L2_C)
+#define L2_TOTAL (2*L2_HW)
+
+// <A><B><C>
+//  _______________
+// |   _       _   |
+// |  |_|  *  |_|  |
+// |               |
+// |   *   BE  *   |
+// |   _       _   |
+// |  |_|  *  |_|  |
+// |_______________|
+// Resulting shape is square
+
 typedef
 struct Level_2_Basic_Build {
 
