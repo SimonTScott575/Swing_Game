@@ -12,8 +12,6 @@ struct Camera_Controller {
   mFrame2D* frame;
 
   mFrame2D* player_frame;
-  mVector2f* gem_positions;
-  int gems_count;
 
   float x_length;
 
@@ -29,7 +27,7 @@ Camera_Controller* Create_Camera_Controller(
   grCamera2D* camera2D
 );
 
-void Set_Gem_Positions(mVector2f* gem_positions, int gems_count, Camera_Controller* cc);
+// void Set_Gem_Positions(mVector2f* gem_positions, int gems_count, Camera_Controller* cc);
 
 void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen);
 

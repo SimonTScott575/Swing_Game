@@ -27,11 +27,11 @@ void Set_Score_Text(grText* text_num, grText* text_den) {
 
   char s[100];
 
-  sprintf(s, "%d", gems_caught_count);
+  sprintf(s, "%d", g_gems_caught_count);
   grSet_Text_Contents(s, text_num);
 
   s[0] = '/';
-  sprintf(s+1, "%d", gems_count);
+  sprintf(s+1, "%d", g_gems_count);
   grSet_Text_Contents(s, text_den);
 
 }

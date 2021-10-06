@@ -26,9 +26,7 @@ struct Rope_Controller {
   phRigid_Body2D* dest_rb;
 
   phRB_System2D* rb_sys;
-
-  mVector2f delta_pos;
-  mVector2f prev_pos;
+  
   float r_v;
 
 };

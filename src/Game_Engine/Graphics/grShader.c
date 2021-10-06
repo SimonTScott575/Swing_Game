@@ -348,6 +348,17 @@ void grSet_Matrix4f_by_name(const char* name, grShader* shader, mMatrix4f matrix
   glUniformMatrix4fv(location, 1, GL_TRUE, (const GLfloat *) matrix.i);
 }
 
+void grSet_intv_by_name(const char* name, grShader* shader, int* values, int32_t length) {
+  int32_t location = glGetUniformLocation(shader->_OpenGL_ID, name);
+  glUseProgram(shader->_OpenGL_ID);
+  glUniform1iv(location, length, values);
+}
+void grSet_float2v_by_name(const char* name, grShader* shader, float* values, int32_t length) {
+  int32_t location = glGetUniformLocation(shader->_OpenGL_ID, name);
+  glUseProgram(shader->_OpenGL_ID);
+  glUniform2fv(location, length, values);
+}
+
 // ---------------
 // Multiple values
 // ---------------

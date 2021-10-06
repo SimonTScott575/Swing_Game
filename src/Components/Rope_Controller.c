@@ -64,6 +64,7 @@ void Update_Rope_Controller(geComponent* component) {
   }
 
   if (    rc->is_hitting
+       && !rc->spring_phase
        && climb_sign
        && !(r_norm < 1.5 && climb_sign > 0)
   ) {
@@ -78,13 +79,12 @@ void Update_Rope_Controller(geComponent* component) {
     }
     else
     if ( rc->spring_phase ) {
-      // start_rod_phase = true;
+      start_rod_phase = true;
     }
 
   } else {
 
     rc->r_v = mDot_V2f(source_rb->velocity, r_unit);
-    rc->delta_pos = mVector2f_ZERO;
 
     if ( rc->rod_phase ) {
       rc->rod_j->_super.position1 = mInv_Transform_2D(rc->dest_pos ,

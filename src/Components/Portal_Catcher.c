@@ -33,7 +33,7 @@ void Update_Portal_Catcher(geComponent* component) {
 
   Portal_Catcher* pc = component->_sub;
 
-  if (gems_caught_count < gems_count) {
+  if (g_gems_caught_count < g_gems_count) {
     return;
   }
 

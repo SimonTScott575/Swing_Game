@@ -46,14 +46,20 @@ void Load_Entities_Level_3_Basic_Build(float x, mFrame2D* frame, Level_3_Basic_B
       (mVector2f){{ L3_C, L3_F }}
     );
 
-    build->gems[2*i] = Create_Gem((mVector2f){{
+    build->gem_positions[2*i] = (mVector2f){{
       x - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A,
       L3_F/2 + L3_E/2
-    }});
-    build->gems[2*i+1] = Create_Gem((mVector2f){{
+    }};
+    build->gem_positions[2*i+1] = (mVector2f){{
       x - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A,
       - L3_F/2 - L3_E/2
-    }});
+    }};
+
+    build->gems[2*i] = Create_Gem(build->gem_positions[2*i]);
+    build->gems[2*i+1] = Create_Gem(build->gem_positions[2*i+1]);
+
+    build->gem_controllers[2*i] = build->gems[2*i]->gc;
+    build->gem_controllers[2*i+1] = build->gems[2*i+1]->gc;
 
   }
   int j = 0;
@@ -70,10 +76,13 @@ void Load_Entities_Level_3_Basic_Build(float x, mFrame2D* frame, Level_3_Basic_B
 
     if (i != L3_PILLAR1_COLS/2 - 1) {
 
-      build->gems[2*L3_PILLAR1_COLS + j] = Create_Gem((mVector2f){{
+      build->gem_positions[2*L3_PILLAR1_COLS + j] = (mVector2f){{
         x - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A + L3_A,
         0
-      }});
+      }};
+
+      build->gems[2*L3_PILLAR1_COLS + j] = Create_Gem(build->gem_positions[2*L3_PILLAR1_COLS + j]);
+      build->gem_controllers[2*L3_PILLAR1_COLS + j] = build->gems[2*L3_PILLAR1_COLS + j]->gc;
 
       j += 1;
 
@@ -95,8 +104,11 @@ void Set_Level_3_Basic_Build(grCamera2D* camera2D, grRendering_System2D* rs, phR
   }
 
   //
-  gems_count = L3_GEM_COUNT;
-  gems_caught_count = 0;
+  // gems_count = L3_GEM_COUNT;
+  // gems_caught_count = 0;
+  if (build->build_with_physics) {
+    Set_Global_Gem_Data(build->gem_controllers, L3_GEM_COUNT,0);
+  }
   //
   dAppend_LL(grRenderer_ptr)(build->bg->renderer, rs->_renderers);
 

@@ -46,6 +46,8 @@ struct Level_3_Basic_Build {
   Rope* rope;
 
   Gem* gems[L3_GEM_COUNT];
+  mVector2f gem_positions[L3_GEM_COUNT];
+  Gem_Controller* gem_controllers[L3_GEM_COUNT];
 
   Portal* portal;
 

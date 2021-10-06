@@ -1,5 +1,7 @@
 #include "Level_3.h"
 
+#include "../Glow.h"
+
 #include "../Builders/End_Level_Menu_Build.h"
 #include "../Builders/Level_UI_Build.h"
 #include "../Builders/Level_3_Basic_Build.h"
@@ -54,6 +56,8 @@ void Load_Level_3(geScene* scene) {
   // ===
   // Set
   // ===
+
+  rs->post_process = Glow_PP;
 
   Set_Level_3_Basic_Build(camera->camera2D, rs, rb_sys, &level_3_basic_build);
 

@@ -46,12 +46,15 @@ void Load_Entities_Level_1_Surfaces_Build(float x, mFrame2D* frame, Camera_Contr
     (mVector2f){{x + L1_A/2 + L1_B + L1_C/2,0}}
   };
   build->gem  = Create_Gem(gem_positions[0]);
-  if (cc != NULL) {
-    Set_Gem_Positions(gem_positions, 1, cc);
-  }
+  // if (cc != NULL) {
+  //   Set_Gem_Positions(gem_positions, 1, cc);
+  // }
 
-  gems_count = 1;
-  gems_caught_count = 0;
+  // gems_count = 1;
+  // gems_caught_count = 0;
+  if (build->build_with_physics) {
+    Set_Global_Gem_Data(&build->gem->gc, 1,0);
+  }
 
   build->portal = Create_Portal((mVector2f){{x + L1_TOTAL-L1_A,0}}, 1);
 

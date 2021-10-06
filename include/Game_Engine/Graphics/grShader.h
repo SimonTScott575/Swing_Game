@@ -93,6 +93,9 @@ void grSet_Matrix2f_by_name(const char* name, grShader* shader, mMatrix2f matrix
 void grSet_Matrix3f_by_name(const char* name, grShader* shader, mMatrix3f matrix);
 void grSet_Matrix4f_by_name(const char* name, grShader* shader, mMatrix4f matrix);
 
+void grSet_intv_by_name(const char* name, grShader* shader, int* values, int32_t length);
+void grSet_float2v_by_name(const char* name, grShader* shader, float* values, int32_t length);
+
 // ---------------
 // Multiple Values
 // ---------------

@@ -28,7 +28,7 @@ void Update_Portal_Renderer(geComponent* component) {
 
   Portal_Renderer* pr = component->_sub;
 
-  if ( gems_caught_count >= gems_count ) {
+  if ( g_gems_caught_count >= g_gems_count ) {
     grSet_Texture_by_name("grTexture", pr->white_t, pr->shader);
   }
 

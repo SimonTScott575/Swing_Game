@@ -20,10 +20,24 @@ void Load_Entities_Level_2_Basic_Build(float x, mFrame2D* frame, Level_2_Basic_B
     build->rope = Create_Rope(build->player->rb);
   }
 
-  build->gem1 = Create_Gem((mVector2f){{x +  L2_A, 0}});
-  build->gem2 = Create_Gem((mVector2f){{x + -L2_A, 0}});
-  build->gem3 = Create_Gem((mVector2f){{x +  0, L2_A}});
-  build->gem4 = Create_Gem((mVector2f){{x +  0,-L2_A}});
+  mVector2f gem_positions[4] = {
+    {{x + L2_A, 0   }},
+    {{x - L2_A, 0   }},
+    {{x + 0,    L2_A}},
+    {{x + 0,   -L2_A}}
+  };
+
+  build->gem1 = Create_Gem(gem_positions[0]);
+  build->gem2 = Create_Gem(gem_positions[1]);
+  build->gem3 = Create_Gem(gem_positions[2]);
+  build->gem4 = Create_Gem(gem_positions[3]);
+
+  //
+  // gems_count = 4;
+  // gems_caught_count = 0;
+  if (build->build_with_physics) {
+    Set_Global_Gem_Data((Gem_Controller*[4]){build->gem1->gc,build->gem2->gc,build->gem3->gc,build->gem4->gc}, 4,0);
+  }
 
   build->portal = Create_Portal((mVector2f){{x,0}}, 1);
 
@@ -73,9 +87,6 @@ void Set_Level_2_Basic_Build(grCamera2D* camera2D, grRendering_System2D* rs, phR
     build->rope->rc->camera2D = camera2D;
   }
 
-  //
-  gems_count = 4;
-  gems_caught_count = 0;
   //
   dAppend_LL(grRenderer_ptr)(build->bg->renderer, rs->_renderers);
 
