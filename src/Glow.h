@@ -10,7 +10,7 @@ extern float Screen_Y2;
 
 extern grShader* Glow_Shader;
 
-void Init_Glow_PP();
+void Init_Glow_PP(int x, int y);
 
 void Glow_PP(grScreen* screen);
 

@@ -48,7 +48,7 @@ int main() {
   level_order[1] = level_2;
   level_order[2] = level_3;
 
-  Init_Glow_PP();
+  Init_Glow_PP(1200,1200);
 
   // #########
   // Game Loop

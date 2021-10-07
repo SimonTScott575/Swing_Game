@@ -4,6 +4,9 @@
 #define GE_INCLUDE_GLFW
 #include <Game_Engine/Game_Engine.h>
 
+#define MAX_ROPE_CLIMB_SPEED 10
+#define ROPE_CLIMP_ACCELERATION 0.4
+
 typedef
 struct Rope_Controller {
 

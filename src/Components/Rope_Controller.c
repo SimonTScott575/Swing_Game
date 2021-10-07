@@ -88,11 +88,11 @@ void Update_Rope_Controller(geComponent* component) {
     float direction_norm = mNorm_V2f(direction);
     // if (fabs(direction.i[1]) < 0.001) { goto EXIT_HITTING; }
 
-    mVector2f direction_n = direction;
-    if (!mNormalize_V2f(&direction_n)) {
+    mVector2f direction_unit = direction;
+    if (!mNormalize_V2f(&direction_unit)) {
       goto EXIT_HITTING;
     }
-    mVector2f direction_n_perp = {{-direction_n.i[1],direction_n.i[0]}};
+    mVector2f direction_unit_perp = {{-direction_unit.i[1],direction_unit.i[0]}};
 
     float length = mNorm_V2f(direction);
     float angle = -atan(direction.i[0]/direction.i[1]);
@@ -169,18 +169,21 @@ void Update_Rope_Controller(geComponent* component) {
       rc->rod_j->_super._super->is_active = false;
       if (climb_sign < 0) { rc->spring_j->_super._super->is_active = false; }
 
-      mVector2f vel_n = mMul_f_V2f( mDot_V2f(direction_n_perp, source_rb->velocity), direction_n_perp );
+      float vel_norm = mNorm_V2f(source_rb->velocity);
+      float acc = vel_norm*vel_norm / direction_norm;
 
-      float vel_dir_norm = mDot_V2f(direction_n, source_rb->velocity);
-      mVector2f vel_dir = mMul_f_V2f( vel_dir_norm, direction_n );
-      if (    !(vel_dir_norm >  15 && climb_sign > 0)
-           && !(vel_dir_norm < -15 && climb_sign < 0)
+      float vel_dot_dir = mDot_V2f(source_rb->velocity, direction_unit);
+      mVector2f vel_dir = mMul_f_V2f( vel_dot_dir, direction_unit );
+      if (    !(vel_dot_dir >  MAX_ROPE_CLIMB_SPEED && climb_sign > 0)
+           && !(vel_dot_dir < -MAX_ROPE_CLIMB_SPEED && climb_sign < 0)
       ) {
-        vel_dir = mAdd_V2f(vel_dir, mMul_f_V2f(climb_sign*0.4, direction_n));
+        vel_dir = mAdd_V2f(vel_dir, mMul_f_V2f(acc*phDELTA_T + climb_sign*ROPE_CLIMP_ACCELERATION, direction_unit));
       }
 
+      mVector2f vel_dir_n = mMul_f_V2f( mDot_V2f(direction_unit_perp, source_rb->velocity), direction_unit_perp );
+
       source_rb->velocity = mAdd_V2f(
-        vel_n,
+        vel_dir_n,
         vel_dir
       );
 
