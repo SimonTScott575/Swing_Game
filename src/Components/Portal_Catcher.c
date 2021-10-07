@@ -6,6 +6,8 @@
 
 #include "Gem_Controller.h"
 
+mVector2f g_portal_pos = mVector2f_ZERO;
+
 Portal_Catcher* Create_Portal_Catcher(float radius, phRigid_Body2D* rb) {
 
   Portal_Catcher* pc = malloc(sizeof(Portal_Catcher));
@@ -67,6 +69,8 @@ void Update_Portal_Catcher(geComponent* component) {
     }
 
   }
+
+  g_portal_pos = pc->rb->frame->position;
 
 }
 
