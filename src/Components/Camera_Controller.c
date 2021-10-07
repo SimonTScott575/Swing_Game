@@ -76,6 +76,9 @@ void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen) {
 
   grSet_float2_by_name("portal_position", Glow_Shader, g_portal_pos.i[0], g_portal_pos.i[1]);
   grSet_int_by_name("portal_is_lit", Glow_Shader, g_gems_caught_count >= g_gems_count);
+  grSet_int_by_name("portal_catches_player", Glow_Shader, g_portal_catches_player);
+  grSet_float_by_name("portal_catch_time", Glow_Shader, g_portal_catch_time);
+  grSet_float_by_name("current_time", Glow_Shader, geGet_Active_Game()->time);
 
 }
 

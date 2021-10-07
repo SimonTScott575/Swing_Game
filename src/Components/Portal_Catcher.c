@@ -7,12 +7,17 @@
 #include "Gem_Controller.h"
 
 mVector2f g_portal_pos = mVector2f_ZERO;
+int g_portal_catches_player = 0;
+float g_portal_catch_time = 0;
 
 Portal_Catcher* Create_Portal_Catcher(float radius, phRigid_Body2D* rb) {
 
   Portal_Catcher* pc = malloc(sizeof(Portal_Catcher));
 
   phSave_Collider_Collisions(rb->collider, pc->collisions, 10);
+
+  g_portal_catches_player = 0;
+  g_portal_catch_time = 0;
 
   *pc = (Portal_Catcher){
 
@@ -63,6 +68,11 @@ void Update_Portal_Catcher(geComponent* component) {
       // player_rb->_super->is_active = true;
 
       pc->is_caught = true;
+
+      if (!g_portal_catches_player) {
+        g_portal_catch_time = geGet_Active_Game()->time;
+      }
+      g_portal_catches_player = true;
 
       break;
 

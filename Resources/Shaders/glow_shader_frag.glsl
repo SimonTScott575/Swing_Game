@@ -13,6 +13,9 @@ uniform bool gems_is_caught[16];
 uniform vec2 portal_position = vec2(0);
 uniform float portal_radius = 1;
 uniform bool portal_is_lit = false;
+uniform bool portal_catches_player = false;
+uniform float portal_catch_time = 0;
+uniform float current_time = 0;
 
 out vec4 frag_colour;
 
@@ -29,20 +32,29 @@ void main() {
     float dist = length( frag_coord - gem_positions[i] );
 
     if ( 0.2 < dist ) {
-      frag_colour *= (2/(dist+2.762)/(dist+2.762) + 1);
+      frag_colour *= (2/pow( dist+2.762, 2 ) + 1);
     }
 
   }
 
   if (portal_is_lit) {
 
-    float portal_dist = length(frag_coord - portal_position);
-    portal_dist = portal_dist - portal_radius;
+    float portal_centre_dist = length(frag_coord - portal_position);
+    float portal_dist = portal_centre_dist - portal_radius;
     if (portal_dist < 0) {
       portal_dist *= -1;
     }
 
-    frag_colour *= ( 2/(portal_dist+2.762)/(portal_dist+2.762) + 1 );
+    frag_colour *= ( 2/pow(portal_dist+2.762, 2) + 1 );
+
+    if (portal_catches_player) {
+
+      float time_since_catch = current_time - portal_catch_time;
+      float ring_dist = portal_centre_dist - (portal_radius + 15*time_since_catch);
+
+      frag_colour *= ( 2/pow( pow(ring_dist,4)+2.762, 2 ) + 1 );
+
+    }
 
   }
 

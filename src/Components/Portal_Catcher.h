@@ -20,6 +20,8 @@ struct Portal_Catcher {
 } Portal_Catcher;
 
 extern mVector2f g_portal_pos;
+extern int g_portal_catches_player;
+extern float g_portal_catch_time;
 
 Portal_Catcher* Create_Portal_Catcher(float radius, phRigid_Body2D* rb);
 
