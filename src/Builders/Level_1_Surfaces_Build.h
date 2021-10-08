@@ -15,7 +15,7 @@
 #define L1_B 4.0f
 #define L1_C 2.0f
 #define L1_D 1.5f
-#define L1_E 5.0f
+#define L1_E 2.0f
 #define L1_BUFFER 20.0f
 #define L1_TOTAL (2*L1_A + 2*L1_B + L1_C)
 

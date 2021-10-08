@@ -112,7 +112,7 @@ void Update_Level_Transitioner(geComponent* component) {
 
   }
   else
-  if (   CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3 < level_time 
+  if (   CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3 < level_time
       && !lt->cd_over) {
 
     lt->player_controller->rb->_super->is_active = true;
@@ -126,6 +126,11 @@ void Update_Level_Transitioner(geComponent* component) {
   } EXIT_CD:
 
   if (lt->pc->is_caught) {
+
+    if ( lt->clock->timer_val < best_times[focused_level_num] || best_times[focused_level_num] < 0 ) {
+      best_times[focused_level_num] = lt->clock->timer_val;
+    }
+
     lt->back_r->_super->is_active = true;
     lt->back_b->_super._super->is_active = true;
     lt->back_tr->_super->_super->is_active = true;
@@ -134,14 +139,11 @@ void Update_Level_Transitioner(geComponent* component) {
     lt->restart_b->_super._super->is_active = true;
     lt->restart_tr->_super->_super->is_active = true;
 
-    if (focused_level_num < LEVELS_COUNT-1) {
+    if (   best_times[focused_level_num] < par_times[focused_level_num] 
+        && focused_level_num < LEVELS_COUNT-1 ) {
       lt->next_level_r->_super->is_active = true;
       lt->next_level_b->_super._super->is_active = true;
       lt->next_level_tr->_super->_super->is_active = true;
-    }
-
-    if ( lt->clock->timer_val < best_times[focused_level_num] || best_times[focused_level_num] < 0 ) {
-      best_times[focused_level_num] = lt->clock->timer_val;
     }
 
     lt->clock->is_ended = true;

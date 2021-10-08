@@ -11,8 +11,8 @@ int focused_level_num = 0;
 
 float par_times[LEVELS_COUNT] = {
   30,
-  30,
-  30
+  20,
+  40
 };
 
 float best_times[LEVELS_COUNT] = {

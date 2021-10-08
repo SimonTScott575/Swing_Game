@@ -71,6 +71,7 @@ void Load_Level_Select_Menu(geScene* scene) {
   Level_Selector* level_selector = Create_Level_Selector(
     next_button->button_ui, next_button->ui_r->_super,
     prev_button->button_ui, prev_button->ui_r->_super,
+    play_level_button->button_ui, play_level_text->text_r,
     lsc->lscc
   );
 

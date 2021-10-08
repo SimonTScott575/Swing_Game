@@ -29,6 +29,21 @@ void Load_Scene_1(geScene* scene) {
 
   Load_Entities_Level_1_Surfaces_Build(0, camera->frame, camera->cc, &level_1_surfaces_build);
 
+  Menu_Text* instruction_1 = Create_Menu_Text(
+    "1) LEFT CLICK + W/S",
+    "../Resources/Fonts/Fira/FiraSans-Heavy.ttf",
+    0,0,
+    0,-6,
+    4
+  );
+  Menu_Text* instruction_2 = Create_Menu_Text(
+    "2) LEFT CLICK + A/D",
+    "../Resources/Fonts/Fira/FiraSans-Heavy.ttf",
+    0,0,
+    5,6,
+    4
+  );
+
   //
   Load_Entities_Level_UI_Build(&level_ui_build);
 
@@ -58,6 +73,8 @@ void Load_Scene_1(geScene* scene) {
 
   Set_Level_1_Surfaces_Build(camera->camera2D, rs, rb_sys, &level_1_surfaces_build);
 
+  dAppend_LL(grRenderer_ptr)(instruction_1->text_r->_super, rs->_renderers);
+  dAppend_LL(grRenderer_ptr)(instruction_2->text_r->_super, rs->_renderers);
   rb_sys->gravity = (mVector2f){0,-5};
 
   camera->cc->rs = rs;
@@ -73,6 +90,8 @@ void Load_Scene_1(geScene* scene) {
   // ===
 
   geAdd_Entity(camera->_super, scene); //!!! should be add at start
+  geAdd_Entity(instruction_1->_super, scene);
+  geAdd_Entity(instruction_2->_super, scene);
 
   Add_Entities_Level_1_Surfaces_Build(scene, &level_1_surfaces_build);
 
