@@ -25,6 +25,7 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   geButton_UI* next_level_b, grRenderer* next_level_r,
   geButton_UI* prev_level_b, grRenderer* prev_level_r,
   geButton_UI* play_level_b, grText_Renderer* play_level_tr,
+  grText_Renderer* locked_tr,
   Level_Select_Camera_Controller* lscc
 ) {
 
@@ -40,6 +41,8 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   lsn->prev_level_r = prev_level_r;
   lsn->play_level_b = play_level_b;
   lsn->play_level_tr = play_level_tr;
+
+  lsn->locked_tr = locked_tr;
 
   lsn->lscc = lscc;
   // lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
@@ -67,14 +70,17 @@ void Update_Level_Select_Navigator_Sub_Component(geComponent* component) {
         || best_times[focused_level_num-1] < 0 ) {
       lsn->play_level_b->_super._super->is_active = false;
       lsn->play_level_tr->_super->_super->is_active = false;
+      lsn->locked_tr->_super->_super->is_active = true;
     } else {
       lsn->play_level_b->_super._super->is_active = true;
       lsn->play_level_tr->_super->_super->is_active = true;
+      lsn->locked_tr->_super->_super->is_active = false;
     }
 
   } else {
     lsn->play_level_b->_super._super->is_active = true;
     lsn->play_level_tr->_super->_super->is_active = true;
+    lsn->locked_tr->_super->_super->is_active = false;
   }
 
 }

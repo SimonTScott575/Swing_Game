@@ -68,10 +68,14 @@ void Load_Level_Select_Menu(geScene* scene) {
     = par_time_text->text_r->text->alignment
     = GR_ALIGN_RIGHT;
 
+  Menu_Text* locked_text = Create_Menu_Text("BEAT PAR TO CONTINUE", NULL, 0, 0,0,0, 0.5);
+  locked_text->text_r->text->alignment = GR_ALIGN_CENTRE;
+
   Level_Selector* level_selector = Create_Level_Selector(
     next_button->button_ui, next_button->ui_r->_super,
     prev_button->button_ui, prev_button->ui_r->_super,
     play_level_button->button_ui, play_level_text->text_r,
+    locked_text->text_r,
     lsc->lscc
   );
 
@@ -106,6 +110,8 @@ void Load_Level_Select_Menu(geScene* scene) {
   dAppend_LL(geUI_Element_ptr)(&play_level_button->button_ui->_super, ge_uim->_elements);
   dAppend_LL(geUI_Element_ptr)(&main_menu_button->button_ui->_super, ge_uim->_elements);
 
+  dAppend_LL(grRenderer_ptr)(locked_text->text_r->_super, ui_rs->_renderers);
+
   // ---
   // Add
   // ---
@@ -129,6 +135,8 @@ void Load_Level_Select_Menu(geScene* scene) {
   geAdd_Entity(level_name_text->_super, scene);
   geAdd_Entity(best_time_text->_super, scene);
   geAdd_Entity(par_time_text->_super, scene);
+
+  geAdd_Entity(locked_text->_super, scene);
 
   geAdd_System(rs->_super, scene);
 
