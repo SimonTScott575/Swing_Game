@@ -2,7 +2,7 @@
 #define GE_UI_RENDERER_H
 
 #include <Game_Engine/Graphics/grRenderer.h>
-#include <Game_Engine/Graphics/Defaults/grCamera.h>
+#include <Game_Engine/Graphics/grCamera.h>
 #include "geUI_Element.h"
 
 typedef struct geUI_Renderer geUI_Renderer;

@@ -11,21 +11,33 @@
 
 #include <Game_Engine/Graphics/grScreen.h>
 
-static void grDestroy_Text_Sub_Renderer(grRenderer* renderer);
-
 // ======
-// global
+// static
 // ======
 
-static grModel* gr_text_model;
+static grModel* gr_text_model = NULL;
+
+// ==========================
+// Initialization/Termination
+// ==========================
 
 void grInit_Text_Renderer() {
 
-  gr_text_model = grCreate_Model_From_Mesh(grRect2D_Mesh);
+  if (gr_text_model == NULL) {
+    gr_text_model = grCreate_Model_From_Mesh(grRect2D_Mesh);
+  }
 
 }
 
-// ===
+void grTerminate_Text_Renderer() {
+
+  if (gr_text_model != NULL) {
+    grDestroy_Model(gr_text_model);
+  }
+
+  gr_text_model = NULL;
+
+}
 
 grText* grCreate_Text(const char* contents, grFont* font) {
 
@@ -114,6 +126,7 @@ grFont* grCreate_Font(const char* path, int32_t size) {
   FT_Done_Face(face);
   FT_Done_FreeType(ft);
 
+  // error catching
   goto no_fail;
 
   face_fail :
@@ -132,7 +145,7 @@ grFont* grCreate_Font(const char* path, int32_t size) {
 
 }
 
-static void grDestroy_Text_Sub_Renderer(grRenderer* renderer) {
+void grDestroy_Text_Sub_Renderer(grRenderer* renderer) {
 
   grText_Renderer* text_r = renderer->_sub;
 
@@ -187,22 +200,22 @@ void grRender_Text_Renderer(grRenderer* renderer, grCamera2D* camera) {
     float vertices[4][4] = {
       {
         ( xpos          + ch._bearing_X )/1000.0, //? (float)screen->_X_pixels,//*X_length,
-        ( ypos                         )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
+        ( ypos                          )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
          0,0
       },
       {
         ( xpos + width  + ch._bearing_X )/1000.0, //? (float)screen->_X_pixels,//*X_length,
-        ( ypos + height                )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
+        ( ypos + height                 )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
          1,1
       },
       {
         ( xpos          + ch._bearing_X )/1000.0, //? (float)screen->_X_pixels,//*X_length,
-        ( ypos + height                )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
+        ( ypos + height                 )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
          0,1
       },
       {
         ( xpos + width  + ch._bearing_X )/1000.0, //? (float)screen->_X_pixels,//*X_length,
-        ( ypos                         )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
+        ( ypos                          )/1000.0, //? /(float)screen->_Y_pixels,//*Y_length,
          1,0
       }
     };

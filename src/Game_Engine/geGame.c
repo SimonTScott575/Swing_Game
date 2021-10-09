@@ -205,24 +205,3 @@ void geSet_Next_Scene(geScene* scene, geGame* game) {
   game->_next_scene = scene;
 
 }
-
-
-
-
-
-
-// void geAdd_Scene(geScene* scene, geGame* game) {
-//   scene->_scene_node = dAppend_LLScene(scene, game->_scenes);
-//
-//   if (game->_active_scene == NULL) {
-//     game->_active_scene = scene;
-//   }
-// }
-//
-// void geRemove_Scene(geScene* scene, geGame* game) {
-//   dRemove_LLScene(scene->_scene_node, game->_scenes);
-//
-//   if (game->_active_scene == scene) {
-//     game->_active_scene == NULL;
-//   }
-// }

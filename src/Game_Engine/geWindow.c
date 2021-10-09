@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-D_SOURCE_dLList(geCursor_Position_fn, geCursor_Position_fn);
+D_SOURCE_LLIST(geCursor_Position_fn, geCursor_Position_fn);
 
 static geWindow* geActive_Window = NULL;
 

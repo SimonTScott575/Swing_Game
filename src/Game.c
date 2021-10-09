@@ -7,6 +7,7 @@
 #include "Scenes/Level_1.h"
 #include "Scenes/Level_2.h"
 #include "Scenes/Level_3.h"
+#include "Scenes/Level_4.h"
 #include "Scenes.h"
 #include "Glow.h"
 
@@ -44,9 +45,13 @@ int main() {
   level_3 = geCreate_Scene(Load_Level_3);
   geAdd_Scene(level_3, game);
 
+  level_4 = geCreate_Scene(Load_Level_4);
+  geAdd_Scene(level_4, game);
+
   level_order[0] = level_1;
   level_order[1] = level_2;
   level_order[2] = level_3;
+  level_order[3] = level_4;
 
   Init_Glow_PP(1200,1200);
 

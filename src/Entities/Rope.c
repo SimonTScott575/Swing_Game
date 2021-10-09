@@ -33,7 +33,6 @@ Rope* Create_Rope(phRigid_Body2D* source_rb) {
   };
 
   geAdd_Component(frame->_super, entity);
-  geAdd_Component(sprite->_super, entity);
   geAdd_Component(renderer->_super, entity);
   geAdd_Component(rod_j->_super._super, entity);
   geAdd_Component(spring_j->_super._super, entity);
@@ -48,6 +47,8 @@ Rope* Create_Rope(phRigid_Body2D* source_rb) {
 void Destroy_Rope_Sub_Entity(geEntity* entity) {
 
   Rope* rope = entity->_sub;
+
+  grDestroy_Sprite(rope->sprite);
 
   free(rope);
 

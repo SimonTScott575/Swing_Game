@@ -1,20 +1,16 @@
 #include "Level_Select_Navigator.h"
 
-#include "../Scenes.h"
-#include "../Scenes/Level_1.h"
-#include "../Scenes/Level_2.h"
-#include "../Scenes/Level_3.h"
-#include "../Builders/Level_3_Basic_Build.h"
-
 static float level_target_x_pos[LEVELS_COUNT] = {
   0,
   L2_MENU_POS,
-  L3_MENU_POS
+  L3_MENU_POS,
+  L4_MENU_POS
 };
 static float level_target_x_length[LEVELS_COUNT] = {
   L1_MAX_X_LENGTH + 2,
   L2_MAX_X_LENGTH + 10,
-  L3_MAX_X_LENGTH
+  L3_MAX_X_LENGTH,
+  L4_MAX_X_LENGTH
 };
 
 static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);

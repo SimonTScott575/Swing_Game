@@ -1,4 +1,7 @@
-#include <Game_Engine/Graphics/Defaults/grRendering_System.h>
+//TODO: pass back/front screen to system
+//TODO: swap screens NOT in "Render" fn but instead an "update system" fn (should make systems like other "classes")  
+
+#include <Game_Engine/Graphics/grRendering_System.h>
 
 #include <stdlib.h>
 
@@ -48,28 +51,28 @@ void grDestroy_Rendering_System2D(grRendering_System2D* rs) {
 
 void grRender_Rendering_System2D(grRendering_System2D* rs) {
 
-  geWindow* window = geGet_Active_Window(); //! change to screen!
-  // grSet_Projection_2D(rs->camera->_X_length, (float)window->_Y_pixels/window->_X_pixels * rs->camera->_X_length, rs->camera); //? do by user, not GE ?
+  geWindow* window = geGet_Active_Window();
 
   rs->camera->_prepare(rs->camera, window->_back_screen); // grPrepare_Camera(rs->camera, window->_back_screen);
 
   dNode_LL(grRenderer_ptr)* current = rs->_renderers->start;
 
-  for ( ; current != NULL; current = current->next ) {
+  for (
+    dNode_LL(grRenderer_ptr)* current = rs->_renderers->start;
+    current != NULL;
+    current = current->next
+  ) {
 
-    if (!current->element->is_active) { continue; }
-    if (current->element->_super != NULL && !current->element->_super->is_active) { continue; }
-    if (current->element->_super != NULL && current->element->_super->_entity != NULL && !current->element->_super->_entity->is_active) { continue; }
+    grRenderer* r = current->element;
 
-    // mGenerate_transform_2D((mFrame2D*) current->element->frame);
-    grRender(current->element, rs->camera);
+    if (r->_super != NULL && !geComponent_Is_Active(r->_super)) { continue; }
+
+    grRender(r, rs->camera);
 
   }
 
   if (rs->post_process != NULL) {
     rs->post_process(window->_back_screen);
   }
-
-  // geSwap_Screens(geGet_Active_Window());
 
 }

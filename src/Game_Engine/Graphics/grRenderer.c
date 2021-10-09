@@ -6,15 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-D_SOURCE_dLList(grRenderer*, grRenderer_ptr);
-
-// ======
-// static
-// ======
-
-// static void grDestroy_Renderer_void(void* arg) {
-//   grDestroy_Renderer(arg);
-// }
+D_SOURCE_LLIST(grRenderer*, grRenderer_ptr);
 
 // ====================
 // Creation/Destruction

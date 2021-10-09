@@ -10,13 +10,13 @@
 
 #include "grShader.h"
 #include "grModel.h"
-#include "Defaults/grCamera.h"
+#include "grCamera.h"
 
 typedef struct grRenderer grRenderer;
 typedef void (*grRender_fn)(grRenderer* renderer, grCamera2D* camera);
 typedef void (*grDestroy_Sub_Renderer_fn)(grRenderer* renderer);
 
-D_HEADER_dLList(grRenderer*, grRenderer_ptr);
+D_HEADER_LLIST(grRenderer*, grRenderer_ptr);
 
 struct grRenderer {
 

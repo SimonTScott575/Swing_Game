@@ -6,12 +6,13 @@
 
 #include <Game_Engine/Graphics/grRenderer.h>
 #include <Game_Engine/Graphics/grScreen.h>
-#include <Game_Engine/Graphics/Defaults/grCamera.h>
+#include <Game_Engine/Graphics/grCamera.h>
 
 typedef struct grRendering_System2D grRendering_System2D;
 
 typedef void (*grPost_Processing_fn)(grScreen* screen);
 
+typedef
 struct grRendering_System2D {
 
   geSystem* _super;
@@ -21,7 +22,7 @@ struct grRendering_System2D {
 
   grPost_Processing_fn post_process;
 
-};
+} grRendering_System2D;
 
 // ====================
 // Creation/Destruction

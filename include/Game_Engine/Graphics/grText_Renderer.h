@@ -10,15 +10,7 @@
 #define GR_ALIGN_RIGHT  1
 #define GR_ALIGN_CENTRE 2
 
-typedef struct grText grText;
-typedef struct grText_Renderer grText_Renderer;
-typedef struct grCharacter grCharacter;
-typedef struct grFont grFont;
-
-struct grFont {
-  grCharacter* _characters;
-  uint32_t _characters_count;
-};
+typedef
 struct grCharacter {
   grTexture* _texture;
 
@@ -29,16 +21,24 @@ struct grCharacter {
   int32_t _bearing_Y;
 
   int32_t _advance;
-};
+} grCharacter;
 
+typedef
+struct grFont {
+  grCharacter* _characters;
+  uint32_t _characters_count;
+} grFont;
+
+typedef
 struct grText {
   char* _contents;
 
   grFont* font;
 
   int alignment;
-};
+} grText;
 
+typedef
 struct grText_Renderer {
 
   grRenderer* _super;
@@ -48,19 +48,18 @@ struct grText_Renderer {
   float rel_Y;
 
   grText* text;
-  // //TODO: grText, there set alignment too
-  // const char* text;
-  // grFont* font;
 
   mFrame2D _renderer_frame;
 
-};
+} grText_Renderer;
 
 // ======
 // global
 // ======
 
 void grInit_Text_Renderer();
+
+void grTerminate_Text_Renderer(); //TODO: !!! MUST incorporate into engine
 
 // ===
 
@@ -71,6 +70,7 @@ grFont* grCreate_Font(const char* path, int32_t size);
 void grDestroy_Font(grFont* font);
 
 grText_Renderer* grCreate_Text_Renderer_2D(grText* text, mFrame2D* frame, grShader* shader);
+void grDestroy_Text_Sub_Renderer(grRenderer* renderer);
 
 // ===
 

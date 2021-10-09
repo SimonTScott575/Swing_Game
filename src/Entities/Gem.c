@@ -32,7 +32,6 @@ Gem* Create_Gem(mVector2f position) {
   };
 
   geAdd_Component(frame->_super, entity);
-  geAdd_Component(sprite->_super, entity);
   geAdd_Component(renderer->_super, entity);
   geAdd_Component(circle_c->_super._super, entity);
   geAdd_Component(rb->_super, entity);
@@ -47,6 +46,8 @@ Gem* Create_Gem(mVector2f position) {
 void Destroy_Gem_Sub_Entity(geEntity* entity) {
 
   Gem* gem = entity->_sub;
+
+  grDestroy_Sprite(gem->sprite);
 
   free(gem);
 

@@ -3,23 +3,20 @@
 
 #include <Game_Engine/ECS/geComponent.h>
 
-#include <Game_Engine/Graphics/Graphics.h>
+#include <Game_Engine/Graphics/grTexture.h>
+#include <Game_Engine/Graphics/grModel.h>
+#include <Game_Engine/Graphics/grShader.h>
 
-typedef struct grSprite grSprite;
-
+typedef
 struct grSprite {
-
-  geComponent* _super;
 
   grTexture* _texture;
   grModel* _model;
   grShader* _shader;
 
-};
+} grSprite;
 
 grSprite* grCreate_Sprite(char* path, float width,  float height);
-
-// void grDestroy_Sprite(grSprite* sprite);
-void grDestroy_Sprite_Sub_Component(geComponent* component);
+void grDestroy_Sprite(grSprite* sprite);
 
 #endif

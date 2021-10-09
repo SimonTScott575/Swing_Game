@@ -18,7 +18,6 @@ Menu_Button* Create_Menu_Button(float x, float y, float x_offset, float y_offset
   geUI_Renderer* ui_r = grCreate_UI_Renderer(&button_ui->_super, sprite->_model, sprite->_shader);
 
   geAdd_Component(frame->_super, entity);
-  geAdd_Component(sprite->_super, entity);
   geAdd_Component(ui_r->_super->_super, entity);
   geAdd_Component(button_ui->_super._super, entity);
 
@@ -27,7 +26,6 @@ Menu_Button* Create_Menu_Button(float x, float y, float x_offset, float y_offset
     ._super = entity,
     .frame = frame,
     .sprite = sprite,
-    // .renderer = renderer,
     .ui_r = ui_r,
     .button_ui = button_ui
   };
@@ -41,6 +39,8 @@ Menu_Button* Create_Menu_Button(float x, float y, float x_offset, float y_offset
 void Destroy_Menu_Button_Sub_Entity(geEntity* entity) {
 
   Menu_Button* menu_b = entity->_sub;
+
+  grDestroy_Sprite(menu_b->sprite);
 
   free(menu_b);
 

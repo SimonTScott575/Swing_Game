@@ -17,10 +17,10 @@
 #include <Game_Engine/Graphics/grScreen.h>
 #include <Game_Engine/Graphics/grText_Renderer.h>
 
-#include <Game_Engine/Graphics/Defaults/grCamera.h>
-#include <Game_Engine/Graphics/Defaults/grRendering_System.h>
-#include <Game_Engine/Graphics/Defaults/grColour_Render.h>
-#include <Game_Engine/Graphics/Defaults/grSprite.h>
+#include <Game_Engine/Graphics/grCamera.h>
+#include <Game_Engine/Graphics/grRendering_System.h>
+#include <Game_Engine/Graphics/grColour_Render.h>
+#include <Game_Engine/Graphics/grSprite.h>
 
 void grInit();
 

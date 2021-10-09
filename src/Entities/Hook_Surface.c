@@ -38,7 +38,6 @@ Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale) {
   };
 
   geAdd_Component(frame->_super, entity);
-  geAdd_Component(cr->_super, entity);
   geAdd_Component(renderer->_super, entity);
   geAdd_Component(aabb_c->_super._super, entity);
   geAdd_Component(rb->_super, entity);
@@ -52,6 +51,8 @@ Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale) {
 void Destroy_Hook_Surface_Sub_Entity(geEntity* entity) {
 
   Hook_Surface* hs = entity->_sub;
+
+  grDestroy_Colour_Render(hs->cr);
 
   free(hs);
 

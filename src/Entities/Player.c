@@ -20,7 +20,6 @@ Player* Create_Player() {
   Player_Controller* pc = Create_Player_Controller(rb);
 
   geAdd_Component(frame->_super, entity);
-  geAdd_Component(sprite->_super, entity);
   geAdd_Component(renderer->_super, entity);
   geAdd_Component(circle_c->_super._super, entity);
   geAdd_Component(rb->_super, entity);
@@ -50,6 +49,8 @@ Player* Create_Player() {
 void Destroy_Player_Sub_Entity(geEntity* entity) {
 
   Player* player = entity->_sub;
+
+  grDestroy_Sprite(player->sprite);
 
   free(player);
 

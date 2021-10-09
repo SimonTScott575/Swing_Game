@@ -15,7 +15,7 @@ typedef struct geWindow geWindow;
 
 typedef void (*geCursor_Position_fn)(geWindow* window, double x, double y);
 
-D_HEADER_dLList(geCursor_Position_fn, geCursor_Position_fn);
+D_HEADER_LLIST(geCursor_Position_fn, geCursor_Position_fn);
 
 struct geWindow {
 

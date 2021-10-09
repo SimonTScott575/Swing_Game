@@ -3,7 +3,7 @@
 
 #include <Game_Engine/ECS/geSystem.h>
 #include <Game_Engine/geWindow.h>
-#include <Game_Engine/Graphics/Defaults/grCamera.h>
+#include <Game_Engine/Graphics/grCamera.h>
 
 #include <Game_Engine/UI/geUI_Element.h>
 #include <Game_Engine/UI/geButton_UI.h>

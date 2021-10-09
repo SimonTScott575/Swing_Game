@@ -5,8 +5,7 @@
 
 #include "../Components/Gem_Controller.h"
 
-typedef struct Gem Gem;
-
+typedef
 struct Gem {
 
   geEntity* _super;
@@ -21,7 +20,7 @@ struct Gem {
 
   Gem_Controller* gc;
 
-};
+} Gem;
 
 Gem* Create_Gem(mVector2f position);
 

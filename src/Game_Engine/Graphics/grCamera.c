@@ -1,4 +1,4 @@
-#include <Game_Engine/Graphics/Defaults/grCamera.h>
+#include <Game_Engine/Graphics/grCamera.h>
 
 #include <stdlib.h>
 #include <string.h>

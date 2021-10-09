@@ -1,10 +1,10 @@
-#include "Level_3.h"
+#include "Level_4.h"
 
 #include "../Glow.h"
 
 #include "../Scenes/End_Level_Menu_Build.h"
 #include "../Scenes/Level_UI_Build.h"
-#include "../Scenes/Level_3_Basic_Build.h"
+#include "../Scenes/Level_4_Basic_Build.h"
 
 #include "../Entities/Camera.h"
 #include "../Entities/UI_Camera.h"
@@ -14,9 +14,9 @@
 
 #include "../Components/Gem_Controller.h"
 
-void Load_Level_3(geScene* scene) {
+void Load_Level_4(geScene* scene) {
 
-  Level_3_Basic_Build level_3_basic_build = Level_3_Basic_Build_init(1);
+  Level_4_Basic_Build level_4_basic_build = Level_4_Basic_Build_init(1);
 
   // ========
   // Load ECS
@@ -26,11 +26,11 @@ void Load_Level_3(geScene* scene) {
   // Entities
   // --------
 
-  Load_Entity_Player_Level_3_Basic_Build(&level_3_basic_build);
+  Load_Entity_Player_Level_4_Basic_Build(&level_4_basic_build);
 
-  Camera* camera = Create_Camera(level_3_basic_build.player->frame, 20);
+  Camera* camera = Create_Camera(level_4_basic_build.player->frame, 20);
 
-  Load_Entities_Level_3_Basic_Build(0, camera->frame, &level_3_basic_build);
+  Load_Entities_Level_4_Basic_Build(0, camera->frame, &level_4_basic_build);
 
   //
   Level_UI_Build level_ui_build;
@@ -39,7 +39,7 @@ void Load_Level_3(geScene* scene) {
   //
   End_Level_Menu_Build end_level_menu_build;
 
-  Load_Entities_End_Level_Menu_Build(level_3_basic_build.portal->pc, level_ui_build.timer->clock, level_3_basic_build.player->pc, &end_level_menu_build);
+  Load_Entities_End_Level_Menu_Build(level_4_basic_build.portal->pc, level_ui_build.timer->clock, level_4_basic_build.player->pc, &end_level_menu_build);
 
   // -------
   // Systems
@@ -59,10 +59,15 @@ void Load_Level_3(geScene* scene) {
 
   rs->post_process = Glow_PP;
 
-  Set_Level_3_Basic_Build(camera->camera2D, rs, rb_sys, &level_3_basic_build);
+  Set_Level_4_Basic_Build(camera->camera2D, rs, rb_sys, &level_4_basic_build);
 
   //
   camera->cc->rs = rs;
+  camera->camera2D->background_colour[0]
+    = camera->camera2D->background_colour[2]
+    = camera->camera2D->background_colour[3]
+    = 1;
+  camera->camera2D->background_colour[1] = 0;
 
   rb_sys->gravity = (mVector2f){{0,-5}};
 
@@ -82,7 +87,7 @@ void Load_Level_3(geScene* scene) {
 
   geAdd_Entity(camera->_super, scene);
 
-  Add_Entities_Level_3_Basic_Build(scene, &level_3_basic_build);
+  Add_Entities_Level_4_Basic_Build(scene, &level_4_basic_build);
 
   Add_Entities_Level_UI_Build(scene, &level_ui_build);
 

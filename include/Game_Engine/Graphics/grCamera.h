@@ -10,10 +10,10 @@
 #include <Game_Engine/Graphics/grScreen.h>
 
 typedef struct grCamera2D grCamera2D;
-typedef struct grCamera3D grCamera3D;
 
 typedef void (*grPrepare_Camera_fn)(grCamera2D* camera, grScreen* screen);
 
+typedef
 struct grCamera2D {
 
   geComponent* _super;
@@ -30,7 +30,7 @@ struct grCamera2D {
   void* _sub;
   grPrepare_Camera_fn _prepare;
 
-};
+} grCamera2D;
 
 // ====================
 // Creation/Destruction
