@@ -17,9 +17,13 @@ struct geUI_Renderer {
 
 };
 
+// ==========================
+// Initialization/Termination
+// ==========================
+
 geUI_Renderer* grCreate_UI_Renderer(geUI_Element* uie, grModel* model, grShader* shader);
 
-//
+// ===
 
 void geRender_UI_Renderer(grRenderer* renderer, grCamera2D* camera);
 

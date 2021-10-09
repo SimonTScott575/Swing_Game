@@ -1,14 +1,21 @@
 #include <Game_Engine/UI/geUI_Renderer.h>
 
-//! grRender(grRenderer* r, grCamera2D* camera) ?
+// ======
+// static
+// ======
 
 static void geDestroy_UI_Sub_Renderer(grRenderer* renderer);
+
+// ==========================
+// Initialization/Termination
+// ==========================
 
 geUI_Renderer* grCreate_UI_Renderer(geUI_Element* uie, grModel* model, grShader* shader) {
 
   geUI_Renderer* ui_r = malloc(sizeof(geUI_Renderer));
 
   mFrame2D* frame = new_mFrame2D(mVector2f_ZERO,0,mVector2f_ONE);
+
   grRenderer* renderer = grCreate_Renderer_2D(frame, model, shader);
   grSet_Sub_Renderer(ui_r, geDestroy_UI_Sub_Renderer, renderer);
   renderer->render_fn = geRender_UI_Renderer;
@@ -37,12 +44,12 @@ void geDestroy_UI_Sub_Renderer(grRenderer* renderer) {
 
 };
 
+// ===
+
 void geRender_UI_Renderer(grRenderer* renderer, grCamera2D* camera) {
 
   geUI_Renderer* ui_r = renderer->_sub;
   geUI_Element* uie = ui_r->uie;
-
-  //... use camera (as arg?) to set attached frame (see geGenerate_UI_Render_Frame)
 
   mFrame2D* renderer_frame = ui_r->_super->frame;
 

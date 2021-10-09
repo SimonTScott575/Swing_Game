@@ -1,9 +1,6 @@
 #ifndef GE_GAME_H
 #define GE_GAME_H
 
-// #include "../../extern/glad/glad.h"
-// #include "../../extern/GLFW/glfw3.h"
-
 #include <Game_Engine/geScene.h>
 #include <Game_Engine/geInput_States.h>
 #include <Game_Engine/geWindow.h>

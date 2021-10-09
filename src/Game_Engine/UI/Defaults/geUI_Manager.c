@@ -5,6 +5,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <Game_Engine/ECS/geEntity.h>
+
+// ==========================
+// Initialization/Termiantion
+// ==========================
+
 geUI_Manager* geCreate_UI_Manager(grCamera2D* camera) {
 
   geUI_Manager* uim = malloc(sizeof(geUI_Manager));
@@ -20,6 +26,20 @@ geUI_Manager* geCreate_UI_Manager(grCamera2D* camera) {
   return uim;
 
 }
+
+void geDestroy_UI_Manager(void* arg) {
+
+  geUI_Manager* uim = arg;
+
+  geDestroy_System(uim->_super);
+  
+  del_dLList(geUI_Element_ptr)(uim->_elements);
+
+  free(uim);
+
+}
+
+// ===
 
 void geUpdate_UI_Manager(void* arg) {
 
@@ -39,10 +59,9 @@ void geUpdate_UI_Manager(void* arg) {
 
     geUI_Element* uie = uie_node->element;
 
-    if (uie->_super != NULL && !uie->_super->is_active) { continue; }
+    if (uie->_super != NULL && !geComponent_Is_Active(uie->_super)) { continue; }
 
     geUpdate_UI_Element(uie, uim->camera->_X_length, normalized_mouse_X, normalized_mouse_Y, geGet_Active_Window());
-    // geGenerate_UI_Render_Frame(uie, uim);
 
   }
 
@@ -50,28 +69,3 @@ void geUpdate_UI_Manager(void* arg) {
   grSet_Projection_2D(2*inv_ar, 2, uim->camera); //? at top ?
 
 }
-
-void geDestroy_UI_Manager(void* arg) {
-
-  geUI_Manager* uim = arg;
-
-  geDestroy_System(uim->_super);
-  del_dLList(geUI_Element_ptr)(uim->_elements);
-
-  free(uim);
-
-}
-
-// void geGenerate_UI_Render_Frame(geUI_Element* uie, geUI_Manager* uim) {
-//
-//   grCamera2D* camera = uim->camera;
-//   mFrame2D* renderer_frame = uie->renderer->frame;
-//
-//   renderer_frame->position = mAdd_V2f(
-//     (mVector2f){{uie->x*camera->_X_length/2,uie->y}},
-//     uie->frame->position
-//   );
-//   renderer_frame->rotation = uie->frame->rotation;
-//   renderer_frame->scale = uie->frame->scale;
-//
-// }

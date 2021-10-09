@@ -20,11 +20,9 @@ struct geUI_Manager {
 };
 
 geUI_Manager* geCreate_UI_Manager(grCamera2D* camera);
-void geUpdate_UI_Manager(void* arg);
+
 void geDestroy_UI_Manager(void* arg);
 
-//... add/remove etc
-
-// void geGenerate_UI_Render_Frame(geUI_Element* uie, geUI_Manager* uim);
+void geUpdate_UI_Manager(void* arg);
 
 #endif

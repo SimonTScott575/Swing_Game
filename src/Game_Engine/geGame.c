@@ -11,21 +11,6 @@
 
 static geGame* geActive_Game = NULL;
 
-// ======
-// global//?
-// ======
-
-void geSet_Active_Game(geGame* game) {
-
-  geSet_Active_Input_States(&game->input_states);
-
-  geActive_Game = game;
-
-}
-geGame* geGet_Active_Game() {
-  return geActive_Game;
-}
-
 // ====================
 // Creation/Destruction
 // ====================
@@ -51,8 +36,8 @@ geGame* geCreate_Game(geWindow* window) {
     .window = window
   };
 
-  glfwSetKeyCallback(window->_window_ID, geKey_States_Callback_GLFW);
-  glfwSetMouseButtonCallback(window->_window_ID, geMouse_Button_Callback_GLFW);
+  glfwSetKeyCallback(window->_window_ID, geKey_States_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
+  glfwSetMouseButtonCallback(window->_window_ID, geMouse_Button_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
 
   if ( geGet_Active_Game() == NULL ) {
     geSet_Active_Game(game);
@@ -68,6 +53,21 @@ void geDestroy_Game(geGame* game) {
 
   free(game);
 
+}
+
+// ======
+// Active
+// ======
+
+void geSet_Active_Game(geGame* game) {
+
+  geSet_Active_Input_States(&game->input_states);
+
+  geActive_Game = game;
+
+}
+geGame* geGet_Active_Game() {
+  return geActive_Game;
 }
 
 // ===

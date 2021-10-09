@@ -27,8 +27,8 @@ void Update_Player_Controller(geComponent* component) {
 
   pc->last_pos = pc->rb->frame->position.i[0];
 
-  bool D_down = glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_D);
-  bool A_down = glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_A);
+  bool D_down = geKey_Down(geGet_Active_Game(), GE_KB_D); // glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_D);
+  bool A_down = geKey_Down(geGet_Active_Game(), GE_KB_A); // glfwGetKey(geGet_Active_Window()->_window_ID, GLFW_KEY_A);
   if (D_down || A_down) {
     float new_vel = pc->rb->velocity.i[0] + ( D_down - A_down )*0.2;
     if (-7 < pc->rb->velocity.i[0] && new_vel > 0 || pc->rb->velocity.i[0] < 7 && new_vel < 0) {
