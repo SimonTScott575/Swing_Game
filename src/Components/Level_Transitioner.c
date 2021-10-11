@@ -1,6 +1,7 @@
 #include "Level_Transitioner.h"
 
 #include <math.h>
+#include <string.h>
 
 #include "../Scenes.h"
 
@@ -11,11 +12,9 @@
 
 Level_Transitioner* Create_Level_Transitioner(
   Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
-  grText* cd_text,           grText_Renderer* cd_text_r,
-  geButton_UI* back_b,       grRenderer* back_r,
-  geButton_UI* restart_b,    grRenderer* restart_r,
-  geButton_UI* next_level_b, grRenderer* next_level_r,
-  grText_Renderer* back_tr, grText_Renderer* restart_tr, grText_Renderer* next_level_tr
+  grText_Renderer* cd_text_r,
+  geEntity** end_ui1_arr, // restart and back : button/text entities
+  geEntity** end_ui2_arr // next level : button/text entities
 ) {
 
   Level_Transitioner* lt = malloc(sizeof(Level_Transitioner));
@@ -28,37 +27,21 @@ Level_Transitioner* Create_Level_Transitioner(
     .clock = clock,
     .player_controller = player_controller,
 
-    .cd_text = cd_text,
+    .cd_text = cd_text_r->text,
     .cd_text_r = cd_text_r,
-
-    .back_b = back_b,
-    .back_r = back_r,
-
-    .restart_b = restart_b,
-    .restart_r = restart_r,
-
-    .next_level_b = next_level_b,
-    .next_level_r = next_level_r,
-
-    .back_tr = back_tr,
-    .restart_tr = restart_tr,
-    .next_level_tr = next_level_tr
 
   };
 
   geSet_Sub_Component(lt, Update_Level_Transitioner, Destroy_Level_Transitioner_Sub_Component, lt->_super);
 
-  lt->back_b->_super._super->is_active = false;
-  lt->back_r->_super->is_active = false;
-  lt->back_tr->_super->_super->is_active = false;
-
-  lt->restart_b->_super._super->is_active = false;
-  lt->restart_r->_super->is_active = false;
-  lt->restart_tr->_super->_super->is_active = false;
-
-  lt->next_level_b->_super._super->is_active = false;
-  lt->next_level_r->_super->is_active = false;
-  lt->next_level_tr->_super->_super->is_active = false;
+  memcpy(lt->end_ui1_arr, end_ui1_arr, END_UI1_LENGTH*sizeof(geEntity*));
+  memcpy(lt->end_ui2_arr, end_ui2_arr, END_UI2_LENGTH*sizeof(geEntity*));
+  for (int i = 0; i < END_UI1_LENGTH; i++) {
+    lt->end_ui1_arr[i]->is_active = false;
+  }
+  for (int i = 0; i < END_UI2_LENGTH; i++) {
+    lt->end_ui2_arr[i]->is_active = false;
+  }
 
   lt->level_start_time = 0;
   lt->cd_first_frame = 0;
@@ -131,19 +114,17 @@ void Update_Level_Transitioner(geComponent* component) {
       best_times[focused_level_num] = lt->clock->timer_val;
     }
 
-    lt->back_r->_super->is_active = true;
-    lt->back_b->_super._super->is_active = true;
-    lt->back_tr->_super->_super->is_active = true;
+    for (int i = 0; i < END_UI1_LENGTH; i++) {
+      lt->end_ui1_arr[i]->is_active = true;
+    }
 
-    lt->restart_r->_super->is_active = true;
-    lt->restart_b->_super._super->is_active = true;
-    lt->restart_tr->_super->_super->is_active = true;
-
-    if (   best_times[focused_level_num] < par_times[focused_level_num] 
+    if (   best_times[focused_level_num] < par_times[focused_level_num]
         && focused_level_num < LEVELS_COUNT-1 ) {
-      lt->next_level_r->_super->is_active = true;
-      lt->next_level_b->_super._super->is_active = true;
-      lt->next_level_tr->_super->_super->is_active = true;
+
+      for (int i = 0; i < END_UI2_LENGTH; i++) {
+        lt->end_ui2_arr[i]->is_active = true;
+      }
+
     }
 
     lt->clock->is_ended = true;

@@ -22,6 +22,9 @@ struct geGame {
 
   geInput_States input_states;
 
+  grScreen* _front_screen;
+  grScreen* _back_screen;
+
   geWindow* window;
 
 };
@@ -62,6 +65,8 @@ geScene* geGet_First_Scene(geGame* game);
 
 geScene* geGet_Next_Scene(geGame* game);
 void geSet_Next_Scene(geScene* scene, geGame* game);
+
+void geSwap_Screens(geGame* game);
 
 // void geAdd_Scene(geScene* scene, geGame* game);
 // void geRemove_Scene(geScene* scene, geGame* game);

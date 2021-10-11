@@ -4,13 +4,15 @@ static float level_target_x_pos[LEVELS_COUNT] = {
   0,
   L2_MENU_POS,
   L3_MENU_POS,
-  L4_MENU_POS
+  L4_MENU_POS,
+  L5_MENU_POS
 };
 static float level_target_x_length[LEVELS_COUNT] = {
   L1_MAX_X_LENGTH + 2,
   L2_MAX_X_LENGTH + 10,
   L3_MAX_X_LENGTH,
-  L4_MAX_X_LENGTH
+  L4_MAX_X_LENGTH,
+  L5_MAX_X_LENGTH
 };
 
 static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
@@ -18,10 +20,10 @@ static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
 Level_Select_Navigator* active_lsn = NULL;
 
 Level_Select_Navigator* Create_Level_Select_Navigator(
-  geButton_UI* next_level_b, grRenderer* next_level_r,
-  geButton_UI* prev_level_b, grRenderer* prev_level_r,
-  geButton_UI* play_level_b, grText_Renderer* play_level_tr,
-  grText_Renderer* locked_tr,
+  geEntity* next_level_e,
+  geEntity* prev_level_e,
+  geEntity* play_level_e,
+  geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 ) {
 
@@ -31,14 +33,11 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
     active_lsn = lsn;
   }
 
-  lsn->next_level_b = next_level_b;
-  lsn->next_level_r = next_level_r;
-  lsn->prev_level_b = prev_level_b;
-  lsn->prev_level_r = prev_level_r;
-  lsn->play_level_b = play_level_b;
-  lsn->play_level_tr = play_level_tr;
+  lsn->next_level_e = next_level_e;
+  lsn->prev_level_e = prev_level_e;
+  lsn->play_level_e = play_level_e;
 
-  lsn->locked_tr = locked_tr;
+  lsn->locked_e = locked_e;
 
   lsn->lscc = lscc;
   // lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
@@ -64,19 +63,19 @@ void Update_Level_Select_Navigator_Sub_Component(geComponent* component) {
 
     if (   best_times[focused_level_num-1] > par_times[focused_level_num-1]
         || best_times[focused_level_num-1] < 0 ) {
-      lsn->play_level_b->_super._super->is_active = false;
-      lsn->play_level_tr->_super->_super->is_active = false;
-      lsn->locked_tr->_super->_super->is_active = true;
+      lsn->play_level_e->is_active = false;
+      lsn->play_level_e->is_active = false;
+      lsn->locked_e->is_active = true;
     } else {
-      lsn->play_level_b->_super._super->is_active = true;
-      lsn->play_level_tr->_super->_super->is_active = true;
-      lsn->locked_tr->_super->_super->is_active = false;
+      lsn->play_level_e->is_active = true;
+      lsn->play_level_e->is_active = true;
+      lsn->locked_e->is_active = false;
     }
 
   } else {
-    lsn->play_level_b->_super._super->is_active = true;
-    lsn->play_level_tr->_super->_super->is_active = true;
-    lsn->locked_tr->_super->_super->is_active = false;
+    lsn->play_level_e->is_active = true;
+    lsn->play_level_e->is_active = true;
+    lsn->locked_e->is_active = false;
   }
 
 }
@@ -155,23 +154,14 @@ static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn) {
   geScene* selected_level = level_order[level_num];
 
   if (level_num == 0) {
-    active_lsn->prev_level_b->_super._super->is_active = false;
-    active_lsn->prev_level_r->_super->is_active = false;
-
-    active_lsn->next_level_b->_super._super->is_active = true;
-    active_lsn->next_level_r->_super->is_active = true;
+    active_lsn->prev_level_e->is_active = false;
+    active_lsn->next_level_e->is_active = true;
   } else if (level_num == LEVELS_COUNT-1) {
-    active_lsn->next_level_b->_super._super->is_active = false;
-    active_lsn->next_level_r->_super->is_active = false;
-
-    active_lsn->prev_level_b->_super._super->is_active = true;
-    active_lsn->prev_level_r->_super->is_active = true;
+    active_lsn->next_level_e->is_active = false;
+    active_lsn->prev_level_e->is_active = true;
   } else {
-    active_lsn->next_level_b->_super._super->is_active = true;
-    active_lsn->next_level_r->_super->is_active = true;
-
-    active_lsn->prev_level_b->_super._super->is_active = true;
-    active_lsn->prev_level_r->_super->is_active = true;
+    active_lsn->next_level_e->is_active = true;
+    active_lsn->prev_level_e->is_active = true;
   }
 
   active_lsn->lscc->target_position = (mVector2f){{level_target_x_pos[focused_level_num],0}};

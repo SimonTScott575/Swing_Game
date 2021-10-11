@@ -7,6 +7,9 @@
 #include "Timer_Clock.h"
 #include "Player_Controller.h"
 
+#define END_UI1_LENGTH 4
+#define END_UI2_LENGTH 2
+
 typedef struct Level_Transitioner Level_Transitioner;
 
 struct Level_Transitioner {
@@ -17,18 +20,8 @@ struct Level_Transitioner {
   Timer_Clock* clock;
   Player_Controller* player_controller;
 
-  grRenderer* back_r;
-  geButton_UI* back_b;
-
-  grRenderer* restart_r;
-  geButton_UI* restart_b;
-
-  grRenderer* next_level_r;
-  geButton_UI* next_level_b;
-
-  grText_Renderer* back_tr;
-  grText_Renderer* restart_tr;
-  grText_Renderer* next_level_tr;
+  geEntity* end_ui1_arr[END_UI1_LENGTH];
+  geEntity* end_ui2_arr[END_UI2_LENGTH];
 
   float level_start_time;
   int cd_first_frame;
@@ -41,11 +34,9 @@ struct Level_Transitioner {
 
 Level_Transitioner* Create_Level_Transitioner(
   Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
-  grText* cd_text,           grText_Renderer* cd_text_r,
-  geButton_UI* back_b,       grRenderer* back_r,
-  geButton_UI* restart_b,    grRenderer* restart_r,
-  geButton_UI* next_level_b, grRenderer* next_level_r,
-  grText_Renderer* back_tr, grText_Renderer* restart_tr, grText_Renderer* next_level_tr
+  grText_Renderer* cd_text_r,
+  geEntity** end_ui1_arr, // restart and back : button/text entities
+  geEntity** end_ui2_arr // next level : button/text entities
 );
 
 void Update_Level_Transitioner(geComponent* component);

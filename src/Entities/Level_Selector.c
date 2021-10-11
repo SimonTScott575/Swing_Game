@@ -1,20 +1,20 @@
 #include "Level_Selector.h"
 
 Level_Selector* Create_Level_Selector(
-  geButton_UI* next_level_b, grRenderer* next_level_r,
-  geButton_UI* prev_level_b, grRenderer* prev_level_r,
-  geButton_UI* play_level_b, grText_Renderer* play_level_tr,
-  grText_Renderer* locked_tr,
+  geEntity* next_level_e,
+  geEntity* prev_level_e,
+  geEntity* play_level_e,
+  geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 ) {
 
   geEntity* entity = geCreate_Entity();
 
   Level_Select_Navigator* lsn = Create_Level_Select_Navigator(
-    next_level_b, next_level_r,
-    prev_level_b, prev_level_r,
-    play_level_b, play_level_tr,
-    locked_tr,
+    next_level_e,
+    prev_level_e,
+    play_level_e,
+    locked_e,
     lscc
   );
 

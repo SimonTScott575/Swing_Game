@@ -1,17 +1,11 @@
-#if defined(M_AS_HEADER)
-  #define M__Frame_SCOPE__ extern
-#elif defined(M_AS_SOURCE)
-  #define M__Frame_SCOPE__
-#else
-  #define M__Frame_SCOPE__ static
-#endif
-
 // ######
 // HEADER
 // ######
 
 #ifndef M_Frame_H
 #define M_Frame_H
+
+#include <stdio.h> //DEBUG
 
 #include <math.h>
 
@@ -21,285 +15,298 @@
 #include "mMatrix.h"
 #include "mQuaternion.h"
 
-// ============
-// Declarations
-// ============
-
-#ifndef M_NO_DEFAULTS
-
-  typedef struct mFrame2D mFrame2D;
-  typedef struct mFrame3D mFrame3D;
-
-  struct mFrame2D {
-    geComponent* _super;
-
-    mMatrix3f transform;
-
-    mVector2f position;
-    float rotation;
-    mVector2f scale;
-  };
-  struct mFrame3D {
-    geComponent* _super;
-
-    mMatrix4f transform;
-
-    mVector3f position;
-    mQuaternion quaternion;
-    mVector3f scale;
-  };
-
-  M__Frame_SCOPE__ const mFrame2D mFrame2D_I;
-  M__Frame_SCOPE__ const mFrame3D mFrame3D_I;
-
-  M__Frame_SCOPE__ mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale);
-  M__Frame_SCOPE__ mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
-
-  M__Frame_SCOPE__ mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale);
-  M__Frame_SCOPE__ mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
-  M__Frame_SCOPE__ void del_mFrame2D_Sub_Component(geComponent* component);
-  M__Frame_SCOPE__ void del_mFrame3D_Sub_Component(geComponent* component);
-
-  M__Frame_SCOPE__ void mGenerate_transform_2D(mFrame2D* frame);
-  M__Frame_SCOPE__ void mGenerate_transform_3D(mFrame3D* frame);
-
-  M__Frame_SCOPE__ mVector2f mTransform_2D(mVector2f v, mMatrix3f transform);
-  M__Frame_SCOPE__ mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame);
-  M__Frame_SCOPE__ mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame);
-  M__Frame_SCOPE__ mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame);
-  M__Frame_SCOPE__ mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame);
-
-  M__Frame_SCOPE__ mVector2f mAxis_X_2D(mFrame2D* frame);
-  M__Frame_SCOPE__ mVector3f mAxis_X_3D(mFrame3D* frame);
-
-  M__Frame_SCOPE__ mVector2f mAxis_Y_2D(mFrame2D* frame);
-  M__Frame_SCOPE__ mVector3f mAxis_Y_3D(mFrame3D* frame);
-
-  M__Frame_SCOPE__ mVector3f mAxis_Z_3D(mFrame3D* frame);
-
+#ifndef M_SCOPE
+  #if defined(M_AS_HEADER)
+    #define M_SCOPE extern
+  #elif defined(M_AS_SOURCE)
+    #define M_SCOPE
+  #else
+    #define M_SCOPE static
+  #endif
 #endif
 
-// ===========
-// Definitions
-// ===========
 
-#ifndef M_NO_DEFAULTS
+typedef struct mFrame2D mFrame2D;
+typedef struct mFrame3D mFrame3D;
 
-  // ======
-  // Consts
-  // ======
+struct mFrame2D {
+  geComponent* _super;
 
-  M__Frame_SCOPE__ const mFrame2D mFrame2D_I = { .transform = mMatrix3f_I,
+  mMatrix3f transform;
 
-                                                 .position = mVector2f_ZERO,
-                                                 .rotation = 0,
-                                                 .scale = mVector2f_ONE      };
-  M__Frame_SCOPE__ const mFrame3D mFrame3D_I = { .transform = mMatrix4f_I,
+  mVector2f position;
+  float rotation;
+  mVector2f scale;
+};
+struct mFrame3D {
+  geComponent* _super;
 
-                                                 .position = mVector3f_ZERO,
-                                                 .quaternion = mQuaternion_I,
-                                                 .scale = mVector3f_ONE       };
+  mMatrix4f transform;
 
-  // ===
-  //
-  // ===
+  mVector3f position;
+  mQuaternion quaternion;
+  mVector3f scale;
+};
 
-  M__Frame_SCOPE__ mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
-    mFrame2D frame;
-    frame.position = position;
-    frame.rotation = rotation;
-    frame.scale = scale;
+M_SCOPE const mFrame2D mFrame2D_I;
+M_SCOPE const mFrame3D mFrame3D_I;
 
-    mGenerate_transform_2D(&frame);
+M_SCOPE mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale);
+M_SCOPE mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
 
-    return frame;
-  };
-  M__Frame_SCOPE__ mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
-    mFrame3D frame;
+M_SCOPE mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale);
+M_SCOPE mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
+M_SCOPE void del_mFrame2D_Sub_Component(geComponent* component);
+M_SCOPE void del_mFrame3D_Sub_Component(geComponent* component);
 
-    frame.position = position;
-    frame.quaternion = mQuaternion_I;
-    mRotate_YXZ_Q(rotation, &frame.quaternion);
-    frame.scale = scale;
+M_SCOPE void mGenerate_transform_2D(mFrame2D* frame);
+M_SCOPE void mGenerate_transform_3D(mFrame3D* frame);
 
-    mGenerate_transform_3D(&frame);
+M_SCOPE mVector2f mTransform_2D(mVector2f v, mMatrix3f transform);
+M_SCOPE mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame);
+M_SCOPE mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame);
+M_SCOPE mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame);
+M_SCOPE mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame);
 
-    return frame;
-  };
+M_SCOPE mVector2f mAxis_X_2D(mFrame2D* frame);
+M_SCOPE mVector3f mAxis_X_3D(mFrame3D* frame);
 
-  M__Frame_SCOPE__ mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
+M_SCOPE mVector2f mAxis_Y_2D(mFrame2D* frame);
+M_SCOPE mVector3f mAxis_Y_3D(mFrame3D* frame);
 
-    mFrame2D* frame = malloc(sizeof(mFrame2D));
+M_SCOPE mVector3f mAxis_Z_3D(mFrame3D* frame);
 
-    *frame = init_mFrame2D(position, rotation, scale);
+// ======
+// Consts
+// ======
 
-    frame->_super = geCreate_Component();
-    geSet_Sub_Component(frame, NULL, del_mFrame2D_Sub_Component, frame->_super);
+M_SCOPE const mFrame2D mFrame2D_I = { .transform = mMatrix3f_I,
 
-    return frame;
+                                               .position = mVector2f_ZERO,
+                                               .rotation = 0,
+                                               .scale = mVector2f_ONE      };
+M_SCOPE const mFrame3D mFrame3D_I = { .transform = mMatrix4f_I,
 
-  };
-  M__Frame_SCOPE__ mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
+                                               .position = mVector3f_ZERO,
+                                               .quaternion = mQuaternion_I,
+                                               .scale = mVector3f_ONE       };
 
-    mFrame3D* frame = malloc(sizeof(mFrame3D));
+// ===
+//
+// ===
 
-    *frame = init_mFrame3D(position, rotation, scale);
+M_SCOPE
+mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
+  mFrame2D frame;
+  frame.position = position;
+  frame.rotation = rotation;
+  frame.scale = scale;
 
-    frame->_super = geCreate_Component();
-    geSet_Sub_Component(frame, NULL, del_mFrame3D_Sub_Component, frame->_super);
+  mGenerate_transform_2D(&frame);
 
-    return frame;
+  return frame;
+};
+M_SCOPE
+mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
+  mFrame3D frame;
 
-  };
+  frame.position = position;
+  frame.quaternion = mQuaternion_I;
+  mRotate_YXZ_Q(rotation, &frame.quaternion);
+  frame.scale = scale;
 
-  M__Frame_SCOPE__ void del_mFrame2D_Sub_Component(geComponent* component) {
-    mFrame2D* frame = component->_sub;
-    free(frame);
-  }
-  M__Frame_SCOPE__ void del_mFrame3D_Sub_Component(geComponent* component) {
-    mFrame3D* frame = component->_sub;
-    free(frame);
-  }
+  mGenerate_transform_3D(&frame);
 
-  // ===
+  return frame;
+};
 
-  M__Frame_SCOPE__ void mGenerate_transform_2D(mFrame2D* frame) { //? MACRO INLINE IS BETTER with non ptr ? have second with ptr for when using a manager?
-    // *frame = init_mFrame2D(frame->position, frame->rotation, frame->scale);
+M_SCOPE
+mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
 
-    frame->transform.i[0][2] = frame->position.i[0];
-    frame->transform.i[1][2] = frame->position.i[1];
+  mFrame2D* frame = malloc(sizeof(mFrame2D));
 
-    frame->transform.i[0][0] =  cos(frame->rotation);
-    frame->transform.i[0][1] = -sin(frame->rotation);
-    frame->transform.i[1][0] =  sin(frame->rotation);
-    frame->transform.i[1][1] =  cos(frame->rotation);
+  *frame = init_mFrame2D(position, rotation, scale);
 
-    frame->transform.i[0][0] *= frame->scale.i[0];
-    frame->transform.i[0][1] *= frame->scale.i[1];
-    frame->transform.i[1][0] *= frame->scale.i[0];
-    frame->transform.i[1][1] *= frame->scale.i[1];
+  frame->_super = geCreate_Component();
+  geSet_Sub_Component(frame, NULL, del_mFrame2D_Sub_Component, frame->_super);
 
-    frame->transform.i[2][0] = frame->transform.i[2][1] = 0;
-    frame->transform.i[2][2] = 1;
-  }
-  M__Frame_SCOPE__ void mGenerate_transform_3D(mFrame3D* frame) { //? MACRO INLINE IS BETTER with non ptr ? have second with ptr for when using a manager?
-    // Translation
-    frame->transform.i[0][3] = frame->position.i[0];
-    frame->transform.i[1][3] = frame->position.i[1];
-    frame->transform.i[2][3] = frame->position.i[2];
+  return frame;
 
-    // Rotation
-    mQuaternion_to_Matrix4f_RONLY(frame->quaternion, &frame->transform);
+};
+M_SCOPE
+mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
 
-    // Scale
-    frame->transform.i[0][0] *= frame->scale.i[0];
-    frame->transform.i[0][1] *= frame->scale.i[1];
-    frame->transform.i[0][2] *= frame->scale.i[2];
-    frame->transform.i[1][0] *= frame->scale.i[0];
-    frame->transform.i[1][1] *= frame->scale.i[1];
-    frame->transform.i[1][2] *= frame->scale.i[2];
-    frame->transform.i[2][0] *= frame->scale.i[0];
-    frame->transform.i[2][1] *= frame->scale.i[1];
-    frame->transform.i[2][2] *= frame->scale.i[2];
+  mFrame3D* frame = malloc(sizeof(mFrame3D));
 
-    frame->transform.i[3][0] = 0;
-    frame->transform.i[3][1] = 0;
-    frame->transform.i[3][2] = 0;
-    frame->transform.i[3][3] = 1;
-  }
+  *frame = init_mFrame3D(position, rotation, scale);
 
-  M__Frame_SCOPE__ mVector2f mTransform_2D(mVector2f v, mMatrix3f transform) {
-    mVector3f v3 = mMul_M3f_V3f(transform, (mVector3f){{v.i[0],v.i[1],1}});
-    v = (mVector2f){{v3.i[0],v3.i[1]}};
+  frame->_super = geCreate_Component();
+  geSet_Sub_Component(frame, NULL, del_mFrame3D_Sub_Component, frame->_super);
+
+  return frame;
+
+};
+
+M_SCOPE
+void del_mFrame2D_Sub_Component(geComponent* component) {
+  mFrame2D* frame = component->_sub;
+  free(frame);
+}
+M_SCOPE
+void del_mFrame3D_Sub_Component(geComponent* component) {
+  mFrame3D* frame = component->_sub;
+  free(frame);
+}
+
+// ===
+
+M_SCOPE
+void mGenerate_transform_2D(mFrame2D* frame) { //? MACRO INLINE IS BETTER with non ptr ? have second with ptr for when using a manager?
+  // *frame = init_mFrame2D(frame->position, frame->rotation, frame->scale);
+
+  frame->transform.i[0][2] = frame->position.i[0];
+  frame->transform.i[1][2] = frame->position.i[1];
+
+  frame->transform.i[0][0] =  cos(frame->rotation);
+  frame->transform.i[0][1] = -sin(frame->rotation);
+  frame->transform.i[1][0] =  sin(frame->rotation);
+  frame->transform.i[1][1] =  cos(frame->rotation);
+
+  frame->transform.i[0][0] *= frame->scale.i[0];
+  frame->transform.i[0][1] *= frame->scale.i[1];
+  frame->transform.i[1][0] *= frame->scale.i[0];
+  frame->transform.i[1][1] *= frame->scale.i[1];
+
+  frame->transform.i[2][0] = frame->transform.i[2][1] = 0;
+  frame->transform.i[2][2] = 1;
+}
+M_SCOPE
+void mGenerate_transform_3D(mFrame3D* frame) { //? MACRO INLINE IS BETTER with non ptr ? have second with ptr for when using a manager?
+  // Translation
+  frame->transform.i[0][3] = frame->position.i[0];
+  frame->transform.i[1][3] = frame->position.i[1];
+  frame->transform.i[2][3] = frame->position.i[2];
+
+  // Rotation
+  mQuaternion_to_Matrix4f_RONLY(frame->quaternion, &frame->transform);
+
+  // Scale
+  frame->transform.i[0][0] *= frame->scale.i[0];
+  frame->transform.i[0][1] *= frame->scale.i[1];
+  frame->transform.i[0][2] *= frame->scale.i[2];
+  frame->transform.i[1][0] *= frame->scale.i[0];
+  frame->transform.i[1][1] *= frame->scale.i[1];
+  frame->transform.i[1][2] *= frame->scale.i[2];
+  frame->transform.i[2][0] *= frame->scale.i[0];
+  frame->transform.i[2][1] *= frame->scale.i[1];
+  frame->transform.i[2][2] *= frame->scale.i[2];
+
+  frame->transform.i[3][0] = 0;
+  frame->transform.i[3][1] = 0;
+  frame->transform.i[3][2] = 0;
+  frame->transform.i[3][3] = 1;
+}
+
+M_SCOPE
+mVector2f mTransform_2D(mVector2f v, mMatrix3f transform) {
+  mVector3f v3 = mMul_M3f_V3f(transform, (mVector3f){{v.i[0],v.i[1],1}});
+  v = (mVector2f){{v3.i[0],v3.i[1]}};
+  return v;
+}
+M_SCOPE
+mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame) {
+  frame.scale = mVector2f_ONE;
+  mGenerate_transform_2D(&frame);
+  mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+  return (mVector2f){{v3.i[0],v3.i[1]}};
+}
+M_SCOPE
+mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame) {
+  frame.position.i[0] = frame.position.i[1] = 0;
+  mGenerate_transform_2D(&frame);
+  mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+  return (mVector2f){{v3.i[0],v3.i[1]}};
+}
+M_SCOPE
+mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame) {
+  frame.scale = mVector2f_ONE;
+  frame.position = mVector2f_ZERO;
+  mGenerate_transform_2D(&frame);
+  mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
+  return (mVector2f){{v3.i[0],v3.i[1]}};
+}
+
+M_SCOPE
+mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame) {
+  if (frame.scale.i[0] < 0.001 || frame.scale.i[1] < 0.001) {
+    printf("\nDEBUG : ATTEMPT DIV 0\n");
     return v;
   }
-  M__Frame_SCOPE__ mVector2f mTransform_TR_2D(mVector2f v, mFrame2D frame) {
-    frame.scale = mVector2f_ONE;
-    mGenerate_transform_2D(&frame);
-    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
-    return (mVector2f){{v3.i[0],v3.i[1]}};
-  }
-  M__Frame_SCOPE__ mVector2f mTransform_RS_2D(mVector2f v, mFrame2D frame) {
-    frame.position.i[0] = frame.position.i[1] = 0;
-    mGenerate_transform_2D(&frame);
-    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
-    return (mVector2f){{v3.i[0],v3.i[1]}};
-  }
-  M__Frame_SCOPE__ mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame) {
-    frame.scale = mVector2f_ONE;
-    frame.position = mVector2f_ZERO;
-    mGenerate_transform_2D(&frame);
-    mVector3f v3 = mMul_M3f_V3f(frame.transform,(mVector3f){{v.i[0],v.i[1],1}});
-    return (mVector2f){{v3.i[0],v3.i[1]}};
-  }
-  #include <stdio.h> //DEBUG
-  M__Frame_SCOPE__ mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame) {
-    if (frame.scale.i[0] < 0.001 || frame.scale.i[1] < 0.001) {
-      printf("\nDEBUG : ATTEMPT DIV 0\n");
-      return v;
-    }
-    mVector2f scale = (mVector2f){{1/frame.scale.i[0],1/frame.scale.i[1]}};
-    float r = -frame.rotation;
-    mVector2f p = mMul_f_V2f(-1,frame.position);
+  mVector2f scale = (mVector2f){{1/frame.scale.i[0],1/frame.scale.i[1]}};
+  float r = -frame.rotation;
+  mVector2f p = mMul_f_V2f(-1,frame.position);
 
-    float s = sin(r);
-    float c = cos(r);
+  float s = sin(r);
+  float c = cos(r);
 
-    mMatrix3f SRT = {.i={
-      { scale.i[0]*c,  -scale.i[0]*s, scale.i[0]*( c*p.i[0] - s*p.i[1] )},
-      { scale.i[1]*s,   scale.i[1]*c, scale.i[1]*( s*p.i[0] + c*p.i[1] )},
-      {0,0,1}
-    }};
+  mMatrix3f SRT = {.i={
+    { scale.i[0]*c,  -scale.i[0]*s, scale.i[0]*( c*p.i[0] - s*p.i[1] )},
+    { scale.i[1]*s,   scale.i[1]*c, scale.i[1]*( s*p.i[0] + c*p.i[1] )},
+    {0,0,1}
+  }};
 
-    mVector3f v3 = mMul_M3f_V3f(SRT,(mVector3f){{v.i[0],v.i[1],1}});
-    return (mVector2f){{v3.i[0],v3.i[1]}};
-  }
+  mVector3f v3 = mMul_M3f_V3f(SRT,(mVector3f){{v.i[0],v.i[1],1}});
+  return (mVector2f){{v3.i[0],v3.i[1]}};
+}
 
-  // ====
-  // Axis
-  // ====
+// ====
+// Axis
+// ====
 
-  M__Frame_SCOPE__ mVector2f mAxis_X_2D(mFrame2D* frame) {
-    mVector2f result;
-    result.i[0] = frame->transform.i[0][0];
-    result.i[1] = frame->transform.i[1][0];
+M_SCOPE
+mVector2f mAxis_X_2D(mFrame2D* frame) {
+  mVector2f result;
+  result.i[0] = frame->transform.i[0][0];
+  result.i[1] = frame->transform.i[1][0];
 
-    return result;
-  }
-  M__Frame_SCOPE__ mVector3f mAxis_X_3D(mFrame3D* frame) {
-    mVector3f result;
-    result.i[0] = frame->transform.i[0][0];
-    result.i[1] = frame->transform.i[1][0];
-    result.i[2] = frame->transform.i[2][0];
+  return result;
+}
+M_SCOPE
+mVector3f mAxis_X_3D(mFrame3D* frame) {
+  mVector3f result;
+  result.i[0] = frame->transform.i[0][0];
+  result.i[1] = frame->transform.i[1][0];
+  result.i[2] = frame->transform.i[2][0];
 
-    return result;
-  }
+  return result;
+}
 
-  M__Frame_SCOPE__ mVector2f mAxis_Y_2D(mFrame2D* frame) {
-    mVector2f result;
-    result.i[0] = frame->transform.i[0][1];
-    result.i[1] = frame->transform.i[1][1];
+M_SCOPE
+mVector2f mAxis_Y_2D(mFrame2D* frame) {
+  mVector2f result;
+  result.i[0] = frame->transform.i[0][1];
+  result.i[1] = frame->transform.i[1][1];
 
-    return result;
-  }
-  M__Frame_SCOPE__ mVector3f mAxis_Y_3D(mFrame3D* frame) {
-    mVector3f result;
-    result.i[0] = frame->transform.i[0][1];//! wrong way around?
-    result.i[1] = frame->transform.i[1][1];
-    result.i[2] = frame->transform.i[2][1];
+  return result;
+}
+M_SCOPE
+mVector3f mAxis_Y_3D(mFrame3D* frame) {
+  mVector3f result;
+  result.i[0] = frame->transform.i[0][1];//! wrong way around?
+  result.i[1] = frame->transform.i[1][1];
+  result.i[2] = frame->transform.i[2][1];
 
-    return result;
-  }
+  return result;
+}
 
-  M__Frame_SCOPE__ mVector3f mAxis_Z_3D(mFrame3D* frame) {
-    mVector3f result;
-    result.i[0] = frame->transform.i[0][2];//! wrong way around?
-    result.i[1] = frame->transform.i[1][2];
-    result.i[2] = frame->transform.i[2][2];
+M_SCOPE
+mVector3f mAxis_Z_3D(mFrame3D* frame) {
+  mVector3f result;
+  result.i[0] = frame->transform.i[0][2];//! wrong way around?
+  result.i[1] = frame->transform.i[1][2];
+  result.i[2] = frame->transform.i[2][2];
 
-    return result;
-  }
-
-#endif
+  return result;
+}
 
 #endif

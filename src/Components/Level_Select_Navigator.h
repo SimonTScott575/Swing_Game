@@ -8,8 +8,8 @@
 #include "../Scenes/Level_2.h"
 #include "../Scenes/Level_3.h"
 #include "../Scenes/Level_4.h"
-#include "../Scenes/Level_3_Basic_Build.h"
-#include "../Scenes/Level_4_Basic_Build.h"
+#include "../Scenes/Level_5.h"
+#include "../Scenes/Level_1_Surfaces_Build.h"
 
 #include "../Components/Level_Select_Camera_Controller.h"
 
@@ -19,11 +19,13 @@
 #define L2_MAX_X_LENGTH L2_TOTAL
 #define L3_MAX_X_LENGTH L3_WIDTH
 #define L4_MAX_X_LENGTH L4_TOTAL
+#define L5_MAX_X_LENGTH L5_TOTAL
 
 #define L1_MENU_POS L1_OFFSET
 #define L2_MENU_POS (L1_MENU_POS + (L1_A*3/2.0 + 2*L1_B + L1_C) + L1_BUFFER + L2_BUFFER + L2_MAX_X_LENGTH/2)
 #define L3_MENU_POS (L2_MENU_POS + L2_MAX_X_LENGTH/2            + L2_BUFFER + L3_BUFFER + L3_MAX_X_LENGTH/2)
 #define L4_MENU_POS (L3_MENU_POS + L3_MAX_X_LENGTH/2            + L3_BUFFER + L4_BUFFER + L4_MAX_X_LENGTH/2)
+#define L5_MENU_POS (L4_MENU_POS + L4_MAX_X_LENGTH/2            + L4_BUFFER + L5_BUFFER + L5_MAX_X_LENGTH/2)
 
 typedef struct Level_Select_Navigator Level_Select_Navigator;
 
@@ -31,14 +33,11 @@ struct Level_Select_Navigator {
 
   geComponent* _super;
 
-  grRenderer* next_level_r;
-  geButton_UI* next_level_b;
-  grRenderer* prev_level_r;
-  geButton_UI* prev_level_b;
-  grText_Renderer* play_level_tr;
-  geButton_UI* play_level_b;
+  geEntity* next_level_e;
+  geEntity* prev_level_e;
+  geEntity* play_level_e;
 
-  grText_Renderer* locked_tr;
+  geEntity* locked_e;
 
   Level_Select_Camera_Controller* lscc;
 
@@ -47,10 +46,10 @@ struct Level_Select_Navigator {
 extern Level_Select_Navigator* active_lsn;
 
 Level_Select_Navigator* Create_Level_Select_Navigator(
-  geButton_UI* next_level_b, grRenderer* next_level_r,
-  geButton_UI* prev_level_b, grRenderer* prev_level_r,
-  geButton_UI* play_level_b, grText_Renderer* play_level_tr,
-  grText_Renderer* locked_tr,
+  geEntity* next_level_e,
+  geEntity* prev_level_e,
+  geEntity* play_level_e,
+  geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 );
 void Update_Level_Select_Navigator_Sub_Component(geComponent* component);

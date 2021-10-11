@@ -1,14 +1,11 @@
-#ifndef GR_Screen_H
-#define GR_Screen_H
+#ifndef GR_SCREEN_H
+#define GR_SCREEN_H
 
 #include <stdint.h>
 #include <stdbool.h>
 
 #include "grShader.h"
 #include "grTexture.h"
-
-// FORWARD HEADER
-// typedef struct GLFWwindow GLFWwindow;
 
 typedef struct grScreen grScreen;
 typedef uint32_t grTest;

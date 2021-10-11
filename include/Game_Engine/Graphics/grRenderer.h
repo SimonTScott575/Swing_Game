@@ -18,6 +18,7 @@ typedef void (*grDestroy_Sub_Renderer_fn)(grRenderer* renderer);
 
 D_HEADER_LLIST(grRenderer*, grRenderer_ptr);
 
+typedef
 struct grRenderer {
 
   geComponent* _super;
@@ -36,7 +37,7 @@ struct grRenderer {
   grDestroy_Sub_Renderer_fn _destroy_sub;
   void* _sub;
 
-};
+} grRenderer;
 
 // ====================
 // Creation/Destruction

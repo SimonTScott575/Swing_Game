@@ -25,24 +25,16 @@ struct geWindow {
   int _X_pixels;
   int _Y_pixels;
 
-  grScreen* _front_screen;
-  grScreen* _back_screen;
-
   dLList(geCursor_Position_fn)* cursor_position_fns; // NOT IMPLEMENTED
 
 } geWindow;
 
 geWindow* geCreate_Window(int width, int height, char* name);
-//!!! destroy
-
-void geWindow_Resize_Callback(geWindow_ID window_ID, int width, int height); //TEMP, shouldn't be public
+void geDestroy_Window(geWindow* window);
 
 geWindow* geGet_Active_Window();
-
 void geSet_Active_Window(geWindow* window);
 
 bool geWindow_Should_Close(geWindow* window);
-
-void geSwap_Screens(geWindow* window);
 
 #endif

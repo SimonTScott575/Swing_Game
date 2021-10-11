@@ -6,6 +6,7 @@ geScene* level_1;
 geScene* level_2;
 geScene* level_3;
 geScene* level_4;
+geScene* level_5;
 
 geScene* level_order[LEVELS_COUNT] = {0};
 int focused_level_num = 0;
@@ -14,10 +15,12 @@ float par_times[LEVELS_COUNT] = {
   30,
   20,
   40,
+  30,
   30
 };
 
 float best_times[LEVELS_COUNT] = {
+  -1,
   -1,
   -1,
   -1,
@@ -28,10 +31,9 @@ char* level_names[LEVELS_COUNT] = {
   "LEVEL 1",
   "LEVEL 2",
   "LEVEL 3",
-  "LEVEL 4"
+  "LEVEL 4",
+  "LEVEL 5"
 };
-
-char* level_name_TEST = "LEVEL 1";
 
 void Init_Scenes() {
 

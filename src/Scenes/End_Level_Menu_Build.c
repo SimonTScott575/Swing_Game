@@ -16,11 +16,11 @@ void Load_Entities_End_Level_Menu_Build(Portal_Catcher* pc, Timer_Clock* clock, 
 
   build->m_uim = Create_UI_Manager(
     pc, clock, player_controller,
-    build->cd_menu_text->text,      build->cd_menu_text->text_r,
-    build->back_b->button_ui,       build->back_b->ui_r->_super,
-    build->restart_b->button_ui,    build->restart_b->ui_r->_super,
-    build->next_level_b->button_ui, build->next_level_b->ui_r->_super,
-    build->back_mt->text_r, build->restart_mt->text_r, build->next_level_mt->text_r
+    build->cd_menu_text->text_r,
+
+    (geEntity*[4]){build->back_b->_super, build->restart_b->_super, build->back_mt->_super, build->restart_mt->_super},
+    (geEntity*[2]){build->next_level_b->_super, build->next_level_mt->_super}
+
   );
 
 }

@@ -3,9 +3,12 @@
 #include "../Scenes.h"
 
 #include "../Scenes/Level_1_Surfaces_Build.h"
-#include "../Scenes/Level_2_Basic_Build.h"
-#include "../Scenes/Level_3_Basic_Build.h"
-#include "../Scenes/Level_4_Basic_Build.h"
+
+#include "../Scenes/Level_Builder.h"
+#include "../Scenes/Level_2.h"
+#include "../Scenes/Level_3.h"
+#include "../Scenes/Level_4.h"
+#include "../Scenes/Level_5.h"
 
 #include "../Entities/UI_Camera.h"
 #include "../Entities/Menu_Button.h"
@@ -20,26 +23,28 @@
 
 void Load_Level_Select_Menu(geScene* scene) {
 
-  Level_1_Surfaces_Build level_1_surfaces_build = Level_1_Surfaces_Build_init(0);
-  Level_2_Basic_Build level_2_basic_build = Level_2_Basic_Build_init(0);
-  Level_3_Basic_Build level_3_basic_build = Level_3_Basic_Build_init(0);
-  Level_4_Basic_Build level_4_basic_build = Level_4_Basic_Build_init(0);
+  Level_1_Builder l1_builder = Level_1_Builder_init(&l1_builder);
+  l1_builder._super.as_scene = false;
+  Level_2_Builder l2_builder = Level_2_Builder_init(&l2_builder);
+  l2_builder._super.as_scene = false;
+  Level_3_Builder l3_builder = Level_3_Builder_init(&l3_builder);
+  l3_builder._super.as_scene = false;
+  Level_4_Builder l4_builder = Level_4_Builder_init(&l4_builder);
+  l4_builder._super.as_scene = false;
+  Level_5_Builder l5_builder = Level_5_Builder_init(&l5_builder);
+  l5_builder._super.as_scene = false;
 
   // ---
   // ECS
   // ---
 
-  Load_Entity_Player_Level_1_Surfaces_Build(L1_MENU_POS, &level_1_surfaces_build);
-  Load_Entity_Player_Level_2_Basic_Build(&level_2_basic_build);
-  Load_Entity_Player_Level_3_Basic_Build(&level_3_basic_build);
-  Load_Entity_Player_Level_4_Basic_Build(&level_4_basic_build);
-
   Level_Select_Camera* lsc = Create_Level_Select_Camera(40);
 
-  Load_Entities_Level_1_Surfaces_Build(L1_MENU_POS, lsc->camera2D->frame, NULL, &level_1_surfaces_build);
-  Load_Entities_Level_2_Basic_Build(L2_MENU_POS, lsc->camera2D->frame, &level_2_basic_build);
-  Load_Entities_Level_3_Basic_Build(L3_MENU_POS, lsc->camera2D->frame, &level_3_basic_build);
-  Load_Entities_Level_4_Basic_Build(L4_MENU_POS, lsc->camera2D->frame, &level_4_basic_build);
+  Build_Level_Basics_Load(L1_MENU_POS, &l1_builder._super);
+  Build_Level_Basics_Load(L2_MENU_POS, &l2_builder._super);
+  Build_Level_Basics_Load(L3_MENU_POS, &l3_builder._super);
+  Build_Level_Basics_Load(L4_MENU_POS, &l4_builder._super);
+  Build_Level_Basics_Load(L5_MENU_POS, &l5_builder._super);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
 
@@ -76,10 +81,10 @@ void Load_Level_Select_Menu(geScene* scene) {
   locked_text->text_r->text->alignment = GR_ALIGN_CENTRE;
 
   Level_Selector* level_selector = Create_Level_Selector(
-    next_button->button_ui, next_button->ui_r->_super,
-    prev_button->button_ui, prev_button->ui_r->_super,
-    play_level_button->button_ui, play_level_text->text_r,
-    locked_text->text_r,
+    next_button->button_ui->_super._super->_entity,
+    prev_button->button_ui->_super._super->_entity,
+    play_level_button->button_ui->_super._super->_entity,
+    locked_text->text_r->_super->_super->_entity,
     lsc->lscc
   );
 
@@ -91,10 +96,11 @@ void Load_Level_Select_Menu(geScene* scene) {
   // Set
   // ---
 
-  Set_Level_1_Surfaces_Build(lsc->camera2D, rs, NULL, &level_1_surfaces_build);
-  Set_Level_2_Basic_Build(lsc->camera2D, rs, NULL, &level_2_basic_build);
-  Set_Level_3_Basic_Build(lsc->camera2D, rs, NULL, &level_3_basic_build);
-  Set_Level_4_Basic_Build(lsc->camera2D, rs, NULL, &level_4_basic_build);
+  Build_Level_Basics_Set(rs, &l1_builder._super);
+  Build_Level_Basics_Set(rs, &l2_builder._super);
+  Build_Level_Basics_Set(rs, &l3_builder._super);
+  Build_Level_Basics_Set(rs, &l4_builder._super);
+  Build_Level_Basics_Set(rs, &l5_builder._super);
 
   lsc->lscc->rs = rs;
 
@@ -121,10 +127,11 @@ void Load_Level_Select_Menu(geScene* scene) {
   // Add
   // ---
 
-  Add_Entities_Level_1_Surfaces_Build(scene, &level_1_surfaces_build);
-  Add_Entities_Level_2_Basic_Build(scene, &level_2_basic_build);
-  Add_Entities_Level_3_Basic_Build(scene, &level_3_basic_build);
-  Add_Entities_Level_4_Basic_Build(scene, &level_4_basic_build);
+  Build_Level_Basics_Add(scene, &l1_builder._super);
+  Build_Level_Basics_Add(scene, &l2_builder._super);
+  Build_Level_Basics_Add(scene, &l3_builder._super);
+  Build_Level_Basics_Add(scene, &l4_builder._super);
+  Build_Level_Basics_Add(scene, &l5_builder._super);
 
   geAdd_Entity(lsc->_super, scene);
 

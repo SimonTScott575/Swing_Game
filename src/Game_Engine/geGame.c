@@ -11,6 +11,8 @@
 
 static geGame* geActive_Game = NULL;
 
+static void geWindow_Resize_Callback(geWindow_ID window_ID, int width, int height);
+
 // ====================
 // Creation/Destruction
 // ====================
@@ -35,6 +37,49 @@ geGame* geCreate_Game(geWindow* window) {
 
     .window = window
   };
+  game->_front_screen = malloc(sizeof(grScreen));
+  game->_back_screen = malloc(sizeof(grScreen));
+  *game->_front_screen = *game->_back_screen = (grScreen){
+    ._colour_texture = NULL,
+
+    ._clear_colour = { 0, 0, 0, 1 },
+    ._clear_depth = 1,
+    ._clear_stencil = 0,
+
+    ._colour_mask = 15,
+    ._depth_mask = 1,
+    ._stencil_mask = 0xFFFFFFFF,
+
+    ._stencil_test      = GL_ALWAYS,
+    ._stencil_ref       = 0,
+    ._stencil_test_mask = 0xFFFFFFFF,
+    ._sFAIL       = GL_KEEP,
+    ._sPASS_dFAIL = GL_KEEP,
+    ._sPASS_dPASS = GL_KEEP,
+
+    ._X_pixels = -1,
+    ._Y_pixels = -1,
+
+    ._OpenGL_ENABLED_FLAG = GL_COLOR_BUFFER_BIT,
+    ._OpenGL_ID = 0
+  };
+
+  game->_front_screen->_colour_texture = NULL;
+  game->_front_screen->_stencil_test = grTests.ALWAYS;
+  game->_front_screen->_sFAIL       = grActions.KEEP;
+  game->_front_screen->_sPASS_dFAIL = grActions.KEEP;
+  game->_front_screen->_sPASS_dPASS = grActions.KEEP;
+  game->_front_screen->_X_pixels = window->_X_pixels;
+  game->_front_screen->_Y_pixels = window->_Y_pixels;
+  game->_back_screen->_colour_texture = NULL;
+  game->_back_screen->_stencil_test = grTests.ALWAYS;
+  game->_back_screen->_sFAIL       = grActions.KEEP;
+  game->_back_screen->_sPASS_dFAIL = grActions.KEEP;
+  game->_back_screen->_sPASS_dPASS = grActions.KEEP;
+  game->_back_screen->_X_pixels = window->_X_pixels;
+  game->_back_screen->_Y_pixels = window->_Y_pixels;
+
+  glfwSetFramebufferSizeCallback(window->_window_ID, &geWindow_Resize_Callback);
 
   glfwSetKeyCallback(window->_window_ID, geKey_States_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
   glfwSetMouseButtonCallback(window->_window_ID, geMouse_Button_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
@@ -61,7 +106,9 @@ void geDestroy_Game(geGame* game) {
 
 void geSet_Active_Game(geGame* game) {
 
+  geSet_Active_Window(game->window);
   geSet_Active_Input_States(&game->input_states);
+  grSet_Active_Screen(game->_back_screen); //... to change opengl context
 
   geActive_Game = game;
 
@@ -109,9 +156,10 @@ void gePlay_Game(geGame* game) {
 
     if ( game->delta_time > 0.02 ) {
 
+      grSet_Active_Screen(game->_back_screen); //?
       geUpdate_Scene(game->_active_scene);
 
-      geSwap_Screens(game->window);
+      geSwap_Screens(game);
       geProcess_Events();
 
       game->time += game->delta_time;
@@ -203,5 +251,29 @@ geScene* geGet_Next_Scene(geGame* game) {
 void geSet_Next_Scene(geScene* scene, geGame* game) {
 
   game->_next_scene = scene;
+
+}
+
+// ===
+
+static void geWindow_Resize_Callback(geWindow_ID window_ID, int width, int height) { //??? or with application
+    glViewport(0, 0, width, height);
+
+    geWindow* window = geGet_Active_Window(); //??? IS THIS FOR SURE THE ACTIVE WINDOW when multiple windows ? should actually search through array for matching id
+    window->_X_pixels = width;
+    window->_Y_pixels = height;
+    geGet_Active_Game()->_back_screen->_X_pixels = width; //? again, active window or ???
+    geGet_Active_Game()->_back_screen->_Y_pixels = height;
+    geGet_Active_Game()->_front_screen->_X_pixels = width;
+    geGet_Active_Game()->_front_screen->_Y_pixels = height;
+}
+
+void geSwap_Screens(geGame* game) {
+
+  grScreen* screen_A = game->_back_screen;
+  game->_back_screen = game->_front_screen;
+  game->_front_screen = screen_A;
+
+  glfwSwapBuffers(game->window->_window_ID);
 
 }

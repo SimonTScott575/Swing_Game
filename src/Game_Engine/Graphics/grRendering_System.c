@@ -1,5 +1,5 @@
 //TODO: pass back/front screen to system
-//TODO: swap screens NOT in "Render" fn but instead an "update system" fn (should make systems like other "classes")  
+//TODO: swap screens NOT in "Render" fn but instead an "update system" fn (should make systems like other "classes")
 
 #include <Game_Engine/Graphics/grRendering_System.h>
 
@@ -10,7 +10,9 @@
 
 #include <Game_Engine/geWindow.h>
 
-//
+// ======
+// static
+// ======
 
 static void grRender_Rendering_System2D_void(void* arg) {
   grRender_Rendering_System2D(arg);
@@ -51,9 +53,9 @@ void grDestroy_Rendering_System2D(grRendering_System2D* rs) {
 
 void grRender_Rendering_System2D(grRendering_System2D* rs) {
 
-  geWindow* window = geGet_Active_Window();
+  grScreen* screen = grGet_Active_Screen();
 
-  rs->camera->_prepare(rs->camera, window->_back_screen); // grPrepare_Camera(rs->camera, window->_back_screen);
+  rs->camera->_prepare(rs->camera, screen); // grPrepare_Camera(rs->camera, window->_back_screen);
 
   dNode_LL(grRenderer_ptr)* current = rs->_renderers->start;
 
@@ -72,7 +74,7 @@ void grRender_Rendering_System2D(grRendering_System2D* rs) {
   }
 
   if (rs->post_process != NULL) {
-    rs->post_process(window->_back_screen);
+    rs->post_process(screen);
   }
 
 }
