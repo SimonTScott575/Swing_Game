@@ -32,18 +32,6 @@ char* level_names[LEVELS_COUNT] = {
 
 Level_Spec g_level_specs[LEVELS_COUNT] = {0};
 
-void Init_Scenes() {
-
-  Import_Best_Times();
-
-}
-
-void Terminate_Scenes() {
-
-  Deport_Best_Times();
-
-}
-
 void Accumulate_Specs() {
 
   g_level_specs[0].offset_x = -9;

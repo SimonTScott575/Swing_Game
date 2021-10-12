@@ -1,7 +1,5 @@
 #include "Level_Select_Navigator.h"
 
-#include "../Level_Spec.h"
-
 static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
 
 Level_Select_Navigator* active_lsn = NULL;
@@ -10,6 +8,7 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   geEntity* next_level_e,
   geEntity* prev_level_e,
   geEntity* play_level_e,
+  geEntity* play_level_text_e,
   geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 ) {
@@ -23,6 +22,7 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   lsn->next_level_e = next_level_e;
   lsn->prev_level_e = prev_level_e;
   lsn->play_level_e = play_level_e;
+  lsn->play_level_text_e = play_level_text_e;
 
   lsn->locked_e = locked_e;
 
@@ -51,17 +51,17 @@ void Update_Level_Select_Navigator_Sub_Component(geComponent* component) {
     if (   best_times[focused_level_num-1] > par_times[focused_level_num-1]
         || best_times[focused_level_num-1] < 0 ) {
       lsn->play_level_e->is_active = false;
-      lsn->play_level_e->is_active = false;
+      lsn->play_level_text_e->is_active = false;
       lsn->locked_e->is_active = true;
     } else {
       lsn->play_level_e->is_active = true;
-      lsn->play_level_e->is_active = true;
+      lsn->play_level_text_e->is_active = true;
       lsn->locked_e->is_active = false;
     }
 
   } else {
     lsn->play_level_e->is_active = true;
-    lsn->play_level_e->is_active = true;
+    lsn->play_level_text_e->is_active = true;
     lsn->locked_e->is_active = false;
   }
 

@@ -19,6 +19,7 @@ Level_Selector* Create_Level_Selector(
   geEntity* next_level_e,
   geEntity* prev_level_e,
   geEntity* play_level_e,
+  geEntity* play_level_text_e,
   geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 );

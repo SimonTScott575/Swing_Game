@@ -33,9 +33,6 @@ extern char* level_names[LEVELS_COUNT];
 
 extern char* level_name_TEST;
 
-void Init_Scenes();
-void Terminate_Scenes();
-
 void Accumulate_Specs();
 
 void Deport_Best_Times();

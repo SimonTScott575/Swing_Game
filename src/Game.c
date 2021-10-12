@@ -31,7 +31,7 @@ int main() {
 
   geGame* game = geCreate_Game(window);
 
-  Init_Scenes();
+  Import_Best_Times();
 
   g_main_menu = geCreate_Scene(Load_Main_Menu);
   geAdd_Scene(g_main_menu, game);
@@ -69,9 +69,10 @@ int main() {
   // Clean Up
   // ########
 
-  //!!! destroy scenes from above !
-
-  Terminate_Scenes();
+  for (int i = 0; i < LEVELS_COUNT; i++) {
+    geDestroy_Scene(level_order[i]);
+  }
+  Deport_Best_Times();
 
   geDestroy_Game(game);
   geDestroy_Window(window);

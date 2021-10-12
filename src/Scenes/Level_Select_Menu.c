@@ -1,7 +1,6 @@
 #include "Level_Select_Menu.h"
 
 #include "../Scenes.h"
-#include "../Level_Spec.h"
 
 #include "../Entities/UI_Camera.h"
 #include "../Entities/Menu_Button.h"
@@ -79,9 +78,10 @@ void Load_Level_Select_Menu(geScene* scene) {
   locked_text->text_r->text->alignment = GR_ALIGN_CENTRE;
 
   Level_Selector* level_selector = Create_Level_Selector(
-    next_button->button_ui->_super._super->_entity,
-    prev_button->button_ui->_super._super->_entity,
-    play_level_button->button_ui->_super._super->_entity,
+    next_button->_super,
+    prev_button->_super,
+    play_level_button->_super,
+    play_level_text->_super,
     locked_text->text_r->_super->_super->_entity,
     lsc->lscc
   );

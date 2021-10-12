@@ -21,6 +21,7 @@ struct Level_Select_Navigator {
   geEntity* next_level_e;
   geEntity* prev_level_e;
   geEntity* play_level_e;
+  geEntity* play_level_text_e;
 
   geEntity* locked_e;
 
@@ -34,6 +35,7 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   geEntity* next_level_e,
   geEntity* prev_level_e,
   geEntity* play_level_e,
+  geEntity* play_level_text_e,
   geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 );
