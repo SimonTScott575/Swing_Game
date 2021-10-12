@@ -1,11 +1,12 @@
 #include "Level_Builder.h"
 
+#include <string.h>
+
 #include "../Glow.h"
 
 #include "../Scenes/End_Level_Menu_Build.h"
 #include "../Scenes/Level_UI_Build.h"
 
-#include "../Entities/Camera.h"
 #include "../Entities/UI_Camera.h"
 #include "../Entities/UI_Manager.h"
 #include "../Entities/Menu_Button.h"
@@ -132,11 +133,6 @@ void Build_Level(float x_offset, Level_Builder* builder, geScene* scene) {
 
     //
     camera->cc->rs = rs;
-    camera->camera2D->background_colour[0]
-      = camera->camera2D->background_colour[2]
-      = camera->camera2D->background_colour[3]
-      = 1;
-    camera->camera2D->background_colour[1] = 0;
 
     rb_sys->gravity = (mVector2f){{0,-5}};
 
@@ -183,6 +179,8 @@ void Build_Level(float x_offset, Level_Builder* builder, geScene* scene) {
 
   }
 
+  
+
 }
 
 void Build_Level_Basics_Load(float x_offset, Level_Builder* builder) {
@@ -191,7 +189,9 @@ void Build_Level_Basics_Load(float x_offset, Level_Builder* builder) {
 
   builder->player->frame->position.i[0] += x_offset;
   builder->portal->frame->position.i[0] += x_offset;
-  builder->bg->frame->position.i[0] += x_offset;
+  if (builder->bg != NULL) {
+    builder->bg->frame->position.i[0] += x_offset;
+  }
   for (int i = 0; i < builder->gem_count; i++) {
     builder->gem_arr[i]->frame->position.i[0] += x_offset;
   }
@@ -206,7 +206,13 @@ void Build_Level_Basics_Load(float x_offset, Level_Builder* builder) {
 
 void Build_Level_Basics_Set(grRendering_System2D* rs, Level_Builder* builder) {
 
-  dAppend_LL(grRenderer_ptr)(builder->bg->renderer, rs->_renderers);
+  // memcpy(rs->camera->background_colour,
+  //        builder->bg_colour,
+  //        4*sizeof(float));
+
+  if (builder->bg != NULL) {
+    dAppend_LL(grRenderer_ptr)(builder->bg->renderer, rs->_renderers);
+  }
 
   dAppend_LL(grRenderer_ptr)(builder->portal->renderer, rs->_renderers);
   dAppend_LL(grRenderer_ptr)(builder->player->renderer, rs->_renderers);
@@ -237,7 +243,9 @@ void Build_Level_Basics_Add(geScene* scene, Level_Builder* builder) {
   for (int i = 0; i < builder->gem_count; i++) {
     geAdd_Entity(builder->gem_arr[i]->_super,  scene);
   }
-  geAdd_Entity(builder->bg->_super, scene);
+  if (builder->bg != NULL) {
+    geAdd_Entity(builder->bg->_super, scene);
+  }
 
   if (builder->as_scene && builder->instruction_1 != NULL && builder->instruction_2 != NULL) {
     geAdd_Entity(builder->instruction_1->_super, scene);

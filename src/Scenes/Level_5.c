@@ -13,6 +13,16 @@
 
 #include "../Components/Gem_Controller.h"
 
+void Init_Level_5_Spec() {
+  g_level_specs[4] =   (Level_Spec){
+    .menu_camera_x_length = L5_TOTAL + 50,
+    .menu_camera_x_pos = 0,
+    .menu_camera_y_pos = 13,
+
+    .max_x_length = L5_BUFFER*2 + L5_TOTAL
+  };
+}
+
 Level_5_Builder Level_5_Builder_init(Level_5_Builder* self) {
 
   Level_5_Builder l5_builder = {
@@ -32,29 +42,28 @@ void Build_Level_5_Entities(Level_Builder* builder) {
 
   builder->player = Create_Player();
 
-  builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,(L5_GEM_COUNT+1)*L5_GEM_SEP}}, 1);
 
-  #if L5_HS2_COUNT != L5_GEM_COUNT
-   #error LEVEL 5 GEM AND HS COUNT NOT EQUAL
-  #endif
+  for (int i = 0; i < L5_HS_COUNT; i++) {
 
-  for (int i = 0; i < L5_HS2_COUNT; i++) {
-
-    l5_builder->hs2_arr[i] = Create_Hook_Surface2(
-      (mVector2f){{ 0, 3 }},
+    l5_builder->hs_arr[i] = Create_Hook_Surface(
+      (mVector2f){{ ( 1 - 2*(i%2) )*3, (i+0.5)*L5_GEM_SEP }},
       (mVector2f){{ 1, 1 }}
     );
 
-    l5_builder->gem_arr[i] = Create_Gem((mVector2f){{3, 3}});
-    // l5_builder->gem_controllers[i] = l5_builder->gem_arr[i]->gc;
+  }
+
+  for (int i = 0; i < L5_GEM_COUNT; i++) {
+
+    l5_builder->gem_arr[i] = Create_Gem((mVector2f){{0, L5_GEM_SEP*(i+1)}});
 
   }
-  builder->hs2_arr = l5_builder->hs2_arr;
+  builder->hs_arr = l5_builder->hs_arr;
   builder->gem_arr = l5_builder->gem_arr;
-  builder->hs2_count = L5_HS2_COUNT;
+  builder->hs_count = L5_HS_COUNT;
   builder->gem_count = L5_GEM_COUNT;
 
-  builder->bg = Create_Background(L5_WIDTH,L5_HEIGHT);
+  // builder->bg = Create_Background(L5_WIDTH,L5_HEIGHT);
 
 }
 

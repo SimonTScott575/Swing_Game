@@ -1,19 +1,6 @@
 #include "Level_Select_Navigator.h"
 
-static float level_target_x_pos[LEVELS_COUNT] = {
-  0,
-  L2_MENU_POS,
-  L3_MENU_POS,
-  L4_MENU_POS,
-  L5_MENU_POS
-};
-static float level_target_x_length[LEVELS_COUNT] = {
-  L1_MAX_X_LENGTH + 2,
-  L2_MAX_X_LENGTH + 10,
-  L3_MAX_X_LENGTH,
-  L4_MAX_X_LENGTH,
-  L5_MAX_X_LENGTH
-};
+#include "../Level_Spec.h"
 
 static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
 
@@ -98,7 +85,7 @@ void On_Click_Play_Button(geUI_Element* uie) { //? component ?
 
   focused_level_num = 0;
 
-  geSet_Next_Scene(level_select_menu, active_game);
+  geSet_Next_Scene(g_level_select_menu, active_game);
   geEnd_Scene(geGet_Active_Game());
 
 }
@@ -115,7 +102,7 @@ void On_Click_Main_Menu(geUI_Element* uie) {
 
   focused_level_num = 0;
 
-  geSet_Next_Scene(main_menu, active_game);
+  geSet_Next_Scene(g_main_menu, active_game);
   geEnd_Scene(geGet_Active_Game());
 
 }
@@ -125,9 +112,6 @@ void On_Click_Next_Level(geUI_Element* uie) {
   if (focused_level_num < LEVELS_COUNT-1) {
     Set_Selected_Level(++focused_level_num, active_lsn);
   }
-
-  // active_lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
-  // active_lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
 
 }
 
@@ -164,7 +148,10 @@ static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn) {
     active_lsn->prev_level_e->is_active = true;
   }
 
-  active_lsn->lscc->target_position = (mVector2f){{level_target_x_pos[focused_level_num],0}};
-  active_lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
+  active_lsn->lscc->target_position = (mVector2f){{
+    g_level_specs[focused_level_num].menu_camera_x_pos,
+    g_level_specs[focused_level_num].menu_camera_y_pos
+  }};
+  active_lsn->lscc->x_length = g_level_specs[focused_level_num].menu_camera_x_length;
 
 }

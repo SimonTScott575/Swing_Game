@@ -1,12 +1,7 @@
 #include "Scenes.h"
 
-geScene* main_menu;
-geScene* level_select_menu;
-geScene* level_1;
-geScene* level_2;
-geScene* level_3;
-geScene* level_4;
-geScene* level_5;
+geScene* g_main_menu;
+geScene* g_level_select_menu;
 
 geScene* level_order[LEVELS_COUNT] = {0};
 int focused_level_num = 0;
@@ -16,7 +11,7 @@ float par_times[LEVELS_COUNT] = {
   20,
   40,
   30,
-  30
+  10
 };
 
 float best_times[LEVELS_COUNT] = {
@@ -35,6 +30,8 @@ char* level_names[LEVELS_COUNT] = {
   "LEVEL 5"
 };
 
+Level_Spec g_level_specs[LEVELS_COUNT] = {0};
+
 void Init_Scenes() {
 
   Import_Best_Times();
@@ -44,6 +41,16 @@ void Init_Scenes() {
 void Terminate_Scenes() {
 
   Deport_Best_Times();
+
+}
+
+void Accumulate_Specs() {
+
+  g_level_specs[0].offset_x = -9;
+  for (int i = 1; i < LEVELS_COUNT; i++) {
+    g_level_specs[i].offset_x = g_level_specs[i-1].offset_x + g_level_specs[i-1].max_x_length/2 + g_level_specs[i].max_x_length/2;
+    g_level_specs[i].menu_camera_x_pos = g_level_specs[i].offset_x;
+  }
 
 }
 

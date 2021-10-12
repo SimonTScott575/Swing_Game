@@ -3,6 +3,7 @@
 
 #include <Game_Engine/Game_Engine.h>
 
+#include "../Entities/Camera.h"
 #include "../Entities/Player.h"
 #include "../Entities/Rope.h"
 #include "../Entities/Hook_Surface.h"
@@ -37,6 +38,7 @@ struct Level_Builder {
 
   bool as_scene;
 
+  // MUST SET BY USER
   Player* player;
   Rope* rope;
   Portal* portal;
@@ -46,11 +48,14 @@ struct Level_Builder {
   int hs_count;
   Hook_Surface2** hs2_arr; // default : NULL
   int hs2_count;
+
+  // USER OPTIONAL
   Background* bg;
 
   Menu_Text* instruction_1;
   Menu_Text* instruction_2;
 
+  // SET BY SUB TYPE
   Build_Level_fn build_level_entities;
 
   void* _sub;

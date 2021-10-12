@@ -33,32 +33,29 @@ int main() {
 
   Init_Scenes();
 
-  main_menu = geCreate_Scene(Load_Main_Menu);
-  geAdd_Scene(main_menu, game);
+  g_main_menu = geCreate_Scene(Load_Main_Menu);
+  geAdd_Scene(g_main_menu, game);
 
-  level_select_menu = geCreate_Scene(Load_Level_Select_Menu);
-  geAdd_Scene(level_select_menu, game);
+  g_level_select_menu = geCreate_Scene(Load_Level_Select_Menu);
+  geAdd_Scene(g_level_select_menu, game);
 
-  level_1 = geCreate_Scene(Load_Level_1);
-  geAdd_Scene(level_1, game);
+  Init_Level_1_Spec();
+  Init_Level_2_Spec();
+  Init_Level_3_Spec();
+  Init_Level_4_Spec();
+  Init_Level_5_Spec();
+  Accumulate_Specs();
 
-  level_2 = geCreate_Scene(Load_Level_2);
-  geAdd_Scene(level_2, game);
-
-  level_3 = geCreate_Scene(Load_Level_3);
-  geAdd_Scene(level_3, game);
-
-  level_4 = geCreate_Scene(Load_Level_4);
-  geAdd_Scene(level_4, game);
-
-  level_5 = geCreate_Scene(Load_Level_5);
-  geAdd_Scene(level_5, game);
-
-  level_order[0] = level_1;
-  level_order[1] = level_2;
-  level_order[2] = level_3;
-  level_order[3] = level_4;
-  level_order[4] = level_5;
+  level_order[0] = geCreate_Scene(Load_Level_1);
+  level_order[1] = geCreate_Scene(Load_Level_2);
+  level_order[2] = geCreate_Scene(Load_Level_3);
+  level_order[3] = geCreate_Scene(Load_Level_4);
+  level_order[4] = geCreate_Scene(Load_Level_5);
+  geAdd_Scene(level_order[0], game);
+  geAdd_Scene(level_order[1], game);
+  geAdd_Scene(level_order[2], game);
+  geAdd_Scene(level_order[3], game);
+  geAdd_Scene(level_order[4], game);
 
   Init_Glow_PP(1200,1200);
 

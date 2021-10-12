@@ -58,8 +58,18 @@ void Build_Level_4_Entities(Level_Builder* builder) {
   builder->hs2_count = L4_HS2_COUNT;
   builder->gem_count = L4_GEM_COUNT;
 
-  builder->bg = Create_Background(L4_WIDTH,L4_HEIGHT);
+  // builder->bg = Create_Background(L4_WIDTH,L4_HEIGHT);
 
+}
+
+void Init_Level_4_Spec() {
+  g_level_specs[3] = (Level_Spec){
+    .menu_camera_x_length = L4_TOTAL + 15,
+    .menu_camera_x_pos = 0,
+    .menu_camera_y_pos = 0,
+
+    .max_x_length = L4_BUFFER*2 + L4_TOTAL
+  };
 }
 
 void Load_Level_4(geScene* scene) {

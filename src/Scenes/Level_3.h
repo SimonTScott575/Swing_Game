@@ -3,6 +3,8 @@
 
 #include <Game_Engine/Game_Engine.h>
 
+#include "../Scenes.h"
+
 #include "Level_Builder.h"
 
 #define L3_PILLAR1_COLS 4 // MUST be even
@@ -16,7 +18,7 @@
 #define L3_D 10.0f
 #define L3_E 10.0f
 #define L3_F 10.0f
-#define L3_BUFFER 10.0f
+#define L3_BUFFER 1000.0f
 #define L3_HEIGHT (2*L3_D + 2*L3_E + L3_F)
 #define L3_WIDTH ( 2 * L3_A * L3_PILLAR1_COLS )
 #define L3_TOTAL L3_WIDTH
@@ -46,6 +48,7 @@ Level_3_Builder Level_3_Builder_init(Level_3_Builder* self);
 void Build_Level_3_Entities(Level_Builder* builder);
 void Load_Level_3(geScene* scene);
 
+void Init_Level_3_Spec();
 void Load_Level_3(geScene* scene);
 
 #endif

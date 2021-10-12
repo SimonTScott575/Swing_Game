@@ -1,14 +1,27 @@
+#ifndef SCENES_H
+#define SCENES_H
+
 #include <Game_Engine/Game_Engine.h>
 
 #define LEVELS_COUNT 5
 
-extern geScene* main_menu;
-extern geScene* level_select_menu;
-extern geScene* level_1;
-extern geScene* level_2;
-extern geScene* level_3;
-extern geScene* level_4;
-extern geScene* level_5;
+typedef
+struct Level_Spec {
+
+  float menu_camera_x_length;
+  float menu_camera_x_pos;
+  float menu_camera_y_pos;
+
+  float offset_x;
+
+  float max_x_length;
+
+} Level_Spec;
+
+extern Level_Spec g_level_specs[LEVELS_COUNT];
+
+extern geScene* g_main_menu;
+extern geScene* g_level_select_menu;
 
 extern geScene* level_order[LEVELS_COUNT];
 extern int focused_level_num;
@@ -23,5 +36,9 @@ extern char* level_name_TEST;
 void Init_Scenes();
 void Terminate_Scenes();
 
+void Accumulate_Specs();
+
 void Deport_Best_Times();
 void Import_Best_Times();
+
+#endif

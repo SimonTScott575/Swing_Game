@@ -3,6 +3,8 @@
 
 #include <Game_Engine/Game_Engine.h>
 
+#include "../Scenes.h"
+
 #include "Level_Builder.h"
 
 #include "../Entities/Player.h"
@@ -15,7 +17,7 @@
 #define L2_A 10.0f
 #define L2_B 10.0f
 #define L2_C 5.0f
-#define L2_BUFFER 30.0f
+#define L2_BUFFER 1000.0f
 #define L2_HW (L2_A+L2_B+L2_C)
 #define L2_TOTAL (2*L2_HW)
 
@@ -45,6 +47,7 @@ Level_2_Builder Level_2_Builder_init(Level_2_Builder* self);
 void Build_Level_2_Entities(Level_Builder* builder);
 void Load_Level_2(geScene* scene);
 
+void Init_Level_2_Spec();
 void Load_Level_2(geScene* scene);
 
 #endif

@@ -28,17 +28,6 @@ Camera_Controller* Create_Camera_Controller(
 
 }
 
-// void Set_Gem_Positions(mVector2f* gem_positions, int gems_count, Camera_Controller* cc) {
-//
-//   cc->gems_count = gems_count;
-//   cc->gem_positions = malloc(gems_count*sizeof(mVector2f));
-//
-//   for (int i = 0; i < gems_count; i++) {
-//     cc->gem_positions[i] = gem_positions[i];
-//   }
-//
-// }
-
 void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen) {
 
   Camera_Controller* cc = camera2D->_sub;

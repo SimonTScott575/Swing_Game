@@ -1,14 +1,7 @@
 #include "Level_Select_Menu.h"
 
 #include "../Scenes.h"
-
-#include "../Scenes/Level_1_Surfaces_Build.h"
-
-#include "../Scenes/Level_Builder.h"
-#include "../Scenes/Level_2.h"
-#include "../Scenes/Level_3.h"
-#include "../Scenes/Level_4.h"
-#include "../Scenes/Level_5.h"
+#include "../Level_Spec.h"
 
 #include "../Entities/UI_Camera.h"
 #include "../Entities/Menu_Button.h"
@@ -40,11 +33,16 @@ void Load_Level_Select_Menu(geScene* scene) {
 
   Level_Select_Camera* lsc = Create_Level_Select_Camera(40);
 
-  Build_Level_Basics_Load(L1_MENU_POS, &l1_builder._super);
-  Build_Level_Basics_Load(L2_MENU_POS, &l2_builder._super);
-  Build_Level_Basics_Load(L3_MENU_POS, &l3_builder._super);
-  Build_Level_Basics_Load(L4_MENU_POS, &l4_builder._super);
-  Build_Level_Basics_Load(L5_MENU_POS, &l5_builder._super);
+  // int offsets[LEVELS_COUNT] = {-9};
+  // for (int i = 1; i < LEVELS_COUNT; i++) {
+  //   offsets[i] = offsets[i-1] + g_level_specs[i-1].max_x_length/2 + g_level_specs[i].max_x_length/2;
+  //   g_level_specs[i].menu_camera_x_pos = offsets[i];
+  // }
+  Build_Level_Basics_Load(g_level_specs[0].offset_x, &l1_builder._super);
+  Build_Level_Basics_Load(g_level_specs[1].offset_x, &l2_builder._super);
+  Build_Level_Basics_Load(g_level_specs[2].offset_x, &l3_builder._super);
+  Build_Level_Basics_Load(g_level_specs[3].offset_x, &l4_builder._super);
+  Build_Level_Basics_Load(g_level_specs[4].offset_x, &l5_builder._super);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
 

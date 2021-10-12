@@ -144,7 +144,7 @@ void On_Click_Back_Button(geUI_Element* uie) {
 
   geGame* active_game = geGet_Active_Game();
 
-  geSet_Next_Scene(level_select_menu, active_game);
+  geSet_Next_Scene(g_level_select_menu, active_game);
   geEnd_Scene(geGet_Active_Game());
 
 }
