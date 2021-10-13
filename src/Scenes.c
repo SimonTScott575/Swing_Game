@@ -11,10 +11,12 @@ float par_times[LEVELS_COUNT] = {
   20,
   40,
   30,
-  10
+  10,
+  30
 };
 
 float best_times[LEVELS_COUNT] = {
+  -1,
   -1,
   -1,
   -1,
@@ -27,7 +29,8 @@ char* level_names[LEVELS_COUNT] = {
   "LEVEL 2",
   "LEVEL 3",
   "LEVEL 4",
-  "LEVEL 5"
+  "LEVEL 5",
+  "LEVEL 6"
 };
 
 Level_Spec g_level_specs[LEVELS_COUNT] = {0};

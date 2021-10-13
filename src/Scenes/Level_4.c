@@ -4,7 +4,6 @@
 
 #include "../Scenes/End_Level_Menu_Build.h"
 #include "../Scenes/Level_UI_Build.h"
-// #include "../Scenes/Level_4_Basic_Build.h"
 
 #include "../Entities/Camera.h"
 #include "../Entities/UI_Camera.h"
@@ -35,22 +34,28 @@ void Build_Level_4_Entities(Level_Builder* builder) {
 
   builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
 
-  #if L4_HS2_COUNT != L4_GEM_COUNT
-    #error L4 HS2 AND GEM COUNT DONT MATCH
-  #endif
-
+  float prev_x_pos;
+  float prev_y_pos;
   for (int i = 0; i < L4_HS2_COUNT; i++) {
 
-    float r = L4_MIN_R + (L4_MAX_R - L4_MIN_R)/(i+1);
-    float x_pos = r*cos( M_PI*3/4.0f + M_PI/4 * i );
-    float y_pos = r*sin( M_PI*3/4.0f + M_PI/4 * i );
-    float s = L4_MIN_SCALE + (L4_MAX_SCALE - L4_MIN_SCALE)/(i+1);
+    float r = L4_MIN_R + (L4_MAX_R - L4_MIN_R)*i/(float)(L4_HS2_COUNT-1);
+    float x_pos = r*cos( M_PI*3/2.0f + M_PI/4 * i );
+    float y_pos = r*sin( M_PI*3/2.0f + M_PI/4 * i );
+    float s = L4_MIN_SCALE + (L4_MAX_SCALE - L4_MIN_SCALE)*i/(float)(L4_HS2_COUNT-1);
     l4_builder->hs2_arr[i] = Create_Hook_Surface2(
       (mVector2f){{ x_pos, y_pos }},
       (mVector2f){{ s, s }}
     );
 
-    l4_builder->gem_arr[i] = Create_Gem((mVector2f){{x_pos, y_pos + s/2 + 0.5}});
+    if (0 < i && i-1 < L4_GEM_COUNT) {
+      l4_builder->gem_arr[i-1] = Create_Gem((mVector2f){{
+        prev_x_pos + (x_pos-prev_x_pos)/2,
+        prev_y_pos + (y_pos-prev_y_pos)/2
+      }});
+    }
+
+    prev_x_pos = x_pos;
+    prev_y_pos = y_pos;
 
   }
   builder->hs2_arr = l4_builder->hs2_arr;

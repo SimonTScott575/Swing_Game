@@ -15,13 +15,13 @@
 #include "../Entities/Portal.h"
 #include "../Entities/Background.h"
 
-#define L4_HS2_COUNT 6
-#define L4_GEM_COUNT L4_HS2_COUNT
+#define L4_HS2_COUNT 8
+#define L4_GEM_COUNT (L4_HS2_COUNT-1)
 
-#define L4_MAX_R 30.0f
-#define L4_MIN_R 5.0f
-#define L4_MAX_SCALE 10.0f
-#define L4_MIN_SCALE 1.0f
+#define L4_MAX_R 20.0f
+#define L4_MIN_R 10.0f
+#define L4_MAX_SCALE 3.0f
+#define L4_MIN_SCALE 3.0f
 #define L4_TOTAL ( 2*( L4_MAX_SCALE/2 + L4_MAX_R ) )
 #define L4_BUFFER 1000.0f
 
