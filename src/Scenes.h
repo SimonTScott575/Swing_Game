@@ -3,7 +3,7 @@
 
 #include <Game_Engine/Game_Engine.h>
 
-#define LEVELS_COUNT 6
+#define LEVELS_COUNT 7
 
 typedef
 struct Level_Spec {
