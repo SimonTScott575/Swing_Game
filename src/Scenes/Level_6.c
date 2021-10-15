@@ -13,8 +13,8 @@
 
 #include "../Components/Gem_Controller.h"
 
-void Init_Level_6_Spec() {
-  g_level_specs[5] =   (Level_Spec){
+void Init_Level_6_Spec(int index) {
+  g_level_specs[index] =   (Level_Spec){
     .menu_camera_x_length = L6_TOTAL + 50,
     .menu_camera_x_pos = 0,
     .menu_camera_y_pos = 0,

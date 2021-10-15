@@ -76,8 +76,8 @@ void Build_Level_1_Entities(Level_Builder* builder) {
 
 }
 
-void Init_Level_1_Spec() {
-  g_level_specs[0] = (Level_Spec){
+void Init_Level_1_Spec(int index) {
+  g_level_specs[index] = (Level_Spec){
     .menu_camera_x_length = ( L1_A*2 + 2*L1_B + L1_C ) + 10, // distance level select camera 0 to edge,,
     .menu_camera_x_pos = 0,
     .menu_camera_y_pos = 0,

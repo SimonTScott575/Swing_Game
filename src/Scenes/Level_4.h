@@ -44,7 +44,7 @@ struct Level_4_Builder {
 Level_4_Builder Level_4_Builder_init(Level_4_Builder* self);
 void Build_Level_4_Entities(Level_Builder* builder);
 
-void Init_Level_4_Spec();
+void Init_Level_4_Spec(int index);
 void Load_Level_4(geScene* scene);
 
 #endif

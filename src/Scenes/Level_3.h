@@ -48,7 +48,7 @@ Level_3_Builder Level_3_Builder_init(Level_3_Builder* self);
 void Build_Level_3_Entities(Level_Builder* builder);
 void Load_Level_3(geScene* scene);
 
-void Init_Level_3_Spec();
+void Init_Level_3_Spec(int index);
 void Load_Level_3(geScene* scene);
 
 #endif

@@ -28,7 +28,7 @@ struct Level_5_Builder {
 Level_5_Builder Level_5_Builder_init(Level_5_Builder* self);
 void Build_Level_5_Entities(Level_Builder* builder);
 
-void Init_Level_5_Spec();
+void Init_Level_5_Spec(int index);
 void Load_Level_5(geScene* scene);
 
 #endif

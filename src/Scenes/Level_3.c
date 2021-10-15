@@ -95,8 +95,8 @@ void Build_Level_3_Entities(Level_Builder* builder) {
 
 }
 
-void Init_Level_3_Spec() {
-  g_level_specs[2] = (Level_Spec){
+void Init_Level_3_Spec(int index) {
+  g_level_specs[index] = (Level_Spec){
     .menu_camera_x_length = L3_WIDTH + 15,
     .menu_camera_x_pos = 0,
     .menu_camera_y_pos = 0,

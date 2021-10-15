@@ -10,6 +10,7 @@
 #include "../Scenes/Level_5.h"
 #include "../Scenes/Level_6.h"
 #include "../Scenes/Level_7.h"
+#include "../Scenes/Level_8.h"
 
 #include "../Entities/UI_Camera.h"
 #include "../Entities/Menu_Button.h"
@@ -38,25 +39,23 @@ void Load_Level_Select_Menu(geScene* scene) {
   l6_builder._super.as_scene = false;
   Level_7_Builder l7_builder = Level_7_Builder_init(&l7_builder);
   l7_builder._super.as_scene = false;
+  Level_8_Builder l8_builder = Level_8_Builder_init(&l8_builder);
+  l8_builder._super.as_scene = false;
 
   // ---
   // ECS
   // ---
 
   Level_Select_Camera* lsc = Create_Level_Select_Camera(40);
-
-  // int offsets[LEVELS_COUNT] = {-9};
-  // for (int i = 1; i < LEVELS_COUNT; i++) {
-  //   offsets[i] = offsets[i-1] + g_level_specs[i-1].max_x_length/2 + g_level_specs[i].max_x_length/2;
-  //   g_level_specs[i].menu_camera_x_pos = offsets[i];
-  // }
+  
   Build_Level_Basics_Load(g_level_specs[0].offset_x, &l1_builder._super);
-  Build_Level_Basics_Load(g_level_specs[1].offset_x, &l2_builder._super);
-  Build_Level_Basics_Load(g_level_specs[2].offset_x, &l3_builder._super);
-  Build_Level_Basics_Load(g_level_specs[3].offset_x, &l4_builder._super);
-  Build_Level_Basics_Load(g_level_specs[4].offset_x, &l5_builder._super);
-  Build_Level_Basics_Load(g_level_specs[5].offset_x, &l6_builder._super);
-  Build_Level_Basics_Load(g_level_specs[6].offset_x, &l7_builder._super);
+  Build_Level_Basics_Load(g_level_specs[1].offset_x, &l7_builder._super);
+  Build_Level_Basics_Load(g_level_specs[2].offset_x, &l2_builder._super);
+  Build_Level_Basics_Load(g_level_specs[3].offset_x, &l3_builder._super);
+  Build_Level_Basics_Load(g_level_specs[4].offset_x, &l4_builder._super);
+  Build_Level_Basics_Load(g_level_specs[5].offset_x, &l5_builder._super);
+  Build_Level_Basics_Load(g_level_specs[6].offset_x, &l6_builder._super);
+  Build_Level_Basics_Load(g_level_specs[7].offset_x, &l8_builder._super);
 
   grRendering_System2D* rs = grCreate_Rendering_System2D(lsc->camera2D);
 
@@ -116,6 +115,7 @@ void Load_Level_Select_Menu(geScene* scene) {
   Build_Level_Basics_Set(rs, &l5_builder._super);
   Build_Level_Basics_Set(rs, &l6_builder._super);
   Build_Level_Basics_Set(rs, &l7_builder._super);
+  Build_Level_Basics_Set(rs, &l8_builder._super);
 
   lsc->lscc->rs = rs;
 
@@ -149,6 +149,7 @@ void Load_Level_Select_Menu(geScene* scene) {
   Build_Level_Basics_Add(scene, &l5_builder._super);
   Build_Level_Basics_Add(scene, &l6_builder._super);
   Build_Level_Basics_Add(scene, &l7_builder._super);
+  Build_Level_Basics_Add(scene, &l8_builder._super);
 
   geAdd_Entity(lsc->_super, scene);
 

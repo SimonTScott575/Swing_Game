@@ -11,6 +11,7 @@
 #include "Scenes/Level_5.h"
 #include "Scenes/Level_6.h"
 #include "Scenes/Level_7.h"
+#include "Scenes/Level_8.h"
 #include "Scenes.h"
 #include "Glow.h"
 
@@ -41,29 +42,27 @@ int main() {
   g_level_select_menu = geCreate_Scene(Load_Level_Select_Menu);
   geAdd_Scene(g_level_select_menu, game);
 
-  Init_Level_1_Spec();
-  Init_Level_2_Spec();
-  Init_Level_3_Spec();
-  Init_Level_4_Spec();
-  Init_Level_5_Spec();
-  Init_Level_6_Spec();
-  Init_Level_7_Spec();
+  Init_Level_1_Spec(0);
+  Init_Level_7_Spec(1);
+  Init_Level_2_Spec(2);
+  Init_Level_3_Spec(3);
+  Init_Level_4_Spec(4);
+  Init_Level_5_Spec(5);
+  Init_Level_6_Spec(6);
+  Init_Level_8_Spec(7);
   Accumulate_Specs();
 
   level_order[0] = geCreate_Scene(Load_Level_1);
-  level_order[1] = geCreate_Scene(Load_Level_2);
-  level_order[2] = geCreate_Scene(Load_Level_3);
-  level_order[3] = geCreate_Scene(Load_Level_4);
-  level_order[4] = geCreate_Scene(Load_Level_5);
-  level_order[5] = geCreate_Scene(Load_Level_6);
-  level_order[6] = geCreate_Scene(Load_Level_7);
-  geAdd_Scene(level_order[0], game);
-  geAdd_Scene(level_order[1], game);
-  geAdd_Scene(level_order[2], game);
-  geAdd_Scene(level_order[3], game);
-  geAdd_Scene(level_order[4], game);
-  geAdd_Scene(level_order[5], game);
-  geAdd_Scene(level_order[6], game);
+  level_order[1] = geCreate_Scene(Load_Level_7);
+  level_order[2] = geCreate_Scene(Load_Level_2);
+  level_order[3] = geCreate_Scene(Load_Level_3);
+  level_order[4] = geCreate_Scene(Load_Level_4);
+  level_order[5] = geCreate_Scene(Load_Level_5);
+  level_order[6] = geCreate_Scene(Load_Level_6);
+  level_order[7] = geCreate_Scene(Load_Level_8);
+  for (int i = 0; i < LEVELS_COUNT; i++) {
+    geAdd_Scene(level_order[i], game);
+  }
 
   Init_Glow_PP(1200,1200);
 

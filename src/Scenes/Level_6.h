@@ -54,7 +54,7 @@ struct Level_6_Builder {
 Level_6_Builder Level_6_Builder_init(Level_6_Builder* self);
 void Build_Level_6_Entities(Level_Builder* builder);
 
-void Init_Level_6_Spec();
+void Init_Level_6_Spec(int index);
 void Load_Level_6(geScene* scene);
 
 #endif

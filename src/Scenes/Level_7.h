@@ -42,7 +42,7 @@ struct Level_7_Builder {
 Level_7_Builder Level_7_Builder_init(Level_7_Builder* self);
 void Build_Level_7_Entities(Level_Builder* builder);
 
-void Init_Level_7_Spec();
+void Init_Level_7_Spec(int index);
 void Load_Level_7(geScene* scene);
 
 #endif

@@ -75,8 +75,8 @@ void Build_Level_2_Entities(Level_Builder* builder) {
 
 }
 
-void Init_Level_2_Spec() {
-  g_level_specs[1] = (Level_Spec){
+void Init_Level_2_Spec(int index) {
+  g_level_specs[index] = (Level_Spec){
     .menu_camera_x_length = L2_TOTAL + 15,
     .menu_camera_x_pos = 0,
     .menu_camera_y_pos = 0,

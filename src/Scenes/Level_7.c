@@ -13,8 +13,8 @@
 
 #include "../Components/Gem_Controller.h"
 
-void Init_Level_7_Spec() {
-  g_level_specs[6] =   (Level_Spec){
+void Init_Level_7_Spec(int index) {
+  g_level_specs[index] =   (Level_Spec){
     .menu_camera_x_length = L7_TOTAL + 50,
     .menu_camera_x_pos = -L7_B/2 + L7_TOTAL/2.0f,
     .menu_camera_y_pos = L7_B/2 - (L7_B/2 + L7_A)/2.0f,
