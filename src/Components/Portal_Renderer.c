@@ -2,11 +2,9 @@
 
 #include "Gem_Controller.h"
 
-Portal_Renderer* Create_Portal_Renderer() {
+void Portal_Renderer_ctor(Portal_Renderer* self) {
 
-  Portal_Renderer* pr = malloc(sizeof(Portal_Renderer));
-
-  *pr = (Portal_Renderer){
+  *self = (Portal_Renderer){
     .grey_t = grCreate_Texture("../Resources/Textures/ring_grey_512.png"),
     .white_t = grCreate_Texture("../Resources/Textures/ring_white_blur_512.png"),
 
@@ -15,12 +13,10 @@ Portal_Renderer* Create_Portal_Renderer() {
                               "../include/Game_Engine/Graphics/Shaders/grTexture_2D_frag.glsl")
   };
 
-  pr->_super = geCreate_Component();
-  geSet_Sub_Component(pr, Update_Portal_Renderer, Destroy_Portal_Renderer_Sub_Component, pr->_super);
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self, Update_Portal_Renderer, Portal_Renderer_Sub_Component_dtor, &self->_super);
 
-  grSet_Texture_by_name("grTexture", pr->grey_t, pr->shader);
-
-  return pr;
+  grSet_Texture_by_name("grTexture", self->grey_t, self->shader);
 
 }
 
@@ -34,7 +30,7 @@ void Update_Portal_Renderer(geComponent* component) {
 
 }
 
-void Destroy_Portal_Renderer_Sub_Component(geComponent* component) {
+void Portal_Renderer_Sub_Component_dtor(geComponent* component) {
 
   Portal_Renderer* pr = component->_sub;
 
@@ -42,7 +38,5 @@ void Destroy_Portal_Renderer_Sub_Component(geComponent* component) {
   grDestroy_Texture(pr->white_t);
   grDestroy_Model(pr->model);
   grDestroy_Shader(pr->shader);
-
-  free(pr);
 
 }

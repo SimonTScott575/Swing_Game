@@ -17,32 +17,37 @@ void Build_Level_3_Entities(Level_Builder* builder) {
 
   Level_3_Builder* l3_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
-  builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,0}}, 1, builder->scene);
 
   l3_builder->hs_arr[0] = Create_Hook_Surface(
     (mVector2f){{ 0, L3_HEIGHT/2 + L3_BUFFER/2 }},
-    (mVector2f){{ L3_TOTAL + L3_BUFFER*2, L3_BUFFER }}
+    (mVector2f){{ L3_TOTAL + L3_BUFFER*2, L3_BUFFER }},
+    builder->scene
   );
   l3_builder->hs_arr[1] = Create_Hook_Surface(
     (mVector2f){{ 0, -L3_HEIGHT/2  - L3_BUFFER/2 }},
-    (mVector2f){{ L3_TOTAL + L3_BUFFER*2, L3_BUFFER }}
+    (mVector2f){{ L3_TOTAL + L3_BUFFER*2, L3_BUFFER }},
+    builder->scene
   );
   l3_builder->hs_arr[2] = Create_Hook_Surface(
     (mVector2f){{ 0 - L3_WIDTH/2 - L3_BUFFER/2, 0 }},
-    (mVector2f){{ L3_BUFFER, L3_HEIGHT }}
+    (mVector2f){{ L3_BUFFER, L3_HEIGHT }},
+    builder->scene
   );
   l3_builder->hs_arr[3] = Create_Hook_Surface(
     (mVector2f){{ 0 + L3_WIDTH/2 + L3_BUFFER/2, 0 }},
-    (mVector2f){{ L3_BUFFER, L3_HEIGHT }}
+    (mVector2f){{ L3_BUFFER, L3_HEIGHT }},
+    builder->scene
   );
 
   for (int i = 0; i < L3_PILLAR1_COLS; i++) {
 
     l3_builder->hs_arr[4 + i] = Create_Hook_Surface(
       (mVector2f){{ - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A, 0 }},
-      (mVector2f){{ L3_C, L3_F }}
+      (mVector2f){{ L3_C, L3_F }},
+      builder->scene
     );
 
     mVector2f pos1 = (mVector2f){{
@@ -54,8 +59,8 @@ void Build_Level_3_Entities(Level_Builder* builder) {
       - L3_F/2 - L3_E/2
     }};
 
-    l3_builder->gem_arr[2*i] = Create_Gem(pos1);
-    l3_builder->gem_arr[2*i+1] = Create_Gem(pos2);
+    l3_builder->gem_arr[2*i] = Create_Gem(pos1, builder->scene);
+    l3_builder->gem_arr[2*i+1] = Create_Gem(pos2, builder->scene);
 
   }
   int j = 0;
@@ -63,11 +68,13 @@ void Build_Level_3_Entities(Level_Builder* builder) {
 
     l3_builder->hs_arr[4+L3_PILLAR1_COLS + 2*i] = Create_Hook_Surface(
       (mVector2f){{ 0 - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A + L3_A, L3_F/2+L3_E/2 }},
-      (mVector2f){{ L3_C, L3_E }}
+      (mVector2f){{ L3_C, L3_E }},
+      builder->scene
     );
     l3_builder->hs_arr[4+L3_PILLAR1_COLS + 2*i+1] = Create_Hook_Surface(
       (mVector2f){{ 0 - 2*L3_A*L3_PILLAR1_COLS/2 + L3_A + i*2*L3_A + L3_A, -L3_F/2-L3_E/2 }},
-      (mVector2f){{ L3_C, L3_E }}
+      (mVector2f){{ L3_C, L3_E }},
+      builder->scene
     );
 
     if (i != L3_PILLAR1_COLS/2 - 1) {
@@ -77,7 +84,7 @@ void Build_Level_3_Entities(Level_Builder* builder) {
         0
       }};
 
-      l3_builder->gem_arr[2*L3_PILLAR1_COLS + j] = Create_Gem(pos);
+      l3_builder->gem_arr[2*L3_PILLAR1_COLS + j] = Create_Gem(pos, builder->scene);
 
       // printf("%d %d\n", 2*L3_PILLAR1_COLS + j, L3_GEM_COUNT);
 

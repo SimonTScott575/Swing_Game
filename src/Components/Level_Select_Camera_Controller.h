@@ -7,7 +7,7 @@ typedef struct Level_Select_Camera_Controller Level_Select_Camera_Controller;
 
 struct Level_Select_Camera_Controller {
 
-  geComponent* _super;
+  geComponent _super;
 
   mFrame2D* frame;
   mVector2f target_position;
@@ -19,8 +19,11 @@ struct Level_Select_Camera_Controller {
 
 };
 
-Level_Select_Camera_Controller* Create_Level_Select_Camera_Controller(mFrame2D* frame, float x_length);
+void Level_Select_Camera_Controller_ctor(
+  Level_Select_Camera_Controller* self,
+  mFrame2D* frame,
+  float x_length
+);
 void Update_Level_Select_Camera_Controller(geComponent* component);
-void Destroy_Level_Select_Camera_Controller_Sub_Component(geComponent* component);
 
 #endif

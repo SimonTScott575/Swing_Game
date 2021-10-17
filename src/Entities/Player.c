@@ -2,45 +2,32 @@
 
 #include "../Layers.h"
 
-Player* Create_Player() {
-
-  geEntity* entity = geCreate_Entity();
-
-  entity->layer_mask = PLAYER_LAYER;
-
-  mFrame2D* frame = new_mFrame2D(mVector2f_ZERO, 0, mVector2f_ONE);
-
-  grSprite* sprite = grCreate_Sprite("../Resources/Textures/circle_red_256.png", 1, 1);
-  grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
-
-  phCircle_Collider2D* circle_c = new_phCircle_Collider2D(frame, 0.5);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.5 * 0.5*0.5, &circle_c->_super);
-  rb->restitution = 0.25;
-
-  Player_Controller* pc = Create_Player_Controller(rb);
-
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(renderer->_super, entity);
-  geAdd_Component(circle_c->_super._super, entity);
-  geAdd_Component(rb->_super, entity);
-  geAdd_Component(pc->_super, entity);
+Player* Create_Player(geScene* scene) {
 
   Player* player = malloc(sizeof(Player));
-  *player = (Player){
-    ._super = entity,
+  if (player == NULL) { return NULL; }
 
-    .frame = frame,
+  player->_super = geEntity_ctor(&player->_super);
+  geSet_Sub_Entity(player, Destroy_Player_Sub_Entity, &player->_super);
+  player->_super.layer_mask = PLAYER_LAYER;
 
-    .renderer = renderer,
-    .sprite = sprite,
+  player->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);
 
-    .circle_c = circle_c,
-    .rb = rb,
+  player->sprite = grCreate_Sprite("../Resources/Textures/circle_red_256.png", 1, 1);
+  grRenderer_2D_ctor(&player->renderer, &player->frame, player->sprite->_model, player->sprite->_shader);
 
-    .pc = pc
-  };
+  player->circle_c = new_phCircle_Collider2D(&player->frame, 0.5);
+  phRigid_Body2D_ctor(&player->rb, &player->frame, 1, 0.5 * 0.5*0.5, &player->circle_c->_super);
+  player->rb.restitution = 0.25;
 
-  geSet_Sub_Entity(player, Destroy_Player_Sub_Entity, entity);
+  Player_Controller_ctor(&player->pc, &player->rb);
+
+  geAdd_Component(&player->renderer._super, &player->_super);
+  geAdd_Component(player->circle_c->_super._super, &player->_super);
+  geAdd_Component(&player->rb._super, &player->_super);
+  geAdd_Component(&player->pc._super, &player->_super);
+
+  geAdd_Entity(&player->_super, scene);
 
   return player;
 

@@ -4,12 +4,9 @@
 
 #include "../Scenes.h"
 
-Display_Time* Create_Display_Time(char* prefix, float* display_times, grText_Renderer* text_r, float x) {
+void Display_Time_ctor(Display_Time* self, char* prefix, float* display_times, grText_Renderer* text_r, float x) {
 
-  Display_Time* dt = malloc(sizeof(Display_Time));
-
-  *dt = (Display_Time){
-    ._super = geCreate_Component(),
+  *self = (Display_Time){
     .prefix = strdup(prefix),
     .prefix_length = strlen(prefix),
     .display_times = display_times,
@@ -17,7 +14,18 @@ Display_Time* Create_Display_Time(char* prefix, float* display_times, grText_Ren
     .x = x
   };
 
-  geSet_Sub_Component(dt, Update_Display_Time, Destroy_Display_Time_Sub_Component, dt->_super);
+  geComponent_ctor(&self->_super);
+
+  geSet_Sub_Component(self, Update_Display_Time, Display_Time_Sub_Component_dtor, &self->_super);
+
+}
+
+Display_Time* Display_Time_new(char* prefix, float* display_times, grText_Renderer* text_r, float x) {
+
+  Display_Time* dt = malloc(sizeof *dt);
+
+  Display_Time_ctor(dt, prefix, display_times, text_r, x);
+  geSet_Sub_Component(dt, dt->_super._update, Display_Time_Sub_Component_del, &dt->_super);
 
   return dt;
 
@@ -44,12 +52,19 @@ void Update_Display_Time(geComponent* component) {
 
 };
 
-void Destroy_Display_Time_Sub_Component(geComponent* component) {
+void Display_Time_Sub_Component_dtor(geComponent* component) {
 
   Display_Time* dt = component->_sub;
 
   free(dt->prefix);
 
+}
+
+void Display_Time_Sub_Component_del(geComponent* component) {
+
+  Display_Time* dt = component->_sub;
+
+  Display_Time_Sub_Component_dtor(&dt->_super);
   free(dt);
 
 }

@@ -19,13 +19,15 @@ D_HEADER_dLList(geComponent*, geComponent_ptr);
 
 struct geComponent {
 
-  geEntity* _entity; //!!! NOT SET, needed ?
+  geEntity* _entity;
   dNode_LL(geComponent_ptr)* _component_node;
 
   bool is_active;
-  char* name; //? uniquely identifies the component, eg player_rigid_body
+  char* name; // uniquely identifies the component, eg player_rigid_body
   geComponent_Layer_Mask layer_mask;
-  geComponent_ID ID; //? identifies type of component, eg rb, renderer etc.
+  geComponent_ID ID; // identifies type of component, eg rb, renderer etc.
+
+  bool _deallocate;
 
   void* _sub;
   geUpdate_Component_fn _update;
@@ -37,7 +39,8 @@ struct geComponent {
 // Initialization
 // ==============
 
-geComponent geComponent_init();
+void geComponent_ctor(geComponent* self);
+void geComponent_dtor(geComponent* component);
 
 geComponent* geCreate_Component();
 

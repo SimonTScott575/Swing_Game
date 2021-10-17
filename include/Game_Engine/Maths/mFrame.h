@@ -6,10 +6,11 @@
 #define M_Frame_H
 
 #include <stdio.h> //DEBUG
+#include <stdlib.h>
 
 #include <math.h>
 
-#include <Game_Engine/ECS/geComponent.h>
+// #include <Game_Engine/ECS/geComponent.h>
 
 #include "mVector.h"
 #include "mMatrix.h"
@@ -30,8 +31,6 @@ typedef struct mFrame2D mFrame2D;
 typedef struct mFrame3D mFrame3D;
 
 struct mFrame2D {
-  geComponent* _super;
-
   mMatrix3f transform;
 
   mVector2f position;
@@ -39,8 +38,6 @@ struct mFrame2D {
   mVector2f scale;
 };
 struct mFrame3D {
-  geComponent* _super;
-
   mMatrix4f transform;
 
   mVector3f position;
@@ -51,13 +48,13 @@ struct mFrame3D {
 M_SCOPE const mFrame2D mFrame2D_I;
 M_SCOPE const mFrame3D mFrame3D_I;
 
-M_SCOPE mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale);
-M_SCOPE mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
+M_SCOPE mFrame2D mFrame2D_init(mVector2f position, float rotation, mVector2f scale);
+M_SCOPE mFrame3D mFrame3D_init(mVector3f position, mVector3f rotation, mVector3f scale);
 
-M_SCOPE mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale);
-M_SCOPE mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale);
-M_SCOPE void del_mFrame2D_Sub_Component(geComponent* component);
-M_SCOPE void del_mFrame3D_Sub_Component(geComponent* component);
+M_SCOPE mFrame2D* mFrame2D_new(mVector2f position, float rotation, mVector2f scale);
+M_SCOPE mFrame3D* mFrame3D_new(mVector3f position, mVector3f rotation, mVector3f scale);
+M_SCOPE void mFrame2D_del(mFrame2D* frame);
+M_SCOPE void mFrame3D_del(mFrame3D* frame);
 
 M_SCOPE void mGenerate_transform_2D(mFrame2D* frame);
 M_SCOPE void mGenerate_transform_3D(mFrame3D* frame);
@@ -96,7 +93,7 @@ M_SCOPE const mFrame3D mFrame3D_I = { .transform = mMatrix4f_I,
 // ===
 
 M_SCOPE
-mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
+mFrame2D mFrame2D_init(mVector2f position, float rotation, mVector2f scale) {
   mFrame2D frame;
   frame.position = position;
   frame.rotation = rotation;
@@ -107,7 +104,7 @@ mFrame2D init_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
   return frame;
 };
 M_SCOPE
-mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
+mFrame3D mFrame3D_init(mVector3f position, mVector3f rotation, mVector3f scale) {
   mFrame3D frame;
 
   frame.position = position;
@@ -121,40 +118,32 @@ mFrame3D init_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) 
 };
 
 M_SCOPE
-mFrame2D* new_mFrame2D(mVector2f position, float rotation, mVector2f scale) {
+mFrame2D* mFrame2D_new(mVector2f position, float rotation, mVector2f scale) {
 
   mFrame2D* frame = malloc(sizeof(mFrame2D));
 
-  *frame = init_mFrame2D(position, rotation, scale);
-
-  frame->_super = geCreate_Component();
-  geSet_Sub_Component(frame, NULL, del_mFrame2D_Sub_Component, frame->_super);
+  *frame = mFrame2D_init(position, rotation, scale);
 
   return frame;
 
 };
 M_SCOPE
-mFrame3D* new_mFrame3D(mVector3f position, mVector3f rotation, mVector3f scale) {
+mFrame3D* mFrame3D_new(mVector3f position, mVector3f rotation, mVector3f scale) {
 
   mFrame3D* frame = malloc(sizeof(mFrame3D));
 
-  *frame = init_mFrame3D(position, rotation, scale);
-
-  frame->_super = geCreate_Component();
-  geSet_Sub_Component(frame, NULL, del_mFrame3D_Sub_Component, frame->_super);
+  *frame = mFrame3D_init(position, rotation, scale);
 
   return frame;
 
 };
 
 M_SCOPE
-void del_mFrame2D_Sub_Component(geComponent* component) {
-  mFrame2D* frame = component->_sub;
+void mFrame2D_del(mFrame2D* frame) {
   free(frame);
 }
 M_SCOPE
-void del_mFrame3D_Sub_Component(geComponent* component) {
-  mFrame3D* frame = component->_sub;
+void mFrame3D_del(mFrame3D* frame) {
   free(frame);
 }
 
@@ -162,7 +151,7 @@ void del_mFrame3D_Sub_Component(geComponent* component) {
 
 M_SCOPE
 void mGenerate_transform_2D(mFrame2D* frame) { //? MACRO INLINE IS BETTER with non ptr ? have second with ptr for when using a manager?
-  // *frame = init_mFrame2D(frame->position, frame->rotation, frame->scale);
+  // *frame = mFrame2D_init(frame->position, frame->rotation, frame->scale);
 
   frame->transform.i[0][2] = frame->position.i[0];
   frame->transform.i[1][2] = frame->position.i[1];
@@ -308,5 +297,14 @@ mVector3f mAxis_Z_3D(mFrame3D* frame) {
 
   return result;
 }
+
+/*** LEGACY ***/
+#define new_mFrame2D mFrame2D_new
+#define new_mFrame3D mFrame3D_new
+#define del_mFrame2D mFrame2D_del
+#define del_mFrame3D mFrame3D_del
+#define init_mFrame2D mFrame2D_init
+#define init_mFrame3D mFrame3D_init
+/**************/
 
 #endif

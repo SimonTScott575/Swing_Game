@@ -8,7 +8,7 @@ typedef struct Player_Controller Player_Controller;
 
 struct Player_Controller {
 
-  geComponent* _super;
+  geComponent _super;
 
   phRigid_Body2D* rb;
 
@@ -16,7 +16,7 @@ struct Player_Controller {
 
 };
 
-Player_Controller* Create_Player_Controller();
+void Player_Controller_ctor(Player_Controller* self, phRigid_Body2D* rb);
 
 void Update_Player_Controller(geComponent* component);
 

@@ -7,15 +7,15 @@ typedef struct Menu_Camera Menu_Camera;
 
 struct Menu_Camera {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
-  grCamera2D* camera2D;
+  grCamera2D camera2D;
 
 };
 
-Menu_Camera* Create_Menu_Camera(float x_length);
+Menu_Camera* Create_Menu_Camera(float x_length, geScene* scene);
 
 void Destroy_Menu_Camera_Sub_Entity(geEntity* entity);
 

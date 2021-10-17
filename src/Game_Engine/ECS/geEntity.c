@@ -8,11 +8,9 @@ D_SOURCE_dLList(geEntity*, geEntity_ptr);
 // Initialization/Termination
 // ==========================
 
-geEntity* geCreate_Entity() {
+geEntity geEntity_ctor(geEntity* self) {
 
-  geEntity* entity = malloc(sizeof(geEntity));
-
-  *entity = (geEntity){
+  return (geEntity){
     ._entity_node = NULL,
 
     .is_active = true,
@@ -22,14 +20,14 @@ geEntity* geCreate_Entity() {
 
     ._components = new_dLList(geComponent_ptr)(0,NULL),
 
-    ._sub = NULL
+    ._deallocate = false,
+
+    ._sub = NULL,
+    ._destroy = NULL
   };
 
-  return entity;
-
 }
-
-void geDestroy_Entity(geEntity* entity) {
+void geEntity_dtor(geEntity* entity) {
 
   del_dLList(geComponent_ptr)(entity->_components);
 
@@ -37,7 +35,28 @@ void geDestroy_Entity(geEntity* entity) {
     entity->_destroy(entity);
   }
 
-  free(entity);
+}
+
+geEntity* geCreate_Entity() {
+
+  geEntity* entity = malloc(sizeof(geEntity));
+
+  *entity = geEntity_ctor(entity);
+  entity->_deallocate = true;
+
+  return entity;
+
+}
+
+void geDestroy_Entity(geEntity* entity) {
+
+  bool deallocate = entity->_deallocate;
+
+  geEntity_dtor(entity);
+
+  if (deallocate) {
+    free(entity);
+  }
 
 }
 
@@ -60,7 +79,7 @@ bool geComponent_Is_Active(geComponent* component) {
 void geUnload_Entity(geEntity* entity) {
 
   dNode_LL(geComponent_ptr)* component_node = entity->_components->start;
-  dNode_LL(geComponent_ptr)* next_component_node;;
+  dNode_LL(geComponent_ptr)* next_component_node;
   for ( ; component_node != NULL; component_node = next_component_node) {
 
     geDestroy_Component(component_node->element);
@@ -128,20 +147,3 @@ geComponent* geGet_Next_Component(geComponent* component) {
   return component->_component_node->next->element;
 
 }
-
-// ===
-
-// geComponent* geFind_Component_By_ID(geComponent_ID id, geEntity* em) {
-//
-//   dLListCM_Node* cm_node = em->_components->start;
-//   while (cm_node != NULL) {
-//
-//     if (cm_node->element->_ID == id) {
-//       return cm_node->element;
-//     }
-//
-//     cm_node = cm_node->next;
-//
-//   }
-//
-// }

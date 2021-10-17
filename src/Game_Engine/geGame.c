@@ -119,7 +119,7 @@ geGame* geGet_Active_Game() {
 
 // ===
 
-void geUnload_Game(geGame* game) {
+void geUnload_Game(geGame* game) { //? NOT used ?
 
   dNode_LL(geScene_ptr)* scene_node = game->_scenes->start;
 
@@ -154,7 +154,8 @@ void gePlay_Game(geGame* game) {
     }
     game->delta_time = glfwGetTime() - start_time - game->time;
 
-    if ( game->delta_time > 0.02 ) {
+    if (    !(game->_end_scene || game->_end_game)
+         && game->delta_time > 0.02 ) {
 
       grSet_Active_Screen(game->_back_screen); //?
       geUpdate_Scene(game->_active_scene);

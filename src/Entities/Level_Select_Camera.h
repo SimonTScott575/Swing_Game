@@ -9,16 +9,16 @@ typedef struct Level_Select_Camera Level_Select_Camera;
 
 struct Level_Select_Camera {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
-  grCamera2D* camera2D;
-  Level_Select_Camera_Controller* lscc;
+  grCamera2D camera2D;
+  Level_Select_Camera_Controller lscc;
 
 };
 
-Level_Select_Camera* Create_Level_Select_Camera(float x_length);
+Level_Select_Camera* Create_Level_Select_Camera(float x_length, geScene* scene);
 
 void Destroy_Level_Select_Camera_Sub_Entity(geEntity* entity);
 

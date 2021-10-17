@@ -1,30 +1,22 @@
 #include "Timer.h"
 
-Timer* Create_Timer(grText* text_sec, grText* text_msec) {
+Timer* Create_Timer(grText* text_sec, grText* text_msec, geScene* scene) {
 
-  geEntity* entity = geCreate_Entity();
+  Timer* timer = malloc(sizeof(Timer));
+
+  timer->_super = geEntity_ctor(&timer->_super);
+  geSet_Sub_Entity(timer, Destroy_Timer_Sub_Entity, &timer->_super);
 
   text_sec->alignment = GR_ALIGN_RIGHT;
   text_msec->alignment = GR_ALIGN_LEFT;
+  timer->text_sec = text_sec;
+  timer->text_msec = text_msec;
 
-  Timer_Clock* clock = Create_Timer_Clock(text_sec, text_msec);
+  Timer_Clock_ctor(&timer->clock, text_sec, text_msec);
 
-  geAdd_Component(clock->_super, entity);
+  geAdd_Component(&timer->clock._super, &timer->_super);
 
-  Timer* timer = malloc(sizeof(Timer));
-  entity->_sub = timer;
-  *timer = (Timer){
-
-    ._super = entity,
-
-    .text_sec = text_sec,
-    .text_msec = text_msec,
-
-    .clock = clock
-
-  };
-
-  geSet_Sub_Entity(timer, Destroy_Timer_Sub_Entity, entity);
+  geAdd_Entity(&timer->_super, scene);
 
   return timer;
 

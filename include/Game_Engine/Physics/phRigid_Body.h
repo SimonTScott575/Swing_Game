@@ -20,7 +20,7 @@ D_HEADER_LLIST(phRigid_Body2D*, phRigid_Body2D_ptr);
 
 struct phRigid_Body2D {
 
-  geComponent* _super;
+  geComponent _super;
 
   dNode_LL(phRigid_Body2D_ptr)* _rb_node;
 
@@ -52,11 +52,7 @@ struct phRigid_Body2D {
 // Initalization
 // =============
 
-phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
-
-phRigid_Body2D* new_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
-
-void del_phRigid_Body2D_Sub_Component(geComponent* component);
+void phRigid_Body2D_ctor(phRigid_Body2D* self, mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
 
 // ==============
 // Set properties

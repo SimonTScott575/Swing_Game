@@ -71,9 +71,8 @@ grText_Renderer* grCreate_Text_Renderer_2D(grText* text, mFrame2D* frame, grShad
 
   text_r->_renderer_frame = mFrame2D_I;
 
-  text_r->_super = grCreate_Renderer_2D(&text_r->_renderer_frame, gr_text_model, shader);
-  text_r->_super->render_fn = grRender_Text_Renderer;
-  grSet_Sub_Renderer(text_r, grDestroy_Text_Sub_Renderer, text_r->_super);
+  grRenderer_2D_ctor(&text_r->_super, &text_r->_renderer_frame, gr_text_model, shader);
+  grSet_Sub_Renderer(text_r, grRender_Text_Renderer, grDestroy_Text_Sub_Renderer, &text_r->_super);
 
   return text_r;
 

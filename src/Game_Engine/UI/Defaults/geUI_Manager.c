@@ -32,7 +32,7 @@ void geDestroy_UI_Manager(void* arg) {
   geUI_Manager* uim = arg;
 
   geDestroy_System(uim->_super);
-  
+
   del_dLList(geUI_Element_ptr)(uim->_elements);
 
   free(uim);
@@ -59,7 +59,7 @@ void geUpdate_UI_Manager(void* arg) {
 
     geUI_Element* uie = uie_node->element;
 
-    if (uie->_super != NULL && !geComponent_Is_Active(uie->_super)) { continue; }
+    if (!geComponent_Is_Active(&uie->_super)) { continue; }
 
     geUpdate_UI_Element(uie, uim->camera->_X_length, normalized_mouse_X, normalized_mouse_Y, geGet_Active_Window());
 

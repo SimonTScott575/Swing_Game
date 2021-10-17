@@ -18,7 +18,7 @@ D_HEADER_LLIST(phJoint2D*, phJoint2D_ptr);
 
 struct phJoint2D {
 
-  geComponent* _super;
+  geComponent _super;
 
   bool active;
   dNode_LL(phJoint2D_ptr)* _joint_node;
@@ -56,14 +56,22 @@ struct phRod_Joint2D {
 
 //IMPORTANT: rb1 MUST NOT be NULL, rb2 MUST be NULL
 
-phJoint2D init_phJoint2D(mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2, phApply_Joint2D_fn apply_fn);
+void phJoint2D_ctor(phJoint2D* self, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2);
 
-phSpring_Joint2D* new_phSpring_Joint2D(float k, float rest_length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2);
-phRod_Joint2D* new_phRod_Joint2D(float length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2);
+void phSpring_Joint2D_ctor(
+  phSpring_Joint2D* self,
+  float k, float rest_length,
+  mVector2f position1, phRigid_Body2D* rb1,
+  mVector2f position2, phRigid_Body2D* rb2
+);
+void phRod_Joint2D_ctor(
+  phRod_Joint2D* self,
+  float length,
+  mVector2f position1, phRigid_Body2D* rb1,
+  mVector2f position2, phRigid_Body2D* rb2
+);
 
-void del_phJoint2D_Sub_Component(geComponent* component);
-
-void phSet_Sub_Joint2D(void* sub, phJoint2D* joint);
+void phSet_Sub_Joint2D(void* sub, phApply_Joint2D_fn apply, phJoint2D* joint);
 
 // =====
 // Apply

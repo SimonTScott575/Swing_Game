@@ -2,47 +2,52 @@
 
 #include <stdbool.h>
 
-Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale, int res) {
+Menu_Text* Create_Menu_Text_With_Resolution(
+  const char* contents,
+  const char* font_path,
+  float rel_X, float rel_Y, float abs_X, float abs_Y,
+  float scale,
+  int res,
+  geScene* scene
+) {
 
-  geEntity* entity = geCreate_Entity();
+  Menu_Text* mt = malloc(sizeof(Menu_Text));
+  if (mt == NULL) { return NULL; }
+
+  mt->_super = geEntity_ctor(&mt->_super);
+  geSet_Sub_Entity(mt, Destroy_Menu_Text_Sub_Entity, &mt->_super);
 
   if (font_path == NULL) {
     font_path = "../Resources/Fonts/Fira/FiraSans-Heavy.ttf";
   }
-  grFont* font = grCreate_Font(font_path, res);
-  grText* text = grCreate_Text(contents, font);
-  text->alignment = GR_ALIGN_CENTRE;
+  mt->font = grCreate_Font(font_path, res);
+  mt->text = grCreate_Text(contents, mt->font);
+  mt->text->alignment = GR_ALIGN_CENTRE;
 
-  mFrame2D* frame = new_mFrame2D((mVector2f){{abs_X,abs_Y}}, 0, (mVector2f){{scale,scale}});
-  grShader* shader = grCreate_Shader("../include/Game_Engine/Graphics/Shaders/grText_2D_vert.glsl",
-                                     "../include/Game_Engine/Graphics/Shaders/grText_2D_frag.glsl");
+  mt->frame = mFrame2D_init((mVector2f){{abs_X,abs_Y}}, 0, (mVector2f){{scale,scale}});
+  mt->shader = grCreate_Shader("../include/Game_Engine/Graphics/Shaders/grText_2D_vert.glsl",
+                               "../include/Game_Engine/Graphics/Shaders/grText_2D_frag.glsl");
 
-  grText_Renderer* text_r = grCreate_Text_Renderer_2D(text, frame, shader);
-  text_r->rel_X = rel_X;
-  text_r->rel_Y = rel_Y;
+  mt->text_r = grCreate_Text_Renderer_2D(mt->text, &mt->frame, mt->shader);
+  mt->text_r->rel_X = rel_X;
+  mt->text_r->rel_Y = rel_Y;
 
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(text_r->_super->_super, entity);
+  geAdd_Component(&mt->text_r->_super._super, &mt->_super);
 
-  Menu_Text* title = malloc(sizeof(Menu_Text));
-  *title = (Menu_Text){
-    ._super = entity,
-    .frame = frame,
-    .font = font,
-    .text = text,
-    .shader = shader,
-    .text_r = text_r
-  };
+  geAdd_Entity(&mt->_super, scene);
 
-  geSet_Sub_Entity(title, Destroy_Menu_Text_Sub_Entity, entity);
-
-  return title;
+  return mt;
 
 }
 
-Menu_Text* Create_Menu_Text(const char* contents, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale) {
+Menu_Text* Create_Menu_Text(
+  const char* contents,
+  const char* font_path,
+  float rel_X, float rel_Y, float abs_X, float abs_Y,
+  float scale,
+  geScene* scene) {
 
-  return Create_Menu_Text_With_Resolution(contents, font_path,  rel_X, rel_Y, abs_X, abs_Y, scale, 256);
+  return Create_Menu_Text_With_Resolution(contents, font_path,  rel_X, rel_Y, abs_X, abs_Y, scale, 256, scene);
 
 }
 

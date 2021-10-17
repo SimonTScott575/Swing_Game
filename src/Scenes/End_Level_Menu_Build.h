@@ -30,7 +30,11 @@ struct End_Level_Menu_Build {
 
 } End_Level_Menu_Build;
 
-void Load_Entities_End_Level_Menu_Build(Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller, End_Level_Menu_Build* build);
+void Load_Entities_End_Level_Menu_Build(
+  Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
+  geScene* scene,
+  End_Level_Menu_Build* build
+);
 void Load_Systems_End_Level_Menu_Build(End_Level_Menu_Build* build);
 void Set_End_Level_Menu_Build(End_Level_Menu_Build* build);
 void Add_Entities_End_Level_Menu_Build(geScene* scene, End_Level_Menu_Build* build);

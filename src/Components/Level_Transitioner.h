@@ -14,7 +14,7 @@ typedef struct Level_Transitioner Level_Transitioner;
 
 struct Level_Transitioner {
 
-  geComponent* _super;
+  geComponent _super;
 
   Portal_Catcher* pc;
   Timer_Clock* clock;
@@ -32,7 +32,8 @@ struct Level_Transitioner {
 
 };
 
-Level_Transitioner* Create_Level_Transitioner(
+void Level_Transitioner_ctor(
+  Level_Transitioner* self,
   Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
   grText_Renderer* cd_text_r,
   geEntity** end_ui1_arr, // restart and back : button/text entities
@@ -40,8 +41,6 @@ Level_Transitioner* Create_Level_Transitioner(
 );
 
 void Update_Level_Transitioner(geComponent* component);
-
-void Destroy_Level_Transitioner_Sub_Component(geComponent* component);
 
 void On_Click_Back_Button(geUI_Element* uie);
 void On_Click_Restart_Button(geUI_Element* uie);

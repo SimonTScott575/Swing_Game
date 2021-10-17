@@ -2,47 +2,34 @@
 
 #include "../Layers.h"
 
-Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale) {
+Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale, geScene* scene) {
 
-  geEntity* entity = geCreate_Entity();
+  Hook_Surface* hs = malloc(sizeof(Hook_Surface));
+  if (hs == NULL) { return NULL; }
 
-  entity->layer_mask = HOOK_SURFACE_LAYER;
+  hs->_super = geEntity_ctor(&hs->_super);
+  geSet_Sub_Entity(hs, Destroy_Hook_Surface_Sub_Entity, &hs->_super);
+  hs->_super.layer_mask = HOOK_SURFACE_LAYER;
 
-  mFrame2D* frame = new_mFrame2D(position, 0, scale);
+  hs->frame = mFrame2D_init(position, 0, scale);
 
-  grColour_Render* cr = grCreate_Colour_Render(
+  hs->cr = grCreate_Colour_Render(
     (float[4]){226/256.0, 113/256.0, 29/256.0, 1},
     grRect2D_Mesh
   );
-  grRenderer* renderer = grCreate_Renderer_2D(frame, cr->_model, cr->_shader);
+  grRenderer_2D_ctor(&hs->renderer, &hs->frame, hs->cr->_model, hs->cr->_shader);
 
-  phAABB_Collider2D* aabb_c = new_phAABB_Collider2D(frame, 1,1);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &aabb_c->_super);
-  rb->is_static = true;
-  rb->is_static_rotation = true;
-  rb->restitution = 0.25;
+  hs->aabb_c = new_phAABB_Collider2D(&hs->frame, 1,1);
+  phRigid_Body2D_ctor(&hs->rb, &hs->frame, 1, 0.1, &hs->aabb_c->_super);
+  hs->rb.is_static = true;
+  hs->rb.is_static_rotation = true;
+  hs->rb.restitution = 0.25;
 
-  Hook_Surface* hs = malloc(sizeof(Hook_Surface));
-  *hs = (Hook_Surface){
+  geAdd_Component(&hs->renderer._super, &hs->_super);
+  geAdd_Component(hs->aabb_c->_super._super, &hs->_super);
+  geAdd_Component(&hs->rb._super, &hs->_super);
 
-    ._super = entity,
-
-    .frame = frame,
-
-    .cr = cr,
-    .renderer = renderer,
-
-    .aabb_c = aabb_c,
-    .rb = rb
-
-  };
-
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(renderer->_super, entity);
-  geAdd_Component(aabb_c->_super._super, entity);
-  geAdd_Component(rb->_super, entity);
-
-  geSet_Sub_Entity(hs, Destroy_Hook_Surface_Sub_Entity, entity);
+  geAdd_Entity(&hs->_super, scene);
 
   return hs;
 

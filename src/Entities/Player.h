@@ -9,21 +9,21 @@ typedef struct Player Player;
 
 struct Player {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grSprite* sprite;
-  grRenderer* renderer;
+  grRenderer renderer;
 
   phCircle_Collider2D* circle_c;
-  phRigid_Body2D* rb;
+  phRigid_Body2D rb;
 
-  Player_Controller* pc;
+  Player_Controller pc;
 
 };
 
-Player* Create_Player();
+Player* Create_Player(geScene* scene);
 
 void Destroy_Player_Sub_Entity(geEntity* entity);
 

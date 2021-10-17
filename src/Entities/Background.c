@@ -1,29 +1,22 @@
 #include "Background.h"
 
-Background* Create_Background(float x_length, float y_length) {
-
-  geEntity* entity = geCreate_Entity();
-
-  mFrame2D* frame = new_mFrame2D(mVector2f_ZERO, 0, mVector2f_ONE);
-
-  grSprite* sprite = grCreate_Sprite("../Resources/Textures/gradient_orange_256.png", x_length,y_length);
-  grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
-
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(renderer->_super, entity);
+Background* Create_Background(float x_length, float y_length, geScene* scene) {
 
   Background* bg = malloc(sizeof(Background));
-  *bg = (Background){
+  if (bg == NULL) { return NULL; }
 
-    ._super = entity,
+  bg->_super = geEntity_ctor(&bg->_super);
+  geSet_Sub_Entity(bg, Destroy_Background_Sub_Entity, &bg->_super);
 
-    .frame = frame,
-    .sprite = sprite,
-    .renderer = renderer
+  bg->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);
 
-  };
+  bg->sprite = grCreate_Sprite("../Resources/Textures/gradient_orange_256.png", x_length,y_length);
 
-  geSet_Sub_Entity(bg, Destroy_Background_Sub_Entity, entity);
+  grRenderer_2D_ctor(&bg->renderer, &bg->frame, bg->sprite->_model, bg->sprite->_shader);
+
+  geAdd_Component(&bg->renderer._super, &bg->_super);
+
+  geAdd_Entity(&bg->_super, scene);
 
   return bg;
 

@@ -11,10 +11,9 @@ D_SOURCE_dLList(phRigid_Body2D*, phRigid_Body2D_ptr);
 // Initalization
 // =============
 
-phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider) {
-  return (phRigid_Body2D){
-
-    ._super = NULL,
+void phRigid_Body2D_ctor(phRigid_Body2D* self, mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider) {
+  
+  *self = (phRigid_Body2D){
 
     .frame = frame,
 
@@ -39,26 +38,9 @@ phRigid_Body2D init_phRigid_Body2D(mFrame2D* frame, float mass, float rotational
     ._force_applied = false
 
   };
-}
 
-phRigid_Body2D* new_phRigid_Body2D(mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider) {
-
-  phRigid_Body2D* rb = malloc(sizeof(phRigid_Body2D));
-  *rb = init_phRigid_Body2D(frame, mass, rotational_inertia, collider);
-
-  rb->_super = geCreate_Component();
-  geSet_Sub_Component(rb, NULL, del_phRigid_Body2D_Sub_Component, rb->_super);
-
-  return rb;
-
-}
-
-void del_phRigid_Body2D_Sub_Component(geComponent* component) {
-
-  phRigid_Body2D* rb = component->_sub;
-
-  free(rb);
-
+  geComponent_ctor(&self->_super);
+  
 }
 
 // ==============

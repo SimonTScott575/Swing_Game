@@ -16,7 +16,7 @@ typedef void (*grPrepare_Camera_fn)(grCamera2D* camera, grScreen* screen);
 typedef
 struct grCamera2D {
 
-  geComponent* _super;
+  geComponent _super;
 
   mFrame2D* frame;
 
@@ -36,9 +36,7 @@ struct grCamera2D {
 // Creation/Destruction
 // ====================
 
-grCamera2D* grCreate_Camera2D(mFrame2D* frame, float width, float height);
-
-void grDestroy_Camera2D_Sub_Component(geComponent* component);
+void grCamera2D_ctor(grCamera2D* self, mFrame2D* frame, float width, float height);
 
 void grSet_Sub_Camera2D(void* sub, grPrepare_Camera_fn prepare, grCamera2D* camera);
 

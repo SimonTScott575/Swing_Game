@@ -8,10 +8,9 @@ D_SOURCE_LLIST(phJoint2D*, phJoint2D_ptr);
 // Initialization
 // ==============
 
-phJoint2D init_phJoint2D(mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2, phApply_Joint2D_fn apply_fn) {
-    return (phJoint2D){
+void phJoint2D_ctor(phJoint2D* self, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2) {
 
-      ._super = NULL,
+    *self = (phJoint2D){
 
       .active = true,
       ._joint_node = NULL,
@@ -21,53 +20,47 @@ phJoint2D init_phJoint2D(mVector2f position1, phRigid_Body2D* rb1, mVector2f pos
       .rigid_body2 = rb2,
       .position2 = position2,
 
-      ._sub = NULL,
-      ._apply_joint = apply_fn
+      ._sub = NULL
 
     };
+
+    geComponent_ctor(&self->_super);
+    geSet_Sub_Component(self, NULL, NULL, &self->_super);
+
 }
 
-void phSet_Sub_Joint2D(void* sub, phJoint2D* joint) {
+void phSet_Sub_Joint2D(void* sub, phApply_Joint2D_fn apply_fn, phJoint2D* joint) {
   joint->_sub = sub;
+  joint->_apply_joint = apply_fn;
 }
 
-phSpring_Joint2D* new_phSpring_Joint2D(float k, float rest_length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2) {
+void phSpring_Joint2D_ctor(
+  phSpring_Joint2D* self,
+  float k, float rest_length,
+  mVector2f position1, phRigid_Body2D* rb1,
+  mVector2f position2, phRigid_Body2D* rb2
+) {
 
-  phSpring_Joint2D* spring = malloc(sizeof(phSpring_Joint2D));
-  spring->k = k;
-  spring->rest_length = rest_length;
+  self->k = k;
+  self->rest_length = rest_length;
 
-  spring->_super = init_phJoint2D(position1, rb1, position2, rb2, phApply_Spring_Joint2D);
-  phSet_Sub_Joint2D(spring, &spring->_super);
-
-  spring->_super._super = geCreate_Component();
-  geSet_Sub_Component(&spring->_super, NULL, del_phJoint2D_Sub_Component, spring->_super._super);
-
-  return spring;
-
-}
-
-phRod_Joint2D* new_phRod_Joint2D(float length, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2) {
-
-  phRod_Joint2D* rod = malloc(sizeof(phRod_Joint2D));
-  rod->radial_velocity = 0;
-  rod->_is_radial_motion = false;
-
-  rod->_super = init_phJoint2D(position1, rb1, position2, rb2, phApply_Rod_Joint2D);
-  phSet_Sub_Joint2D(rod, &rod->_super);
-
-  rod->_super._super = geCreate_Component();
-  geSet_Sub_Component(&rod->_super, NULL, del_phJoint2D_Sub_Component, rod->_super._super);
-
-  return rod;
+  phJoint2D_ctor(&self->_super, position1, rb1, position2, rb2);
+  phSet_Sub_Joint2D(self, phApply_Spring_Joint2D, &self->_super);
 
 }
 
-void del_phJoint2D_Sub_Component(geComponent* component) {
+void phRod_Joint2D_ctor(
+  phRod_Joint2D* self,
+  float length,
+  mVector2f position1, phRigid_Body2D* rb1,
+  mVector2f position2, phRigid_Body2D* rb2
+) {
 
-  phJoint2D* joint = component->_sub;
+  self->radial_velocity = 0;
+  self->_is_radial_motion = false;
 
-  free(joint->_sub);
+  phJoint2D_ctor(&self->_super, position1, rb1, position2, rb2);
+  phSet_Sub_Joint2D(self, phApply_Rod_Joint2D, &self->_super);
 
 }
 
@@ -76,7 +69,7 @@ void del_phJoint2D_Sub_Component(geComponent* component) {
 // =====
 
 void phApply_Joint2D(phJoint2D* joint) {
-  if (joint->_super != NULL && !geComponent_Is_Active(joint->_super)) {
+  if (!geComponent_Is_Active(&joint->_super)) {
     return;
   }
 

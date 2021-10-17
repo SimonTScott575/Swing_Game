@@ -2,34 +2,30 @@
 
 #include <string.h>
 
-Menu_Camera* Create_Menu_Camera(float x_length) {
+Menu_Camera* Create_Menu_Camera(float x_length, geScene* scene) {
 
-  geEntity* entity = geCreate_Entity();
+  Menu_Camera* mc = malloc(sizeof(Menu_Camera));
+  if (mc == NULL) { return NULL; }
 
-  mFrame2D* frame = new_mFrame2D(mVector2f_ZERO, 0, mVector2f_ONE);
+  mc->_super = geEntity_ctor(&mc->_super);
+  geSet_Sub_Entity(mc, Destroy_Menu_Camera_Sub_Entity, &mc->_super);
+
+  mc->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);
 
   float inv_ar = geGet_Active_Window()->_Y_pixels/(float)geGet_Active_Window()->_X_pixels;
-  grCamera2D* camera2D = grCreate_Camera2D(frame, x_length, x_length*inv_ar);
-  camera2D->background_colour[0] = 52/256.0;
-  camera2D->background_colour[1] = 160/256.0;
-  camera2D->background_colour[2] = 164/256.0;
-  camera2D->background_colour[3] = 1;
+  grCamera2D_ctor(&mc->camera2D, &mc->frame, x_length, x_length*inv_ar);
+  mc->camera2D.background_colour[0] = 52/256.0;
+  mc->camera2D.background_colour[1] = 160/256.0;
+  mc->camera2D.background_colour[2] = 164/256.0;
+  mc->camera2D.background_colour[3] = 1;
 
   //! component for adjusting projection with aspect ratio needed
 
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(camera2D->_super, entity);
+  geAdd_Component(&mc->camera2D._super, &mc->_super);
 
-  Menu_Camera* lsc = malloc(sizeof(Menu_Camera));
-  *lsc = (Menu_Camera){
-    ._super = entity,
-    .frame = frame,
-    .camera2D = camera2D
-  };
+  geAdd_Entity(&mc->_super, scene);
 
-  geSet_Sub_Entity(lsc, Destroy_Menu_Camera_Sub_Entity, entity);
-
-  return lsc;
+  return mc;
 
 }
 

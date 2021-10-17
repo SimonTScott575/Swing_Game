@@ -1,20 +1,14 @@
 #include <Game_Engine/ECS/geComponent.h>
 
-D_SOURCE_dLList(geComponent*, geComponent_ptr);
-
-// ======
-// static
-// ======
-
-// static geComponent_ID geHighest_Component_ID = 0;
+D_SOURCE_LLIST(geComponent*, geComponent_ptr);
 
 // ====================
 // Creation/Destruction
 // ====================
 
-geComponent geComponent_init() { //? id ?
+void geComponent_ctor(geComponent* self) {
 
-  return (geComponent){
+  *self = (geComponent){
     ._entity = NULL,
     ._component_node = NULL,
 
@@ -23,14 +17,21 @@ geComponent geComponent_init() { //? id ?
     .layer_mask = 0,
     .ID = 0,
 
+    ._deallocate = false,
+
     ._sub = NULL,
     ._update = NULL,
     ._destroy = NULL
   };
 
 }
+void geComponent_dtor(geComponent* component) {
+  if (component->_destroy != NULL) {
+    component->_destroy(component);
+  }
+}
 
-geComponent* geCreate_Component() { //? id ?
+geComponent* geCreate_Component() {
 
   geComponent* component = malloc(sizeof(geComponent));
 
@@ -43,6 +44,8 @@ geComponent* geCreate_Component() { //? id ?
     .layer_mask = 0,
     .ID = 0,
 
+    ._deallocate = true,
+
     ._sub = NULL,
     ._update = NULL,
     ._destroy = NULL
@@ -52,13 +55,17 @@ geComponent* geCreate_Component() { //? id ?
 
 }
 
-void geDestroy_Component(geComponent* component) { //!!! MUST remove from entity components list (see unload) ? //! NEED component list !
+void geDestroy_Component(geComponent* component) { //!!! MUST remove from entity components list (see unload) ? //! NEED component list ! //? also entity from scene ?
+
+  bool deallocate = component->_deallocate;
 
   if (component->_destroy != NULL) {
     component->_destroy(component);
   }
 
-  free(component);
+  if (deallocate) {
+    free(component);
+  }
 
 }
 
@@ -79,12 +86,3 @@ void geUpdate_Component(geComponent* component) {
   }
 
 }
-// ===
-
-// void geRegister_New_Component_ID(geComponent* component, geComponent_ID* id) {
-//   geHighest_Component_ID += 1;
-//
-//   *id = geHighest_Component_ID;
-//
-//   //...
-// }

@@ -17,9 +17,9 @@ void Build_Level_2_Entities(Level_Builder* builder) {
 
   Level_2_Builder* l2_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
-  builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,0}}, 1, builder->scene);
 
   mVector2f gem_positions[4] = {
     {{0 + L2_A, 0   }},
@@ -28,42 +28,50 @@ void Build_Level_2_Entities(Level_Builder* builder) {
     {{0 + 0,   -L2_A}}
   };
 
-  l2_builder->gem_arr[1-1] = Create_Gem(gem_positions[0]);
-  l2_builder->gem_arr[2-1] = Create_Gem(gem_positions[1]);
-  l2_builder->gem_arr[3-1] = Create_Gem(gem_positions[2]);
-  l2_builder->gem_arr[4-1] = Create_Gem(gem_positions[3]);
+  l2_builder->gem_arr[1-1] = Create_Gem(gem_positions[0], builder->scene);
+  l2_builder->gem_arr[2-1] = Create_Gem(gem_positions[1], builder->scene);
+  l2_builder->gem_arr[3-1] = Create_Gem(gem_positions[2], builder->scene);
+  l2_builder->gem_arr[4-1] = Create_Gem(gem_positions[3], builder->scene);
 
   l2_builder->hs_arr[1-1] = Create_Hook_Surface(
     (mVector2f){{ 0, -L2_HW-L2_BUFFER/2 }},
-    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }}
+    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }},
+    builder->scene
   );
   l2_builder->hs_arr[2-1] = Create_Hook_Surface(
     (mVector2f){{ 0, L2_HW+L2_BUFFER/2 }},
-    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }}
+    (mVector2f){{ L2_HW*2+L2_BUFFER*2, L2_BUFFER }},
+    builder->scene
   );
   l2_builder->hs_arr[3-1] = Create_Hook_Surface(
     (mVector2f){{ 0 -L2_HW-L2_BUFFER/2,  0 }},
-    (mVector2f){{ L2_BUFFER, L2_HW*2 }}
+    (mVector2f){{ L2_BUFFER, L2_HW*2 }},
+    builder->scene
   );
   l2_builder->hs_arr[4-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L2_HW+L2_BUFFER/2, 0 }},
-    (mVector2f){{ L2_BUFFER, L2_HW*2 }}
+    (mVector2f){{ L2_BUFFER, L2_HW*2 }},
+    builder->scene
   );
   l2_builder->hs_arr[5-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L2_C+L2_B/2, L2_C+L2_B/2 }},
-    (mVector2f){{ L2_B, L2_B }}
+    (mVector2f){{ L2_B, L2_B }},
+    builder->scene
   );
   l2_builder->hs_arr[6-1] = Create_Hook_Surface(
     (mVector2f){{ 0 - (L2_C+L2_B/2), L2_C+L2_B/2 }},
-    (mVector2f){{ L2_B, L2_B }}
+    (mVector2f){{ L2_B, L2_B }},
+    builder->scene
   );
   l2_builder->hs_arr[7-1] = Create_Hook_Surface(
     (mVector2f){{ 0 - (L2_C+L2_B/2), -(L2_C+L2_B/2) }},
-    (mVector2f){{ L2_B, L2_B }}
+    (mVector2f){{ L2_B, L2_B }},
+    builder->scene
   );
   l2_builder->hs_arr[8-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L2_C+L2_B/2, -(L2_C+L2_B/2) }},
-    (mVector2f){{ L2_B, L2_B }}
+    (mVector2f){{ L2_B, L2_B }},
+    builder->scene
   );
 
   builder->hs_arr = l2_builder->hs_arr;

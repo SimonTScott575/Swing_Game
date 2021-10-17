@@ -7,19 +7,19 @@ typedef struct Hook_Surface Hook_Surface;
 
 struct Hook_Surface {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grColour_Render* cr;
-  grRenderer* renderer;
+  grRenderer renderer;
 
   phAABB_Collider2D* aabb_c;
-  phRigid_Body2D* rb;
+  phRigid_Body2D rb;
 
 };
 
-Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale);
+Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale, geScene* scene);
 
 void Destroy_Hook_Surface_Sub_Entity(geEntity* entity);
 

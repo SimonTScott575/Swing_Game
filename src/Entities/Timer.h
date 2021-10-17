@@ -8,18 +8,16 @@
 typedef
 struct Timer {
 
-  geEntity* _super;
-
-  mFrame2D* frame;
+  geEntity _super;
 
   grText* text_sec;
   grText* text_msec;
 
-  Timer_Clock* clock;
+  Timer_Clock clock;
 
 } Timer;
 
-Timer* Create_Timer(grText* text_sec, grText* text_msec);
+Timer* Create_Timer(grText* text_sec, grText* text_msec, geScene* scene);
 
 void Destroy_Timer_Sub_Entity(geEntity* entity);
 

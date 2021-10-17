@@ -1,6 +1,8 @@
 #ifndef GE_ENTITY_H
 #define GE_ENTITY_H
 
+#include <stdbool.h>
+
 #include "geComponent.h"
 
 typedef struct geEntity geEntity;
@@ -25,11 +27,16 @@ struct geEntity {
   void* _sub;
   geDestroy_Entity_fn _destroy;
 
+  bool _deallocate;
+
 };
 
 // ==========================
 // Initialization/Termination
 // ==========================
+
+geEntity geEntity_ctor(geEntity* self);
+void geEntity_dtor(geEntity* entity);
 
 geEntity* geCreate_Entity();
 

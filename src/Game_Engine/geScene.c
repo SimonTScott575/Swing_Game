@@ -102,13 +102,13 @@ void geUpdate_Scene(geScene* scene) {
 
 // ===
 
-void geAdd_Entity(geEntity* entity, geScene* scene) {
+dNode_LL(geEntity_ptr)* geAdd_Entity(geEntity* entity, geScene* scene) {
   entity->_entity_node = dAppend_LL(geEntity_ptr)(entity, scene->_entities);
 }
-void geAdd_Entity_Before(geEntity* new_entity, geEntity* entity2, geScene* scene) {
+dNode_LL(geEntity_ptr)* geAdd_Entity_Before(geEntity* new_entity, geEntity* entity2, geScene* scene) {
   new_entity->_entity_node = dInsert_Before_LL(geEntity_ptr)(new_entity, entity2->_entity_node, scene->_entities);
 }
-void geAdd_Entity_After(geEntity* new_entity, geEntity* entity2, geScene* scene) {
+dNode_LL(geEntity_ptr)* geAdd_Entity_After(geEntity* new_entity, geEntity* entity2, geScene* scene) {
   new_entity->_entity_node = dInsert_After_LL(geEntity_ptr)(new_entity, entity2->_entity_node, scene->_entities);
 }
 
@@ -137,13 +137,13 @@ geEntity* geGet_Next_Entity(geEntity* entity) {
 }
 //TODO: get last/prev
 
-void geAdd_System(geSystem* system, geScene* scene) {
+dNode_LL(geSystem_ptr)* geAdd_System(geSystem* system, geScene* scene) {
   system->_system_node = dAppend_LL(geSystem_ptr)(system, scene->_systems);
 }
-void geAdd_System_Before(geSystem* new_system, geSystem* system2, geScene* scene) {
+dNode_LL(geSystem_ptr)* geAdd_System_Before(geSystem* new_system, geSystem* system2, geScene* scene) {
   new_system->_system_node = dInsert_Before_LL(geSystem_ptr)(new_system, system2->_system_node, scene->_systems);
 }
-void geAdd_System_After(geSystem* new_system, geSystem* system2, geScene* scene) {
+dNode_LL(geSystem_ptr)* geAdd_System_After(geSystem* new_system, geSystem* system2, geScene* scene) {
   new_system->_system_node = dInsert_After_LL(geSystem_ptr)(new_system, system2->_system_node, scene->_systems);
 }
 

@@ -8,9 +8,9 @@ typedef struct Menu_Text Menu_Text;
 
 struct Menu_Text {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grFont* font;
   grText* text;
@@ -22,8 +22,21 @@ struct Menu_Text {
 
 };
 
-Menu_Text* Create_Menu_Text(const char* text, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale);
-Menu_Text* Create_Menu_Text_With_Resolution(const char* contents, const char* font_path, float rel_X, float rel_Y, float abs_X, float abs_Y, float scale, int res) ;
+Menu_Text* Create_Menu_Text(
+  const char* contents,
+  const char* font_path,
+  float rel_X, float rel_Y, float abs_X, float abs_Y,
+  float scale,
+  geScene* scene
+);
+Menu_Text* Create_Menu_Text_With_Resolution(
+  const char* contents,
+  const char* font_path,
+  float rel_X, float rel_Y, float abs_X, float abs_Y,
+  float scale,
+  int res,
+  geScene* scene
+) ;
 
 void Destroy_Menu_Text_Sub_Entity(geEntity* entity);
 

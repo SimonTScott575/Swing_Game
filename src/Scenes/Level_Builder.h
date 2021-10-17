@@ -38,6 +38,8 @@ struct Level_Builder {
 
   bool as_scene;
 
+  geScene* scene; // MUST be set non-NULL if as_scene == true
+
   // MUST SET BY USER
   Player* player;
   Rope* rope;
@@ -63,7 +65,7 @@ struct Level_Builder {
 } Level_Builder;
 
 void Build_Level(float x_offset, Level_Builder* builder, geScene* scene);
-void Build_Level_Basics_Load(float x_offset, Level_Builder* builder);
+void Build_Level_Basics_Load(float x_offset, geScene* scene, Level_Builder* builder);
 void Build_Level_Basics_Set(grRendering_System2D* rs, Level_Builder* builder);
 void Build_Level_Basics_Add(geScene* scene, Level_Builder* builder);
 

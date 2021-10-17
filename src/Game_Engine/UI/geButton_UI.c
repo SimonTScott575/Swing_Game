@@ -10,30 +10,15 @@
 //   geDestroy_UI_Element(uie);
 // }
 
-geButton_UI* geCreate_Button_UI(float x_length, float y_length, mFrame2D* frame) {
+void geButton_UI_ctor(geButton_UI* self, float x_length, float y_length, mFrame2D* frame) {
 
-  geButton_UI* button = malloc(sizeof(geButton_UI));
-
-  *button = (geButton_UI){
-    ._super = init_geUI_Element(frame),
+  *self = (geButton_UI){
     .x_length = x_length,
     .y_length = y_length
   };
 
-  geSet_Sub_UI_Element(button, geUpdate_Button_UI, geDestroy_Button_Sub_UI_Element, &button->_super);
-
-  button->_super._super = geCreate_Component();
-  geSet_Sub_Component(&button->_super, NULL, geDestroy_UI_Element_Sub_Component, button->_super._super);
-
-  return button;
-
-}
-
-void geDestroy_Button_Sub_UI_Element(geUI_Element* uie) {
-
-  geButton_UI* button = uie->_sub;
-
-  free(button);
+  geUI_Element_ctor(&self->_super, frame);
+  geSet_Sub_UI_Element(self, geUpdate_Button_UI, NULL, &self->_super);
 
 }
 

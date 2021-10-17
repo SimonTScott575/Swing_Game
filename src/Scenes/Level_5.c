@@ -40,22 +40,23 @@ void Build_Level_5_Entities(Level_Builder* builder) {
 
   Level_5_Builder* l5_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
-  builder->portal = Create_Portal((mVector2f){{0,(L5_GEM_COUNT+1)*L5_GEM_SEP}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,(L5_GEM_COUNT+1)*L5_GEM_SEP}}, 1, builder->scene);
 
   for (int i = 0; i < L5_HS_COUNT; i++) {
 
     l5_builder->hs_arr[i] = Create_Hook_Surface(
       (mVector2f){{ ( 1 - 2*(i%2) )*3, (i+0.5)*L5_GEM_SEP }},
-      (mVector2f){{ 1, 1 }}
+      (mVector2f){{ 1, 1 }},
+      builder->scene
     );
 
   }
 
   for (int i = 0; i < L5_GEM_COUNT; i++) {
 
-    l5_builder->gem_arr[i] = Create_Gem((mVector2f){{0, L5_GEM_SEP*(i+1)}});
+    l5_builder->gem_arr[i] = Create_Gem((mVector2f){{0, L5_GEM_SEP*(i+1)}}, builder->scene);
 
   }
   builder->hs_arr = l5_builder->hs_arr;

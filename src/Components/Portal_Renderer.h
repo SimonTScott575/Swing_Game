@@ -7,7 +7,7 @@ typedef struct Portal_Renderer Portal_Renderer;
 
 struct Portal_Renderer {
 
-  geComponent* _super;
+  geComponent _super;
 
   grTexture* grey_t;
   grTexture* white_t;
@@ -17,8 +17,8 @@ struct Portal_Renderer {
 
 };
 
-Portal_Renderer* Create_Portal_Renderer();
+void Portal_Renderer_ctor(Portal_Renderer* self);
 void Update_Portal_Renderer(geComponent* component);
-void Destroy_Portal_Renderer_Sub_Component(geComponent* component);
+void Portal_Renderer_Sub_Component_dtor(geComponent* component);
 
 #endif

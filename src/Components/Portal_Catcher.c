@@ -10,16 +10,9 @@ mVector2f g_portal_pos = mVector2f_ZERO;
 int g_portal_catches_player = 0;
 float g_portal_catch_time = 0;
 
-Portal_Catcher* Create_Portal_Catcher(float radius, phRigid_Body2D* rb) {
+void Portal_Catcher_ctor(Portal_Catcher* self, float radius, phRigid_Body2D* rb) {
 
-  Portal_Catcher* pc = malloc(sizeof(Portal_Catcher));
-
-  phSave_Collider_Collisions(rb->collider, pc->collisions, 10);
-
-  g_portal_catches_player = 0;
-  g_portal_catch_time = 0;
-
-  *pc = (Portal_Catcher){
+  *self = (Portal_Catcher){
 
     .radius = radius,
     .is_caught = false,
@@ -29,10 +22,13 @@ Portal_Catcher* Create_Portal_Catcher(float radius, phRigid_Body2D* rb) {
 
   };
 
-  pc->_super = geCreate_Component();
-  geSet_Sub_Component(pc, Update_Portal_Catcher, Destroy_Portal_Catcher_Sub_Component, pc->_super);
+  phSave_Collider_Collisions(rb->collider, self->collisions, 10);
 
-  return pc;
+  g_portal_catches_player = 0;
+  g_portal_catch_time = 0;
+
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self, Update_Portal_Catcher, NULL, &self->_super);
 
 };
 
@@ -51,9 +47,9 @@ void Update_Portal_Catcher(geComponent* component) {
 
     phRigid_Body2D* player_rb = NULL;
 
-    if (rb1->_super->_entity->layer_mask & PLAYER_LAYER) {
+    if (rb1->_super._entity->layer_mask & PLAYER_LAYER) {
       player_rb = rb1;
-    } else if (rb2->_super->_entity->layer_mask & PLAYER_LAYER) {
+    } else if (rb2->_super._entity->layer_mask & PLAYER_LAYER) {
       player_rb = rb2;
     }
 
@@ -81,13 +77,5 @@ void Update_Portal_Catcher(geComponent* component) {
   }
 
   g_portal_pos = pc->rb->frame->position;
-
-}
-
-void Destroy_Portal_Catcher_Sub_Component(geComponent* component) {
-
-  Portal_Catcher* pc = component->_sub;
-
-  free(pc);
 
 }

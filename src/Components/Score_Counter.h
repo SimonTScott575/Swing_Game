@@ -6,24 +6,14 @@
 typedef
 struct Score_Counter {
 
-  geComponent* _super;
+  geComponent _super;
 
-  // mFrame2D* frame_num;
-  // mFrame2D* frame_den;
-  //
-  // grFont* font;
   grText* text_num;
   grText* text_den;
 
-  // grShader* shader;
-  // grText_Renderer* text_r_num;
-  // grText_Renderer* text_r_den;
-
-
 } Score_Counter;
 
-Score_Counter* Create_Score_Counter(grText* text_num, grText* text_den);
-void Destroy_Score_Counter_Sub_Component(geComponent* component);
+void Score_Counter_ctor(Score_Counter* self, grText* text_num, grText* text_den);
 
 void Update_Score_Counter(geComponent* component);
 

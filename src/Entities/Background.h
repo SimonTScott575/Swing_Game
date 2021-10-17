@@ -6,16 +6,16 @@
 typedef
 struct Background {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grSprite* sprite;
-  grRenderer* renderer;
+  grRenderer renderer;
 
 } Background;
 
-Background* Create_Background(float x_length, float y_length);
+Background* Create_Background(float x_length, float y_length, geScene* scene);
 
 void Destroy_Background_Sub_Entity(geEntity* entity);
 

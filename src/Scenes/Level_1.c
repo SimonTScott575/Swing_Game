@@ -17,38 +17,44 @@ void Build_Level_1_Entities(Level_Builder* builder) {
 
   Level_1_Builder* l1_builder = builder->_sub;
 
-  builder->player = Create_Player();
-  builder->portal = Create_Portal((mVector2f){{L1_TOTAL-L1_A,0}}, 1);
+  builder->player = Create_Player(builder->scene);
+  builder->portal = Create_Portal((mVector2f){{L1_TOTAL-L1_A,0}}, 1, builder->scene);
 
   l1_builder->hs_arr[1-1] = Create_Hook_Surface(
     (mVector2f){{ 0, -L1_E/2-L1_D - L1_BUFFER/2 }},
-    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}}
+    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}},
+    builder->scene
   );
   l1_builder->hs_arr[2-1] = Create_Hook_Surface(
     (mVector2f){{ 0, L1_E/2+L1_D + L1_BUFFER/2 }},
-    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}}
+    (mVector2f){{L1_TOTAL+L1_BUFFER*2, L1_BUFFER}},
+    builder->scene
   );
   l1_builder->hs_arr[3-1] = Create_Hook_Surface(
     (mVector2f){{ 0 - L1_A/2 - L1_BUFFER/2, 0 }},
-    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}}
+    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}},
+    builder->scene
   );
   l1_builder->hs_arr[4-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L1_TOTAL-L1_A/2 + L1_BUFFER/2, 0 }},
-    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}}
+    (mVector2f){{L1_BUFFER, L1_D+2*L1_E}},
+    builder->scene
   );
   l1_builder->hs_arr[5-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L1_A/2 + L1_B/2, -L1_E/2 - L1_D/2 }},
-    (mVector2f){{L1_B, L1_D}}
+    (mVector2f){{L1_B, L1_D}},
+    builder->scene
   );
   l1_builder->hs_arr[6-1] = Create_Hook_Surface(
     (mVector2f){{ 0 + L1_A/2 + L1_B + L1_C + L1_B/2, L1_E/2 + L1_D/2 }},
-    (mVector2f){{L1_B, L1_D}}
+    (mVector2f){{L1_B, L1_D}},
+    builder->scene
    );
 
   mVector2f gem_positions[1] = {
     (mVector2f){{0 + L1_A/2 + L1_B + L1_C/2,0}}
   };
-  l1_builder->gem_arr[0]  = Create_Gem(gem_positions[0]);
+  l1_builder->gem_arr[0]  = Create_Gem(gem_positions[0], builder->scene);
 
   builder->hs_arr = l1_builder->hs_arr;
   builder->gem_arr = l1_builder->gem_arr;
@@ -63,14 +69,16 @@ void Build_Level_1_Entities(Level_Builder* builder) {
       "../Resources/Fonts/Fira/FiraSans-Heavy.ttf",
       0,0,
       0,-6,
-      4
+      4,
+      builder->scene
     );
     builder->instruction_2 = Create_Menu_Text(
       "2) LEFT CLICK + A/D",
       "../Resources/Fonts/Fira/FiraSans-Heavy.ttf",
       0,0,
       5,6,
-      4
+      4,
+      builder->scene
     );
   }
 

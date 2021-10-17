@@ -9,16 +9,16 @@ typedef struct Camera Camera;
 
 struct Camera {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
-  grCamera2D* camera2D;
-  Camera_Controller* cc;
+  grCamera2D camera2D;
+  Camera_Controller cc;
 
 };
 
-Camera* Create_Camera(mFrame2D* player_frame, float x_length);
+Camera* Create_Camera(mFrame2D* player_frame, float x_length, geScene* scene);
 
 void Destroy_Camera_Sub_Entity(geEntity* entity);
 

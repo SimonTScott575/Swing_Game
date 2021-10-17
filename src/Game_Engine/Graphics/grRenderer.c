@@ -12,12 +12,9 @@ D_SOURCE_LLIST(grRenderer*, grRenderer_ptr);
 // Creation/Destruction
 // ====================
 
-grRenderer* grCreate_Renderer_2D(mFrame2D* frame, grModel* model, grShader* shader) {
+void grRenderer_2D_ctor(grRenderer* self, mFrame2D* frame, grModel* model, grShader* shader) {
 
-  grRenderer* renderer = malloc(sizeof(grRenderer));
-  *renderer = (grRenderer){
-
-    ._super = geCreate_Component(),
+  *self = (grRenderer){
 
     .is_active = true,
     ._renderer_node = NULL,
@@ -34,9 +31,9 @@ grRenderer* grCreate_Renderer_2D(mFrame2D* frame, grModel* model, grShader* shad
 
   };
 
-  geSet_Sub_Component(renderer, NULL, grDestroy_Renderer_Sub_Component, renderer->_super);
+  geComponent_ctor(&self->_super);
 
-  return renderer;
+  geSet_Sub_Component(self, NULL, grRenderer_Sub_Component_dtor, &self->_super);
 
 }
 
@@ -75,7 +72,7 @@ grRenderer* grCreate_Renderer_2D(mFrame2D* frame, grModel* model, grShader* shad
 //
 // }
 
-void grDestroy_Renderer_Sub_Component(geComponent* component) {
+void grRenderer_Sub_Component_dtor(geComponent* component) {
 
   grRenderer* renderer = component->_sub;
 
@@ -83,15 +80,14 @@ void grDestroy_Renderer_Sub_Component(geComponent* component) {
     renderer->_destroy_sub(renderer);
   }
 
-  free(renderer);
-
 }
 
 // ===
 
-void grSet_Sub_Renderer(void* sub, grDestroy_Sub_Renderer_fn destroy_sub_fn, grRenderer* renderer) {
-  renderer->_destroy_sub = destroy_sub_fn;
+void grSet_Sub_Renderer(void* sub, grRender_fn render, grDestroy_Sub_Renderer_fn destroy, grRenderer* renderer) {
   renderer->_sub = sub;
+  renderer->render_fn = render;
+  renderer->_destroy_sub = destroy;
 }
 
 // ======

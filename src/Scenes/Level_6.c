@@ -40,22 +40,23 @@ void Build_Level_6_Entities(Level_Builder* builder) {
 
   Level_6_Builder* l6_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
-  builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,0}}, 1, builder->scene);
 
   for (int i = 0; i < L6_HS2_COUNT; i++) {
 
     l6_builder->hs2_arr[i] = Create_Hook_Surface2(
       L6_HS2_POSITION_ARR[i],
-      L6_HS2_SCALE_ARR[i]
+      L6_HS2_SCALE_ARR[i],
+      builder->scene
     );
 
   }
 
   for (int i = 0; i < L6_GEM_COUNT; i++) {
 
-    l6_builder->gem_arr[i] = Create_Gem(L6_GEM_POSITION_ARR[i]);
+    l6_builder->gem_arr[i] = Create_Gem(L6_GEM_POSITION_ARR[i], builder->scene);
 
   }
   builder->hs2_arr = l6_builder->hs2_arr;

@@ -16,7 +16,7 @@ typedef struct Level_Select_Navigator Level_Select_Navigator;
 
 struct Level_Select_Navigator {
 
-  geComponent* _super;
+  geComponent _super;
 
   geEntity* next_level_e;
   geEntity* prev_level_e;
@@ -31,7 +31,8 @@ struct Level_Select_Navigator {
 
 extern Level_Select_Navigator* active_lsn;
 
-Level_Select_Navigator* Create_Level_Select_Navigator(
+void Level_Select_Navigator_ctor(
+  Level_Select_Navigator* self,
   geEntity* next_level_e,
   geEntity* prev_level_e,
   geEntity* play_level_e,
@@ -39,8 +40,9 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   geEntity* locked_e,
   Level_Select_Camera_Controller* lscc
 );
+void Level_Select_Navigator_Sub_Component_dtor(geComponent* component);
+
 void Update_Level_Select_Navigator_Sub_Component(geComponent* component);
-void Destroy_Level_Select_Navigator_Sub_Component(geComponent* component);
 
 void On_Click_Play_Button(geUI_Element* uie);
 void On_Click_End_Game_Button(geUI_Element* uie);

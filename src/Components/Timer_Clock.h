@@ -8,7 +8,7 @@
 typedef
 struct Timer_Clock {
 
-  geComponent* _super;
+  geComponent _super;
 
   grText* text_sec;
   grText* text_msec;
@@ -22,8 +22,7 @@ struct Timer_Clock {
 
 } Timer_Clock;
 
-Timer_Clock* Create_Timer_Clock(grText* text_sec, grText* text_msec);
-void Destroy_Timer_Clock_Sub_Component(geComponent* component);
+void Timer_Clock_ctor(Timer_Clock* self, grText* text_sec, grText* text_msec);
 
 void Update_Timer_Clock(geComponent* component);
 

@@ -9,7 +9,7 @@ typedef struct geUI_Renderer geUI_Renderer;
 
 struct geUI_Renderer {
 
-  grRenderer* _super;
+  grRenderer _super;
 
   geUI_Element* uie;
 

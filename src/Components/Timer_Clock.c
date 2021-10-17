@@ -2,12 +2,9 @@
 
 #include <string.h>
 
-Timer_Clock* Create_Timer_Clock(grText* text_sec, grText* text_msec) {
+void Timer_Clock_ctor(Timer_Clock* self, grText* text_sec, grText* text_msec) {
 
-  Timer_Clock* clock = malloc(sizeof(Timer_Clock));
-
-  *clock = (Timer_Clock){
-    ._super = geCreate_Component(),
+  *self = (Timer_Clock){
     .text_sec = text_sec,
     .text_msec = text_msec,
     .time_start = geGet_Active_Game()->time, //! should be set by level_transitioner
@@ -16,10 +13,9 @@ Timer_Clock* Create_Timer_Clock(grText* text_sec, grText* text_msec) {
     .is_started = false,
     .is_ended = false
   };
+  geComponent_ctor(&self->_super);
 
-  geSet_Sub_Component(clock, Update_Timer_Clock, Destroy_Timer_Clock_Sub_Component, clock->_super);
-
-  return clock;
+  geSet_Sub_Component(self, Update_Timer_Clock, NULL, &self->_super);
 
 }
 
@@ -46,13 +42,5 @@ void Update_Timer_Clock(geComponent* component) {
   grSet_Text_Contents(s_sec, clock->text_sec);
   grSet_Text_Contents(s_msec+1, clock->text_msec);
   // clock->text->_contents = strdup("a");
-
-}
-
-void Destroy_Timer_Clock_Sub_Component(geComponent* component) {
-
-  Timer_Clock* clock = component->_sub;
-
-  free(clock);
 
 }

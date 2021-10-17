@@ -6,7 +6,7 @@
 typedef
 struct Display_Time {
 
-  geComponent* _super;
+  geComponent _super;
 
   char* prefix;
   int prefix_length;
@@ -17,8 +17,12 @@ struct Display_Time {
 
 } Display_Time;
 
-Display_Time* Create_Display_Time(char* prefix, float* display_times, grText_Renderer* text_r, float x);
+void Display_Time_ctor(Display_Time* self, char* prefix, float* display_times, grText_Renderer* text_r, float x);
+void Display_Time_Sub_Component_dtor(geComponent* component);
+
+Display_Time* Display_Time_new(char* prefix, float* display_times, grText_Renderer* text_r, float x);
+void Display_Time_Sub_Component_del(geComponent* component);
+
 void Update_Display_Time(geComponent* component);
-void Destroy_Display_Time_Sub_Component(geComponent* component);
 
 #endif

@@ -41,7 +41,7 @@ struct grText {
 typedef
 struct grText_Renderer {
 
-  grRenderer* _super;
+  grRenderer _super;
 
   mFrame2D* frame;
   float rel_X;

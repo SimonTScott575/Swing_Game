@@ -10,7 +10,7 @@
 typedef
 struct Rope_Controller {
 
-  geComponent* _super;
+  geComponent _super;
 
   mFrame2D* frame;
   grRenderer* renderer;
@@ -36,7 +36,7 @@ struct Rope_Controller {
 
 } Rope_Controller;
 
-Rope_Controller* Create_Rope_Controller(mFrame2D* frame, grRenderer* renderer, phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j);
+void Rope_Controller_ctor(Rope_Controller* self, mFrame2D* frame, grRenderer* renderer, phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j);
 void Update_Rope_Controller(geComponent* component);
 void Destroy_Rope_Controller_Sub_Component(geComponent* component);
 

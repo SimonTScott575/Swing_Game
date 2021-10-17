@@ -10,22 +10,22 @@ typedef struct Portal Portal;
 
 struct Portal {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
-  Portal_Renderer* pr;
-  grRenderer* renderer;
+  Portal_Renderer pr;
+  grRenderer renderer;
 
   phCircle_Collider2D* collider;
-  phRigid_Body2D* rb;
+  phRigid_Body2D rb;
 
-  Portal_Catcher* pc;
+  Portal_Catcher pc;
 
 };
 
 //NOTE: radius changes scale, not model dimensions
-Portal* Create_Portal(mVector2f position, float radius);
+Portal* Create_Portal(mVector2f position, float radius, geScene* scene);
 
 void Destroy_Portal_Sub_Entity(geEntity* entity);
 

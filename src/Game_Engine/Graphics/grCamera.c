@@ -11,32 +11,22 @@
 // Creation/Destruction
 // ====================
 
-grCamera2D* grCreate_Camera2D(mFrame2D* frame, float width, float height) { //TODO: ??? should set update via set frame ??? ?
+void grCamera2D_ctor(grCamera2D* self, mFrame2D* frame, float width, float height) { //TODO: ??? should set update via set frame ??? ?
 
-  grCamera2D* camera = malloc(sizeof(grCamera2D));
-  camera->frame = frame;
-  camera->_X_length = 2;
-  camera->_sub = NULL;
-  camera->_prepare = grPrepare_Camera;
-  memcpy(camera->background_colour, (float[4]){0,0,0,1}, 4*sizeof(float));
+  self->frame = frame;
+  self->_X_length = 2;
+  self->_sub = NULL;
+  self->_prepare = grPrepare_Camera;
+  memcpy(self->background_colour, (float[4]){0,0,0,1}, 4*sizeof(float));
 
-  camera->_super = geCreate_Component();
-  geSet_Sub_Component(camera, NULL, grDestroy_Camera2D_Sub_Component, camera->_super);
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self, NULL, NULL, &self->_super);
 
   if (frame != NULL) {
-    grSet_View_2D(frame, camera);
+    grSet_View_2D(frame, self);
   }
-  grSet_Projection_2D(width, height, camera);
+  grSet_Projection_2D(width, height, self);
 
-  return camera;
-
-}
-
-void grDestroy_Camera2D_Sub_Component(geComponent* component) {
-
-  grCamera2D* camera = component->_sub;
-
-  free(camera);
 }
 
 void grSet_Sub_Camera2D(void* sub, grPrepare_Camera_fn prepare, grCamera2D* camera) {

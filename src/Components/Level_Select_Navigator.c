@@ -4,7 +4,8 @@ static void Set_Selected_Level(int level_num, Level_Select_Navigator* lsn);
 
 Level_Select_Navigator* active_lsn = NULL;
 
-Level_Select_Navigator* Create_Level_Select_Navigator(
+void Level_Select_Navigator_ctor(
+  Level_Select_Navigator* self,
   geEntity* next_level_e,
   geEntity* prev_level_e,
   geEntity* play_level_e,
@@ -13,32 +14,28 @@ Level_Select_Navigator* Create_Level_Select_Navigator(
   Level_Select_Camera_Controller* lscc
 ) {
 
-  Level_Select_Navigator* lsn = malloc(sizeof(Level_Select_Navigator));
-
   if (active_lsn == NULL) {
-    active_lsn = lsn;
+    active_lsn = self;
   }
 
-  lsn->next_level_e = next_level_e;
-  lsn->prev_level_e = prev_level_e;
-  lsn->play_level_e = play_level_e;
-  lsn->play_level_text_e = play_level_text_e;
+  self->next_level_e = next_level_e;
+  self->prev_level_e = prev_level_e;
+  self->play_level_e = play_level_e;
+  self->play_level_text_e = play_level_text_e;
 
-  lsn->locked_e = locked_e;
+  self->locked_e = locked_e;
 
-  lsn->lscc = lscc;
+  self->lscc = lscc;
   // lsn->lscc->target_position = (mVector2f){{focused_level_num*60,0}};
   // lsn->lscc->x_length = level_target_x_length[focused_level_num] + 5;
 
-  Set_Selected_Level(focused_level_num, lsn);
+  Set_Selected_Level(focused_level_num, self);
 
-  lsn->_super = geCreate_Component();
-  geSet_Sub_Component(lsn,
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self,
                       Update_Level_Select_Navigator_Sub_Component,
-                      Destroy_Level_Select_Navigator_Sub_Component,
-                      lsn->_super);
-
-  return lsn;
+                      Level_Select_Navigator_Sub_Component_dtor,
+                      &self->_super);
 
 }
 
@@ -67,15 +64,13 @@ void Update_Level_Select_Navigator_Sub_Component(geComponent* component) {
 
 }
 
-void Destroy_Level_Select_Navigator_Sub_Component(geComponent* component) {
+void Level_Select_Navigator_Sub_Component_dtor(geComponent* component) {
 
   Level_Select_Navigator* lsn = component->_sub;
 
   if (active_lsn == lsn) {
     active_lsn = NULL;
   }
-
-  free(lsn);
 
 }
 

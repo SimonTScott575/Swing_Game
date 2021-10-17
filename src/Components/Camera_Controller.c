@@ -4,27 +4,25 @@
 #include "Gem_Controller.h"
 #include "Portal_Catcher.h"
 
-Camera_Controller* Create_Camera_Controller(
+void Camera_Controller_ctor(
+  Camera_Controller* self,
   mFrame2D* camera_frame,
   mFrame2D* player_frame,
   float x_length,
   grCamera2D* camera2D
 ) {
 
-  Camera_Controller* cc = malloc(sizeof(Camera_Controller));
-
-  *cc = (Camera_Controller){
-    ._super = geCreate_Component(),
+  *self = (Camera_Controller){
     .frame = camera_frame,
     .player_frame = player_frame,
     .x_length = x_length,
     .camera2D = camera2D
   };
 
-  geSet_Sub_Component(cc, NULL, Destroy_Camera_Controller_Sub_Component, cc->_super);
-  grSet_Sub_Camera2D(cc, Prepare_Camera_Sub_Camera2D, camera2D);
+  geComponent_ctor(&self->_super);
 
-  return cc;
+  geSet_Sub_Component(self, NULL, NULL, &self->_super);
+  grSet_Sub_Camera2D(self, Prepare_Camera_Sub_Camera2D, camera2D);
 
 }
 
@@ -68,13 +66,5 @@ void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen) {
   grSet_int_by_name("portal_catches_player", Glow_Shader, g_portal_catches_player);
   grSet_float_by_name("portal_catch_time", Glow_Shader, g_portal_catch_time);
   grSet_float_by_name("current_time", Glow_Shader, geGet_Active_Game()->time);
-
-}
-
-void Destroy_Camera_Controller_Sub_Component(geComponent* component) {
-
-  Camera_Controller* cc = component->_sub;
-
-  free(cc);
 
 }

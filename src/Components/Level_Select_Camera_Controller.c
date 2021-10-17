@@ -2,11 +2,13 @@
 
 #include "../Scenes.h"
 
-Level_Select_Camera_Controller* Create_Level_Select_Camera_Controller(mFrame2D* frame, float x_length) {
+void Level_Select_Camera_Controller_ctor(
+  Level_Select_Camera_Controller* self,
+  mFrame2D* frame,
+  float x_length
+) {
 
-  Level_Select_Camera_Controller* lscc = malloc(sizeof(Level_Select_Camera_Controller));
-
-  *lscc = (Level_Select_Camera_Controller){
+  *self = (Level_Select_Camera_Controller){
 
     .frame = frame,
     .target_position = mVector2f_ZERO,
@@ -15,10 +17,9 @@ Level_Select_Camera_Controller* Create_Level_Select_Camera_Controller(mFrame2D* 
 
   };
 
-  lscc->_super = geCreate_Component();
-  geSet_Sub_Component(lscc, Update_Level_Select_Camera_Controller, Destroy_Level_Select_Camera_Controller_Sub_Component, lscc->_super);
+  geComponent_ctor(&self->_super);
 
-  return lscc;
+  geSet_Sub_Component(self, Update_Level_Select_Camera_Controller, NULL, &self->_super);
 
 }
 
@@ -40,13 +41,5 @@ void Update_Level_Select_Camera_Controller(geComponent* component) {
   }
 
   lscc->frame->position = lscc->target_position; // (mVector2f){{focused_level_num*60,0}};
-
-}
-
-void Destroy_Level_Select_Camera_Controller_Sub_Component(geComponent* component) {
-
-  Level_Select_Camera_Controller* lscc = component->_sub;
-
-  free(lscc);
 
 }

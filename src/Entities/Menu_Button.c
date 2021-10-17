@@ -2,35 +2,38 @@
 
 #include "../Scenes.h"
 
-Menu_Button* Create_Menu_Button(float x, float y, float x_offset, float y_offset, float width, float height, char* texture_path, geOn_Click_fn on_click) {
-
-  geEntity* entity = geCreate_Entity();
-
-  mFrame2D* frame = new_mFrame2D((mVector2f){{x_offset,y_offset}}, 0, (mVector2f){{1,1}}); //? scale ?
-
-  grSprite* sprite = grCreate_Sprite(texture_path, width, height);
-
-  geButton_UI* button_ui = geCreate_Button_UI(width, height, frame);
-  button_ui->_super.x = x;
-  button_ui->_super.y = y;
-  button_ui->on_click = on_click;
-
-  geUI_Renderer* ui_r = grCreate_UI_Renderer(&button_ui->_super, sprite->_model, sprite->_shader);
-
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(ui_r->_super->_super, entity);
-  geAdd_Component(button_ui->_super._super, entity);
+Menu_Button* Create_Menu_Button(
+  float x, float y,
+  float x_offset, float y_offset,
+  float width, float height,
+  char* texture_path,
+  geOn_Click_fn on_click,
+  geScene* scene
+) {
 
   Menu_Button* menu_b = malloc(sizeof(Menu_Button)); //??? how is sub destroyed ???
-  *menu_b = (Menu_Button){
-    ._super = entity,
-    .frame = frame,
-    .sprite = sprite,
-    .ui_r = ui_r,
-    .button_ui = button_ui
-  };
+  if (menu_b == NULL) { return NULL; }
 
-  geSet_Sub_Entity(menu_b, Destroy_Menu_Button_Sub_Entity, entity);
+  menu_b->_super = geEntity_ctor(&menu_b->_super);
+  geSet_Sub_Entity(menu_b, Destroy_Menu_Button_Sub_Entity, &menu_b->_super);
+
+  menu_b->frame = mFrame2D_init((mVector2f){{x_offset,y_offset}}, 0, (mVector2f){{1,1}}); //? scale ?
+
+  menu_b->sprite = grCreate_Sprite(texture_path, width, height);
+
+  geButton_UI_ctor(&menu_b->button_ui, width, height, &menu_b->frame);
+  menu_b->button_ui._super.x = x;
+  menu_b->button_ui._super.y = y;
+  menu_b->button_ui.on_click = on_click;
+
+  menu_b->ui_r = grCreate_UI_Renderer(&menu_b->button_ui._super,
+                                      menu_b->sprite->_model,
+                                      menu_b->sprite->_shader);
+
+  geAdd_Component(&menu_b->ui_r->_super._super, &menu_b->_super);
+  geAdd_Component(&menu_b->button_ui._super._super, &menu_b->_super);
+
+  geAdd_Entity(&menu_b->_super, scene);
 
   return menu_b;
 

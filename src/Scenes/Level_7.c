@@ -40,39 +40,46 @@ void Build_Level_7_Entities(Level_Builder* builder) {
 
   Level_7_Builder* l7_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
   builder->portal = Create_Portal(
     (mVector2f){{L7_B/2 + L7_C/2 + L7_PILLAR_COUNT*L7_C, -L7_A}},
-    1
+    1,
+    builder->scene
   );
 
   l7_builder->hs_arr[0] = Create_Hook_Surface(
     (mVector2f){{-L7_B/2-L7_BUFFER/2,0}},
-    (mVector2f){{L7_BUFFER,L7_B}}
+    (mVector2f){{L7_BUFFER,L7_B}},
+    builder->scene
   );
   l7_builder->hs_arr[1] = Create_Hook_Surface(
     (mVector2f){{L7_B/2 - (L7_B+L7_BUFFER)/2, -L7_B/2 - L7_A/2}},
-    (mVector2f){{L7_B+L7_BUFFER,L7_A}}
+    (mVector2f){{L7_B+L7_BUFFER,L7_A}},
+    builder->scene
   );
   l7_builder->hs_arr[2] = Create_Hook_Surface(
     (mVector2f){{-L7_B/2 + L7_TOTAL/2, L7_B/2 + L7_BUFFER/2}},
-    (mVector2f){{L7_TOTAL + 2*L7_BUFFER, L7_BUFFER}}
+    (mVector2f){{L7_TOTAL + 2*L7_BUFFER, L7_BUFFER}},
+    builder->scene
   );
   l7_builder->hs_arr[3] = Create_Hook_Surface(
     (mVector2f){{-L7_B/2 + L7_TOTAL/2, -L7_B/2 - L7_A - L7_BUFFER/2}},
-    (mVector2f){{L7_TOTAL + 2*L7_BUFFER,L7_BUFFER}}
+    (mVector2f){{L7_TOTAL + 2*L7_BUFFER,L7_BUFFER}},
+    builder->scene
   );
   l7_builder->hs_arr[4] = Create_Hook_Surface(
     (mVector2f){{-L7_B/2 + L7_TOTAL + L7_BUFFER/2, 0}},
-    (mVector2f){{L7_BUFFER,L7_BUFFER}}
+    (mVector2f){{L7_BUFFER,L7_BUFFER}},
+    builder->scene
   );
 
   for (int i = 0; i < L7_PILLAR_COUNT; i++) {
 
     l7_builder->hs_arr[5+i] = Create_Hook_Surface(
       (mVector2f){{L7_B/2 + L7_C*(i+1), L7_B/2 - L7_A/2 - (i%2)*L7_B}},
-      (mVector2f){{L7_D,L7_A}}
+      (mVector2f){{L7_D,L7_A}},
+      builder->scene
     );
 
   }
@@ -80,7 +87,8 @@ void Build_Level_7_Entities(Level_Builder* builder) {
   for (int i = 0; i < L7_GEM_COUNT; i++) {
 
     l7_builder->gem_arr[i] = Create_Gem(
-      (mVector2f){{ L7_B/2 + L7_C*(i+1), -L7_A*(1 - i%2) }}
+      (mVector2f){{ L7_B/2 + L7_C*(i+1), -L7_A*(1 - i%2) }},
+      builder->scene
     );
 
   }

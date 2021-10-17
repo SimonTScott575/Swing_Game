@@ -19,8 +19,7 @@ struct geButton_UI {
 
 };
 
-geButton_UI* geCreate_Button_UI(float x_length, float y_length, mFrame2D* frame); //! no renderer needed with ui_r
-void geDestroy_Button_Sub_UI_Element(geUI_Element* uie);
+void geButton_UI_ctor(geButton_UI* self, float x_length, float y_length, mFrame2D* frame); //! no renderer needed with ui_r
 
 void geUpdate_Button_UI(geUI_Element* uie, float x_length, float mouse_X, float mouse_Y, geWindow* window);
 

@@ -9,12 +9,9 @@ int g_gems_caught_count = 0;
 int* g_gems_is_caught = NULL;
 mVector2f* g_gem_positions = NULL;
 
-Gem_Controller* Create_Gem_Controller(grRenderer* renderer, phRigid_Body2D* rb) {
+void Gem_Controller_ctor(Gem_Controller* self, grRenderer* renderer, phRigid_Body2D* rb) {
 
-  Gem_Controller* gc = malloc(sizeof(Gem_Controller));
-
-  *gc = (Gem_Controller){
-    ._super = geCreate_Component(),
+  *self = (Gem_Controller){
 
     .renderer = renderer,
 
@@ -24,11 +21,11 @@ Gem_Controller* Create_Gem_Controller(grRenderer* renderer, phRigid_Body2D* rb) 
     .index = -1
   };
 
-  geSet_Sub_Component(gc, Update_Gem_Controller, Destroy_Gem_Controller_Sub_Component, gc->_super);
+  geComponent_ctor(&self->_super);
 
-  phSave_Collider_Collisions(gc->rb->collider, gc->collisions, 10);
+  geSet_Sub_Component(self, Update_Gem_Controller, NULL, &self->_super);
 
-  return gc;
+  phSave_Collider_Collisions(self->rb->collider, self->collisions, 10);
 
 }
 
@@ -39,10 +36,10 @@ void Update_Gem_Controller(geComponent* component) {
   if (!gc->is_caught && gc->rb->collider->_n_collisions > 0) {
     phRigid_Body2D* rb1 = gc->collisions[0].rigid_body1;
     phRigid_Body2D* rb2 = gc->collisions[0].rigid_body2;
-    if ( (rb1->_super->_entity->layer_mask & PLAYER_LAYER) || (rb2->_super->_entity->layer_mask & PLAYER_LAYER) ) {
+    if ( (rb1->_super._entity->layer_mask & PLAYER_LAYER) || (rb2->_super._entity->layer_mask & PLAYER_LAYER) ) {
 
-      gc->rb->_super->is_active = false;
-      gc->renderer->_super->is_active = false;
+      gc->rb->_super.is_active = false;
+      gc->renderer->_super.is_active = false;
 
       gc->is_caught = true;
 
@@ -52,14 +49,6 @@ void Update_Gem_Controller(geComponent* component) {
     }
 
   }
-
-}
-
-void Destroy_Gem_Controller_Sub_Component(geComponent* component) {
-
-  Gem_Controller* gc = component->_sub;
-
-  free(gc);
 
 }
 

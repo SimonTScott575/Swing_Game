@@ -16,19 +16,13 @@ geUI_Renderer* grCreate_UI_Renderer(geUI_Element* uie, grModel* model, grShader*
 
   mFrame2D* frame = new_mFrame2D(mVector2f_ZERO,0,mVector2f_ONE);
 
-  grRenderer* renderer = grCreate_Renderer_2D(frame, model, shader);
-  grSet_Sub_Renderer(ui_r, geDestroy_UI_Sub_Renderer, renderer);
-  renderer->render_fn = geRender_UI_Renderer;
-
   *ui_r = (geUI_Renderer){
-
-    ._super = renderer,
-
     .uie = uie,
-
     .frame = frame
-
   };
+
+  grRenderer_2D_ctor(&ui_r->_super, frame, model, shader);
+  grSet_Sub_Renderer(ui_r, geRender_UI_Renderer, geDestroy_UI_Sub_Renderer, &ui_r->_super);
 
   return ui_r;
 
@@ -38,7 +32,7 @@ void geDestroy_UI_Sub_Renderer(grRenderer* renderer) {
 
   geUI_Renderer* ui_r = renderer->_sub;
 
-  del_mFrame2D_Sub_Component(ui_r->frame->_super);
+  mFrame2D_del(ui_r->frame);
 
   free(ui_r);
 
@@ -51,7 +45,7 @@ void geRender_UI_Renderer(grRenderer* renderer, grCamera2D* camera) {
   geUI_Renderer* ui_r = renderer->_sub;
   geUI_Element* uie = ui_r->uie;
 
-  mFrame2D* renderer_frame = ui_r->_super->frame;
+  mFrame2D* renderer_frame = ui_r->_super.frame;
 
   float ar = grGet_Active_Screen()->_Y_pixels/(float)grGet_Active_Screen()->_X_pixels;
   float Y_length = ar*camera->_X_length/2;

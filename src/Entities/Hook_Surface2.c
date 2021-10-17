@@ -2,44 +2,31 @@
 
 #include "../Layers.h"
 
-Hook_Surface2* Create_Hook_Surface2(mVector2f position, mVector2f scale) {
-
-  geEntity* entity = geCreate_Entity();
-
-  entity->layer_mask = HOOK_SURFACE_LAYER;
-
-  mFrame2D* frame = new_mFrame2D(position, 0, scale);
-
-  grSprite* sprite = grCreate_Sprite("../Resources/Textures/circle_orange_256.png",1,1);
-  grRenderer* renderer = grCreate_Renderer_2D(frame, sprite->_model, sprite->_shader);
-
-  phCircle_Collider2D* circle_c = new_phCircle_Collider2D(frame, 0.5);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &circle_c->_super);
-  rb->is_static = true;
-  rb->is_static_rotation = true;
-  rb->restitution = 0.25;
+Hook_Surface2* Create_Hook_Surface2(mVector2f position, mVector2f scale, geScene* scene) {
 
   Hook_Surface2* hs = malloc(sizeof(Hook_Surface2));
-  *hs = (Hook_Surface2){
+  if (hs == NULL) { return NULL; }
 
-    ._super = entity,
+  hs->_super = geEntity_ctor(&hs->_super);
+  geSet_Sub_Entity(hs, Destroy_Hook_Surface2_Sub_Entity, &hs->_super);
+  hs->_super.layer_mask = HOOK_SURFACE_LAYER;
 
-    .frame = frame,
+  hs->frame = mFrame2D_init(position, 0, scale);
 
-    .sprite = sprite,
-    .renderer = renderer,
+  hs->sprite = grCreate_Sprite("../Resources/Textures/circle_orange_256.png",1,1);
+  grRenderer_2D_ctor(&hs->renderer, &hs->frame, hs->sprite->_model, hs->sprite->_shader);
 
-    .circle_c = circle_c,
-    .rb = rb
+  hs->circle_c = new_phCircle_Collider2D(&hs->frame, 0.5);
+  phRigid_Body2D_ctor(&hs->rb, &hs->frame, 1, 0.1, &hs->circle_c->_super);
+  hs->rb.is_static = true;
+  hs->rb.is_static_rotation = true;
+  hs->rb.restitution = 0.25;
 
-  };
+  geAdd_Component(&hs->renderer._super, &hs->_super);
+  geAdd_Component(hs->circle_c->_super._super, &hs->_super);
+  geAdd_Component(&hs->rb._super, &hs->_super);
 
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(renderer->_super, entity);
-  geAdd_Component(circle_c->_super._super, entity);
-  geAdd_Component(rb->_super, entity);
-
-  geSet_Sub_Entity(hs, Destroy_Hook_Surface2_Sub_Entity, entity);
+  geAdd_Entity(&hs->_super, scene);
 
   return hs;
 

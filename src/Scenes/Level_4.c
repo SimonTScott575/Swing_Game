@@ -30,9 +30,9 @@ void Build_Level_4_Entities(Level_Builder* builder) {
 
   Level_4_Builder* l4_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
-  builder->portal = Create_Portal((mVector2f){{0,0}}, 1);
+  builder->portal = Create_Portal((mVector2f){{0,0}}, 1, builder->scene);
 
   float prev_x_pos;
   float prev_y_pos;
@@ -44,14 +44,18 @@ void Build_Level_4_Entities(Level_Builder* builder) {
     float s = L4_MIN_SCALE + (L4_MAX_SCALE - L4_MIN_SCALE)*i/(float)(L4_HS2_COUNT-1);
     l4_builder->hs2_arr[i] = Create_Hook_Surface2(
       (mVector2f){{ x_pos, y_pos }},
-      (mVector2f){{ s, s }}
+      (mVector2f){{ s, s }},
+      builder->scene
     );
 
     if (0 < i && i-1 < L4_GEM_COUNT) {
-      l4_builder->gem_arr[i-1] = Create_Gem((mVector2f){{
-        prev_x_pos + (x_pos-prev_x_pos)/2,
-        prev_y_pos + (y_pos-prev_y_pos)/2
-      }});
+      l4_builder->gem_arr[i-1] = Create_Gem(
+        (mVector2f){{
+          prev_x_pos + (x_pos-prev_x_pos)/2,
+          prev_y_pos + (y_pos-prev_y_pos)/2
+        }},
+        builder->scene
+      );
     }
 
     prev_x_pos = x_pos;

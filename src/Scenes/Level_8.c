@@ -40,18 +40,20 @@ void Build_Level_8_Entities(Level_Builder* builder) {
 
   Level_8_Builder* l8_builder = builder->_sub;
 
-  builder->player = Create_Player();
+  builder->player = Create_Player(builder->scene);
 
   builder->portal = Create_Portal(
     (mVector2f){{0,0}},
-    1
+    1,
+    builder->scene
   );
 
   for (int i = 0; i < L8_HS_COUNT; i++) {
 
     l8_builder->hs_arr[i] = Create_Hook_Surface(
       L8_HS_POSITIONS[i],
-      L8_HS_SCALES[i]
+      L8_HS_SCALES[i],
+      builder->scene
     );
 
   }
@@ -59,7 +61,8 @@ void Build_Level_8_Entities(Level_Builder* builder) {
 
     l8_builder->hs2_arr[i] = Create_Hook_Surface2(
       L8_HS2_POSITIONS[i],
-      L8_HS2_SCALES[i]
+      L8_HS2_SCALES[i],
+      builder->scene
     );
 
   }
@@ -67,7 +70,8 @@ void Build_Level_8_Entities(Level_Builder* builder) {
   for (int i = 0; i < L8_GEM_COUNT; i++) {
 
     l8_builder->gem_arr[i] = Create_Gem(
-      L8_GEM_POSITIONS[i]
+      L8_GEM_POSITIONS[i],
+      builder->scene
     );
 
   }

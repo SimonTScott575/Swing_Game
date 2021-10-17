@@ -10,18 +10,15 @@
 #define INTRO_TIME3 0.2
 #define CD_TIME 3
 
-Level_Transitioner* Create_Level_Transitioner(
+void Level_Transitioner_ctor(
+  Level_Transitioner* self,
   Portal_Catcher* pc, Timer_Clock* clock, Player_Controller* player_controller,
   grText_Renderer* cd_text_r,
   geEntity** end_ui1_arr, // restart and back : button/text entities
   geEntity** end_ui2_arr // next level : button/text entities
 ) {
 
-  Level_Transitioner* lt = malloc(sizeof(Level_Transitioner));
-
-  *lt = (Level_Transitioner){
-
-    ._super = geCreate_Component(),
+  *self = (Level_Transitioner){
 
     .pc = pc,
     .clock = clock,
@@ -32,25 +29,25 @@ Level_Transitioner* Create_Level_Transitioner(
 
   };
 
-  geSet_Sub_Component(lt, Update_Level_Transitioner, Destroy_Level_Transitioner_Sub_Component, lt->_super);
+  geComponent_ctor(&self->_super);
 
-  memcpy(lt->end_ui1_arr, end_ui1_arr, END_UI1_LENGTH*sizeof(geEntity*));
-  memcpy(lt->end_ui2_arr, end_ui2_arr, END_UI2_LENGTH*sizeof(geEntity*));
+  geSet_Sub_Component(self, Update_Level_Transitioner, NULL, &self->_super);
+
+  memcpy(self->end_ui1_arr, end_ui1_arr, END_UI1_LENGTH*sizeof(geEntity*));
+  memcpy(self->end_ui2_arr, end_ui2_arr, END_UI2_LENGTH*sizeof(geEntity*));
   for (int i = 0; i < END_UI1_LENGTH; i++) {
-    lt->end_ui1_arr[i]->is_active = false;
+    self->end_ui1_arr[i]->is_active = false;
   }
   for (int i = 0; i < END_UI2_LENGTH; i++) {
-    lt->end_ui2_arr[i]->is_active = false;
+    self->end_ui2_arr[i]->is_active = false;
   }
 
-  lt->level_start_time = 0;
-  lt->cd_first_frame = 0;
-  lt->cd_over = 0;
+  self->level_start_time = 0;
+  self->cd_first_frame = 0;
+  self->cd_over = 0;
 
-  lt->cd_text_r->_super->_super->is_active = false;
-  lt->cd_text->alignment = GR_ALIGN_CENTRE;
-
-  return lt;
+  self->cd_text_r->_super._super.is_active = false;
+  self->cd_text->alignment = GR_ALIGN_CENTRE;
 
 }
 
@@ -91,19 +88,19 @@ void Update_Level_Transitioner(geComponent* component) {
     sprintf(level_time_s, "%d", cd);
 
     grSet_Text_Contents(level_time_s, lt->cd_text);
-    lt->cd_text_r->_super->_super->is_active = true;
+    lt->cd_text_r->_super._super.is_active = true;
 
   }
   else
   if (   CD_TIME+INTRO_TIME+INTRO_TIME2+INTRO_TIME3 < level_time
       && !lt->cd_over) {
 
-    lt->player_controller->rb->_super->is_active = true;
+    lt->player_controller->rb->_super.is_active = true;
 
     lt->clock->time_start = geGet_Active_Game()->time;
     lt->clock->is_started = true;
 
-    lt->cd_text_r->_super->_super->is_active = false;
+    lt->cd_text_r->_super._super.is_active = false;
 
     lt->cd_over = 1;
   } EXIT_CD:
@@ -129,14 +126,6 @@ void Update_Level_Transitioner(geComponent* component) {
 
     lt->clock->is_ended = true;
   }
-
-}
-
-void Destroy_Level_Transitioner_Sub_Component(geComponent* component) {
-
-  Level_Transitioner* lt = component->_sub;
-
-  free(lt);
 
 }
 

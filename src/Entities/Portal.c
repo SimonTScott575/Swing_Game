@@ -1,47 +1,33 @@
 #include "Portal.h"
 
-Portal* Create_Portal(mVector2f position, float radius) {
-
-  geEntity* entity = geCreate_Entity();
-
-  mFrame2D* frame = new_mFrame2D(position, 0, (mVector2f){{2*radius,2*radius}});
-
-  Portal_Renderer* pr = Create_Portal_Renderer();
-  grRenderer* renderer = grCreate_Renderer_2D(frame, pr->model, pr->shader);
-
-  phCircle_Collider2D* collider = new_phCircle_Collider2D(frame, 0.5);
-  phRigid_Body2D* rb = new_phRigid_Body2D(frame, 1, 0.1, &collider->_super);
-  rb->is_static = true;
-  rb->is_static_rotation = true; //?
-  rb->is_transparent = true;
-
-  Portal_Catcher* pc = Create_Portal_Catcher(radius, rb);
-
-  geAdd_Component(frame->_super, entity);
-  geAdd_Component(pr->_super, entity);
-  geAdd_Component(renderer->_super, entity);
-  geAdd_Component(collider->_super._super, entity);
-  geAdd_Component(rb->_super, entity);
-  geAdd_Component(pc->_super, entity);
+Portal* Create_Portal(mVector2f position, float radius, geScene* scene) {
 
   Portal* portal = malloc(sizeof(Portal));
-  *portal = (Portal){
+  if (portal == NULL) { return NULL; }
 
-    ._super = entity,
+  portal->_super = geEntity_ctor(&portal->_super);
+  geSet_Sub_Entity(portal, Destroy_Portal_Sub_Entity, &portal->_super);
 
-    .frame = frame,
+  portal->frame = mFrame2D_init(position, 0, (mVector2f){{2*radius,2*radius}});
 
-    .pr = pr,
-    .renderer = renderer,
+  Portal_Renderer_ctor(&portal->pr);
+  grRenderer_2D_ctor(&portal->renderer, &portal->frame, portal->pr.model, portal->pr.shader);
 
-    .collider = collider,
-    .rb = rb,
+  portal->collider = new_phCircle_Collider2D(&portal->frame, 0.5);
+  phRigid_Body2D_ctor(&portal->rb, &portal->frame, 1, 0.1, &portal->collider->_super);
+  portal->rb.is_static = true;
+  portal->rb.is_static_rotation = true; //?
+  portal->rb.is_transparent = true;
 
-    .pc = pc
+  Portal_Catcher_ctor(&portal->pc, radius, &portal->rb);
 
-  };
+  geAdd_Component(&portal->pr._super, &portal->_super);
+  geAdd_Component(&portal->renderer._super, &portal->_super);
+  geAdd_Component(portal->collider->_super._super, &portal->_super);
+  geAdd_Component(&portal->rb._super, &portal->_super);
+  geAdd_Component(&portal->pc._super, &portal->_super);
 
-  geSet_Sub_Entity(portal, Destroy_Portal_Sub_Entity, entity);
+  geAdd_Entity(&portal->_super, scene);
 
   return portal;
 

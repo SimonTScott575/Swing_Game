@@ -16,7 +16,7 @@ D_HEADER_dLList(geUI_Element*, geUI_Element_ptr);
 
 struct geUI_Element {
 
-  geComponent* _super;
+  geComponent _super;
 
   float x; // relative position
   float y; // relative position
@@ -28,8 +28,8 @@ struct geUI_Element {
 
 };
 
-geUI_Element init_geUI_Element(mFrame2D* frame);
-void geDestroy_UI_Element_Sub_Component(geComponent* component);
+void geUI_Element_ctor(geUI_Element* self, mFrame2D* frame);
+void geUI_Element_Sub_Component_dtor(geComponent* component);
 
 void geSet_Sub_UI_Element(void* sub, geUpdate_UI_Element_fn update, geDestroy_UI_Element_fn destroy, geUI_Element* uie);
 

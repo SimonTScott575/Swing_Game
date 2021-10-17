@@ -114,8 +114,8 @@ void phSolve_Collisions(phCollision_Solver2D* cs) {
       phRigid_Body2D* rb1 = rb1_node->element;
       phRigid_Body2D* rb2 = rb2_node->element;
 
-      if (rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) { continue; }
-      if (rb2->_super != NULL && !geComponent_Is_Active(rb2->_super)) { continue; }
+      if (!geComponent_Is_Active(&rb1->_super)) { continue; }
+      if (!geComponent_Is_Active(&rb2->_super)) { continue; }
 
       uint64_t current_collision_count = phDetect_Collisions(rb1, rb2, current_collision);
 
@@ -556,15 +556,13 @@ bool phRay_Cast_Solver_Masked(
 
   for ( ; rb_node != NULL; rb_node = rb_node->next ) {
 
-    if (    rb_node->element->_super != NULL
-         && c_req_lm != 0
-         && !(rb_node->element->_super->layer_mask & c_req_lm) ) {
+    if (    c_req_lm != 0
+         && !(rb_node->element->_super.layer_mask & c_req_lm) ) {
       continue;
     }
-    if (    rb_node->element->_super != NULL
-         && rb_node->element->_super->_entity != NULL
+    if (    rb_node->element->_super._entity != NULL
          && e_req_lm != 0
-         && !(rb_node->element->_super->_entity->layer_mask & e_req_lm) ) {
+         && !(rb_node->element->_super._entity->layer_mask & e_req_lm) ) {
       continue;
     }
 
@@ -749,7 +747,7 @@ uint64_t phGet_Collisions(phCollider2D* c, phCollision2D* collisions, phCollisio
 
   dNode_LL(phRigid_Body2D_ptr)* rb_node = cs->_rigid_bodies->start;
 
-  phRigid_Body2D c_rb = init_phRigid_Body2D(c->frame, 1,1, c); //? better way ?
+  phRigid_Body2D c_rb ; phRigid_Body2D_ctor(&c_rb, c->frame, 1,1, c); //? better way ?
 
   uint64_t total_collisions = 0;
 

@@ -23,7 +23,7 @@ struct Level_UI_Build {
 
 } Level_UI_Build;
 
-void Load_Entities_Level_UI_Build(Level_UI_Build* level_ui_build);
+void Load_Entities_Level_UI_Build(geScene* scene, Level_UI_Build* level_ui_build);
 void Load_Systems_Level_UI_Build(Level_UI_Build* level_ui_build);
 
 void Set_Level_UI_Build(Level_UI_Build* level_ui_build);

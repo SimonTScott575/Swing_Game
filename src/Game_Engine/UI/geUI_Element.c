@@ -2,11 +2,9 @@
 
 D_SOURCE_dLList(geUI_Element*, geUI_Element_ptr);
 
-geUI_Element init_geUI_Element(mFrame2D* frame) {
+void geUI_Element_ctor(geUI_Element* self, mFrame2D* frame) {
 
-  return (geUI_Element){
-    ._super = NULL,
-
+  *self = (geUI_Element){
     .x = 0, // relative position
     .y = 0, // relative position
     .frame = frame, // absolute offset
@@ -16,6 +14,9 @@ geUI_Element init_geUI_Element(mFrame2D* frame) {
     ._destroy = NULL
   };
 
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self, NULL, NULL, &self->_super);
+
 }
 
 void geSet_Sub_UI_Element(void* sub, geUpdate_UI_Element_fn update, geDestroy_UI_Element_fn destroy, geUI_Element* uie) {
@@ -24,7 +25,7 @@ void geSet_Sub_UI_Element(void* sub, geUpdate_UI_Element_fn update, geDestroy_UI
   uie->_destroy = destroy;
 }
 
-void geDestroy_UI_Element_Sub_Component(geComponent* component) {
+void geUI_Element_Sub_Component_dtor(geComponent* component) {
 
   geUI_Element* uie = component->_sub;
 

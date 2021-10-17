@@ -75,8 +75,8 @@ void phAdd_Globals_RB_System2D(phRB_System2D* rb_sys) {
 
   for ( ; rb_node != NULL; rb_node = rb_node->next ) {
 
-    if (rb_node->element->_super != NULL && !rb_node->element->_super->is_active) { continue; }
-    if (rb_node->element->_super != NULL && rb_node->element->_super->_entity != NULL && !rb_node->element->_super->_entity->is_active) { continue; }
+    if (!rb_node->element->_super.is_active) { continue; }
+    if (rb_node->element->_super._entity != NULL && !rb_node->element->_super._entity->is_active) { continue; }
 
     rb_node->element->force = mAdd_V2f( rb_node->element->force, rb_sys->global_force );
 
@@ -86,17 +86,13 @@ void phAdd_Globals_RB_System2D(phRB_System2D* rb_sys) {
 
 }
 
-void phApply_Joint2Ds(phRB_System2D* rb_sys) {
-
-}
-
 void phZero_RB_System2D(phRB_System2D* rb_sys) { //TODO: should use phZero_RB
 
   dNode_LL(phRigid_Body2D_ptr)* rb_node = rb_sys->_cs->_rigid_bodies->start;
 
   for ( ; rb_node != NULL ; rb_node = rb_node->next) {
 
-    if (rb_node->element->_super != NULL && !geComponent_Is_Active(rb_node->element->_super)) { continue; }
+    if (!geComponent_Is_Active(&rb_node->element->_super)) { continue; }
 
     rb_node->element->force = mVector2f_ZERO;
     rb_node->element->torque = 0;
@@ -117,7 +113,7 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
 
     phRigid_Body2D* rb = rb_node->element;
 
-    if (rb->_super != NULL && !geComponent_Is_Active(rb->_super)) {
+    if (!geComponent_Is_Active(&rb->_super)) {
       continue;
     }
 
@@ -139,10 +135,10 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
     phJoint2D* joint = joint_node->element;
     phRigid_Body2D* rb1 = joint->rigid_body1;
 
-    if (joint->_super != NULL && !geComponent_Is_Active(joint->_super)) {
+    if (!geComponent_Is_Active(&joint->_super)) {
       continue;
     }
-    if (rb1 == NULL || rb1->_super != NULL && !geComponent_Is_Active(rb1->_super)) {
+    if (rb1 == NULL || !geComponent_Is_Active(&rb1->_super)) {
       continue;
     }
 
@@ -187,8 +183,6 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
       phApply_Force_On_Velocity(rb1);
       phApply_Force_On_Velocity(rb2);
 
-      // rb1->_force_applied = rb2->_force_applied = true;
-
     }
 
   }
@@ -202,7 +196,7 @@ void phUpdate_RB_System2D(phRB_System2D* rb_sys) { //!!! if current_collision->d
 
     phRigid_Body2D* rb = rb_node->element;
 
-    if (rb->_super != NULL && !geComponent_Is_Active(rb->_super)) {
+    if (!geComponent_Is_Active(&rb->_super)) {
       continue;
     }
 

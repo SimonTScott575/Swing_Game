@@ -8,21 +8,21 @@
 typedef
 struct Gem {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grSprite* sprite;
-  grRenderer* renderer;
+  grRenderer renderer;
 
   phCircle_Collider2D*  circle_c;
-  phRigid_Body2D* rb;
+  phRigid_Body2D rb;
 
-  Gem_Controller* gc;
+  Gem_Controller gc;
 
 } Gem;
 
-Gem* Create_Gem(mVector2f position);
+Gem* Create_Gem(mVector2f position, geScene* scene);
 
 void Destroy_Gem_Sub_Entity(geEntity* entity);
 

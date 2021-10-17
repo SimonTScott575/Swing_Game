@@ -8,20 +8,20 @@
 typedef
 struct Rope {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
   grSprite* sprite;
-  grRenderer* renderer;
+  grRenderer renderer;
 
-  phRod_Joint2D* rod_j;
-  phSpring_Joint2D* spring_j;
-  Rope_Controller* rc;
+  phRod_Joint2D rod_j;
+  phSpring_Joint2D spring_j;
+  Rope_Controller rc;
 
 } Rope;
 
-Rope* Create_Rope(phRigid_Body2D* source_rb);
+Rope* Create_Rope(phRigid_Body2D* source_rb, geScene* scene);
 
 void Destroy_Rope_Sub_Entity(geEntity* entity);
 

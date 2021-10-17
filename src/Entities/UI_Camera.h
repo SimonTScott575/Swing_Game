@@ -7,15 +7,15 @@ typedef struct UI_Camera UI_Camera;
 
 struct UI_Camera {
 
-  geEntity* _super;
+  geEntity _super;
 
-  mFrame2D* frame;
+  mFrame2D frame;
 
-  grCamera2D* camera;
+  grCamera2D camera;
 
 };
 
-UI_Camera* Create_UI_Camera();
+UI_Camera* Create_UI_Camera(geScene* scene);
 
 void Destroy_UI_Camera_Sub_Entity(geEntity* entity);
 

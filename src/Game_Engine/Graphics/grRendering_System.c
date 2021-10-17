@@ -67,7 +67,7 @@ void grRender_Rendering_System2D(grRendering_System2D* rs) {
 
     grRenderer* r = current->element;
 
-    if (r->_super != NULL && !geComponent_Is_Active(r->_super)) { continue; }
+    if (!geComponent_Is_Active(&r->_super)) { continue; }
 
     grRender(r, rs->camera);
 
