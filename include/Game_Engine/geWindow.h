@@ -5,7 +5,7 @@
 #define GE_WINDOW_H
 
 #include <Game_Engine/dATUM/dLList.h>
-#include <Game_Engine/Graphics/grScreen.h>
+#include <Game_Engine/Graphics/Graphics.h>
 
 //? TEMP FORWARD HEADER
 typedef struct GLFWwindow GLFWwindow;
@@ -13,6 +13,7 @@ typedef GLFWwindow* geWindow_ID;
 
 typedef struct geWindow geWindow;
 
+//
 typedef void (*geCursor_Position_fn)(geWindow* window, double x, double y);
 
 D_HEADER_LLIST(geCursor_Position_fn, geCursor_Position_fn);
@@ -29,12 +30,28 @@ struct geWindow {
 
 } geWindow;
 
+// =========================
+// Initliazation/Termination
+// =========================
+
 geWindow* geCreate_Window(int width, int height, char* name);
 void geDestroy_Window(geWindow* window);
+
+// ===
 
 geWindow* geGet_Active_Window();
 void geSet_Active_Window(geWindow* window);
 
-bool geWindow_Should_Close(geWindow* window);
+// ===
+
+// Set window should close property as true (retrive with geGet_Window_Should_Close)
+void geSet_Window_Should_Close(geWindow* window, bool val);
+
+// returns true if set as true by geSet_Window_Should_Close
+bool geGet_Window_Should_Close(geWindow* window);
+
+/*** LEGACY ***/
+#define geWindow_Should_Close geGet_Window_Should_Close
+/**************/
 
 #endif

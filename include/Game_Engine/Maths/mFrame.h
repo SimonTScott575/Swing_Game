@@ -1,16 +1,9 @@
-// ######
-// HEADER
-// ######
+#ifndef M_FRAME_H
+#define M_FRAME_H
 
-#ifndef M_Frame_H
-#define M_Frame_H
-
-#include <stdio.h> //DEBUG
 #include <stdlib.h>
 
 #include <math.h>
-
-// #include <Game_Engine/ECS/geComponent.h>
 
 #include "mVector.h"
 #include "mMatrix.h"
@@ -78,15 +71,13 @@ M_SCOPE mVector3f mAxis_Z_3D(mFrame3D* frame);
 // ======
 
 M_SCOPE const mFrame2D mFrame2D_I = { .transform = mMatrix3f_I,
-
-                                               .position = mVector2f_ZERO,
-                                               .rotation = 0,
-                                               .scale = mVector2f_ONE      };
+                                      .position = mVector2f_ZERO,
+                                      .rotation = 0,
+                                      .scale = mVector2f_ONE };
 M_SCOPE const mFrame3D mFrame3D_I = { .transform = mMatrix4f_I,
-
-                                               .position = mVector3f_ZERO,
-                                               .quaternion = mQuaternion_I,
-                                               .scale = mVector3f_ONE       };
+                                      .position = mVector3f_ZERO,
+                                      .quaternion = mQuaternion_I,
+                                      .scale = mVector3f_ONE };
 
 // ===
 //
@@ -228,7 +219,7 @@ mVector2f mTransform_R_2D(mVector2f v, mFrame2D frame) {
 M_SCOPE
 mVector2f mInv_Transform_2D(mVector2f v, mFrame2D frame) {
   if (frame.scale.i[0] < 0.001 || frame.scale.i[1] < 0.001) {
-    printf("\nDEBUG : ATTEMPT DIV 0\n");
+    //TODO: raise error
     return v;
   }
   mVector2f scale = (mVector2f){{1/frame.scale.i[0],1/frame.scale.i[1]}};

@@ -1,9 +1,5 @@
-// ######
-// HEADER
-// ######
-
-#ifndef M_Quaternion_H
-#define M_Quaternion_H
+#ifndef M_QUATERNION_H
+#define M_QUATERNION_H
 
 #include <math.h>
 

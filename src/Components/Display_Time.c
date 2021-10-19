@@ -23,6 +23,7 @@ void Display_Time_ctor(Display_Time* self, char* prefix, float* display_times, g
 Display_Time* Display_Time_new(char* prefix, float* display_times, grText_Renderer* text_r, float x) {
 
   Display_Time* dt = malloc(sizeof *dt);
+  if (dt == NULL) { return NULL; }
 
   Display_Time_ctor(dt, prefix, display_times, text_r, x);
   geSet_Sub_Component(dt, dt->_super._update, Display_Time_Sub_Component_del, &dt->_super);
@@ -56,7 +57,9 @@ void Display_Time_Sub_Component_dtor(geComponent* component) {
 
   Display_Time* dt = component->_sub;
 
-  free(dt->prefix);
+  if (dt->prefix != NULL) {
+    free(dt->prefix);
+  }
 
 }
 

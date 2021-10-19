@@ -7,7 +7,7 @@ Level_Select_Camera* Create_Level_Select_Camera(float x_length, geScene* scene) 
   Level_Select_Camera* lsc = malloc(sizeof(Level_Select_Camera));
   if (lsc == NULL) { return NULL; }
 
-  lsc->_super = geEntity_ctor(&lsc->_super);
+  geEntity_ctor(&lsc->_super);
   geSet_Sub_Entity(lsc, Destroy_Level_Select_Camera_Sub_Entity, &lsc->_super);
 
   lsc->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);

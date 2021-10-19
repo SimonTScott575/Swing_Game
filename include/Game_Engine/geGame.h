@@ -5,8 +5,7 @@
 #include <Game_Engine/geInput_States.h>
 #include <Game_Engine/geWindow.h>
 
-typedef struct geGame geGame;
-
+typedef
 struct geGame {
 
   geScene* _active_scene;
@@ -27,7 +26,7 @@ struct geGame {
 
   geWindow* window;
 
-};
+} geGame;
 
 // ===
 
@@ -42,33 +41,37 @@ geGame* geCreate_Game(geWindow* window);
 
 void geDestroy_Game(geGame* game);
 
-// ===
+// =========
+// Start/End
+// =========
 
-void geUnload_Game(geGame* game); //? what about already unloaded scenes ? static ?
-
+// Plays scenes
 void gePlay_Game(geGame* game);
 
 void geEnd_Scene(geGame* game);
 void geEnd_Game(geGame* game);
 
-//? end_game used instead of unload game ? or end_game used by components to signal end ?
+// ================
+// Scene Management
+// ================
 
-// ===
-
+// Add/remove scenes
 void geAdd_Scene(geScene* scene, geGame* game);
 void geAdd_Scene_Before(geScene* new_scene, geScene* scene2, geGame* game);
 void geAdd_Scene_After(geScene* new_scene, geScene* scene2, geGame* game);
 
 void geRemove_Scene(geScene* scene, geGame* game);
 
+// Get scenes
 geScene* geGet_First_Scene(geGame* game);
-
 geScene* geGet_Next_Scene(geGame* game);
+
+// Set next scene to be played, after scene ends the next scene will be the
+// next scene in the order added.
 void geSet_Next_Scene(geScene* scene, geGame* game);
 
-void geSwap_Screens(geGame* game);
+// ===
 
-// void geAdd_Scene(geScene* scene, geGame* game);
-// void geRemove_Scene(geScene* scene, geGame* game);
+void geSwap_Screens(geGame* game);
 
 #endif

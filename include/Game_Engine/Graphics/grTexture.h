@@ -10,7 +10,7 @@
 
 #include "grImage.h"
 
-typedef struct grTexture grTexture;
+typedef
 struct grTexture {
   uint32_t _X_pixels;
   uint32_t _Y_pixels;
@@ -19,7 +19,7 @@ struct grTexture {
   grColour _colour_format;
 
   unsigned int _OpenGL_ID;
-};
+} grTexture;
 
 // ==========================
 // Initializaiton/Termination
@@ -27,13 +27,13 @@ struct grTexture {
 
 // Imports image from file path.  Stored in GPU RAM.
 // Imported as per grCreate_Image.
-grTexture* grCreate_Texture(const char* path);
+grTexture grTexture_init(const char* path);
 // Uploads image to GPU RAM
-grTexture* grCreate_Texture_From_Image(grImage* image);
+grTexture grTexture_From_Image_init(grImage* image);
 // Uploads image to GPU RAM with dimensions (X_pixels, Y_pixels) with values //...!!!???
-grTexture* grCreate_Texture_NULL(int X_pixels, int Y_pixels);
+grTexture grTexture_Empty_init(int X_pixels, int Y_pixels);
 
 // Frees all texture data (from RAM/GPU).
-void grDestroy_Texture(grTexture* texture);
+void grTexture_term(grTexture* texture);
 
 #endif

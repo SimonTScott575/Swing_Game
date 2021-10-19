@@ -1,6 +1,10 @@
 #include <Game_Engine/UI/geUI_Element.h>
 
-D_SOURCE_dLList(geUI_Element*, geUI_Element_ptr);
+D_SOURCE_LLIST(geUI_Element*, geUI_Element_ptr);
+
+// ==========================
+// Initialization/Termination
+// ==========================
 
 void geUI_Element_ctor(geUI_Element* self, mFrame2D* frame) {
 
@@ -19,12 +23,6 @@ void geUI_Element_ctor(geUI_Element* self, mFrame2D* frame) {
 
 }
 
-void geSet_Sub_UI_Element(void* sub, geUpdate_UI_Element_fn update, geDestroy_UI_Element_fn destroy, geUI_Element* uie) {
-  uie->_sub = sub;
-  uie->_update = update;
-  uie->_destroy = destroy;
-}
-
 void geUI_Element_Sub_Component_dtor(geComponent* component) {
 
   geUI_Element* uie = component->_sub;
@@ -34,6 +32,14 @@ void geUI_Element_Sub_Component_dtor(geComponent* component) {
   }
 
 }
+
+void geSet_Sub_UI_Element(void* sub, geUpdate_UI_Element_fn update, geDestroy_UI_Element_fn destroy, geUI_Element* uie) {
+  uie->_sub = sub;
+  uie->_update = update;
+  uie->_destroy = destroy;
+}
+
+// ===
 
 void geUpdate_UI_Element(geUI_Element* uie, float x_length, float mouse_X, float mouse_Y, geWindow* window) {
 

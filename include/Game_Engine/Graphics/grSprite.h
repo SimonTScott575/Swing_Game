@@ -10,9 +10,9 @@
 typedef
 struct grSprite {
 
-  grTexture* _texture;
-  grModel* _model;
-  grShader* _shader;
+  grTexture _texture;
+  grModel _model;
+  grShader _shader;
 
 } grSprite;
 

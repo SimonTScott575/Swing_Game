@@ -13,8 +13,8 @@ void Timer_Clock_ctor(Timer_Clock* self, grText* text_sec, grText* text_msec) {
     .is_started = false,
     .is_ended = false
   };
+  
   geComponent_ctor(&self->_super);
-
   geSet_Sub_Component(self, Update_Timer_Clock, NULL, &self->_super);
 
 }

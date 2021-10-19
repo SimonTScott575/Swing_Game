@@ -14,7 +14,7 @@ struct Menu_Text {
 
   grFont* font;
   grText* text;
-  grShader* shader;
+  grShader shader;
 
   grText_Renderer* text_r;
 

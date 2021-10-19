@@ -40,6 +40,5 @@ void grInit_Types() {
   }
 
   grTypes._dType = GL_INT;
-  // grTypes._dPtr = grTypes._size_t;
 
 }

@@ -10,7 +10,7 @@ typedef struct geSystem geSystem;
 typedef void (*geUpdate_fn)(void*);
 typedef void (*geDestroy_fn)(void*);
 
-D_HEADER_dLList(geSystem*, geSystem_ptr);
+D_HEADER_LLIST(geSystem*, geSystem_ptr);
 
 struct geSystem {
 
@@ -24,9 +24,9 @@ struct geSystem {
 
 };
 
-// ====================
-// Creation/Destruction
-// ====================
+// ==========================
+// Initialization/Termination
+// ==========================
 
 geSystem* geCreate_System(void* sub, geUpdate_fn update, geDestroy_fn destroy);
 

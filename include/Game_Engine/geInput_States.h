@@ -12,12 +12,12 @@
 // FORWARD HEADER
 typedef struct GLFWwindow GLFWwindow;
 
-typedef struct geInput_States geInput_States;
-
+//
+typedef
 struct geInput_States {
   uint8_t states[GE_KEY_STATES_LENGTH+1];
   uint8_t mouse_states[GE_MOUSE_STATES_LENGTH+1];
-};
+} geInput_States;
 
 void geSet_Active_Input_States(geInput_States* input_states);
 

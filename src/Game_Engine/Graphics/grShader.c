@@ -1,3 +1,5 @@
+//TODO: ensure malloc/realloc/free is std compliant
+
 #include <Game_Engine/Graphics/grShader.h>
 
 #include <stdlib.h>
@@ -10,7 +12,7 @@
 
 #include <Game_Engine/dATUM/dFile.h>
 
-grShader* grCreate_Shader(const char* vertex_path, const char* fragment_path) {
+grShader grShader_init(const char* vertex_path, const char* fragment_path) {
 
   // -------------------------
   // Import shader source code
@@ -88,30 +90,34 @@ grShader* grCreate_Shader(const char* vertex_path, const char* fragment_path) {
   // Set shader
   // ----------
 
-  grShader* shader = malloc(sizeof(grShader));
-  shader->_OpenGL_ID = shader_ID;
-  shader->textures = NULL;
-  shader->_texture_locations = NULL;
-  shader->_textures_length = 0;
+  grShader shader = {
+    ._OpenGL_ID = shader_ID,
+    .textures = NULL,
+    ._texture_locations = NULL,
+    ._textures_length = 0
+  };
 
-  shader->_Z_location = glGetUniformLocation(shader->_OpenGL_ID, "grZ"); //! not auto updated in shader, should be
-  shader->_Model3x3_location = glGetUniformLocation(shader->_OpenGL_ID, "grModel3x3");
-  shader->_View3x3_location = glGetUniformLocation(shader->_OpenGL_ID, "grView3x3");
-  shader->_Projection3x3_location = glGetUniformLocation(shader->_OpenGL_ID, "grProjection3x3");
+  shader._Z_location = glGetUniformLocation(shader._OpenGL_ID, "grZ"); //! not auto updated in shader, should be
+  shader._Model3x3_location = glGetUniformLocation(shader._OpenGL_ID, "grModel3x3");
+  shader._View3x3_location = glGetUniformLocation(shader._OpenGL_ID, "grView3x3");
+  shader._Projection3x3_location = glGetUniformLocation(shader._OpenGL_ID, "grProjection3x3");
 
-  shader->_Model4x4_location = glGetUniformLocation(shader->_OpenGL_ID, "grModel4x4");
-  shader->_View4x4_location = glGetUniformLocation(shader->_OpenGL_ID, "grView4x4");
-  shader->_Projection4x4_location = glGetUniformLocation(shader->_OpenGL_ID, "grProjection4x4");
+  shader._Model4x4_location = glGetUniformLocation(shader._OpenGL_ID, "grModel4x4");
+  shader._View4x4_location = glGetUniformLocation(shader._OpenGL_ID, "grView4x4");
+  shader._Projection4x4_location = glGetUniformLocation(shader._OpenGL_ID, "grProjection4x4");
 
   return shader;
 };
 
-void grDestroy_Shader(grShader* shader) {
+void grShader_term(grShader* shader) {
   glDeleteProgram(shader->_OpenGL_ID);
 
-  free(shader->textures);
-  free(shader->_texture_locations);
-  free(shader);
+  if (shader->textures != NULL) {
+    free(shader->textures);
+  }
+  if (shader->_texture_locations != NULL) {
+    free(shader->_texture_locations);
+  }
 };
 
 // Get shader variable location by name

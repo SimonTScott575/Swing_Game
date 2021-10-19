@@ -5,18 +5,19 @@
 
 #include <Game_Engine/dATUM/dLList.h>
 
-//!!! fwd header
+//!!!??? fwd header
 typedef struct geEntity geEntity;
-
 typedef struct geComponent geComponent;
-typedef uint32_t geComponent_Layer_Mask;
-typedef uint64_t geComponent_ID;
 
 typedef void (*geUpdate_Component_fn)(geComponent*);
 typedef void (*geDestroy_Sub_Component_fn)(geComponent*);
 
-D_HEADER_dLList(geComponent*, geComponent_ptr);
+D_HEADER_LLIST(geComponent*, geComponent_ptr);
 
+typedef uint32_t geComponent_Layer_Mask;
+typedef uint64_t geComponent_ID;
+
+typedef
 struct geComponent {
 
   geEntity* _entity;
@@ -27,13 +28,11 @@ struct geComponent {
   geComponent_Layer_Mask layer_mask;
   geComponent_ID ID; // identifies type of component, eg rb, renderer etc.
 
-  bool _deallocate;
-
   void* _sub;
   geUpdate_Component_fn _update;
   geDestroy_Sub_Component_fn _destroy;
 
-};
+} geComponent;
 
 // ==============
 // Initialization
@@ -42,10 +41,6 @@ struct geComponent {
 void geComponent_ctor(geComponent* self);
 void geComponent_dtor(geComponent* component);
 
-geComponent* geCreate_Component();
-
-void geDestroy_Component(geComponent* component);
-
 void geSet_Sub_Component(void* sub, geUpdate_Component_fn update, geDestroy_Sub_Component_fn _destroy, geComponent* component);
 
 // ===
@@ -53,9 +48,5 @@ void geSet_Sub_Component(void* sub, geUpdate_Component_fn update, geDestroy_Sub_
 void geUnload_Component(geComponent* component); //! needs remove, put in entity ?
 
 void geUpdate_Component(geComponent* component);
-
-// ===
-
-// void geRegister_New_Component_ID(geComponent_ID* id);
 
 #endif

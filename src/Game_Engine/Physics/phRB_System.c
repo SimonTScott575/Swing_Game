@@ -1,8 +1,5 @@
 #include <Game_Engine/Physics/phRB_System.h>
 
-//d
-#include <stdio.h>
-
 // ======
 // static
 // ======
@@ -19,9 +16,9 @@ static void phZero_Rigid_Body2D(phRigid_Body2D* rb) {
   rb->torque = 0;
 }
 
-// ===
-//
-// ===
+// ==========================
+// Initialization/Termination
+// ==========================
 
 phRB_System2D* new_phRB_System2D() {
 
@@ -65,9 +62,9 @@ void phRemove_Joint2D(phJoint2D* joint, phRB_System2D* rb_sys) {
   dRemove_LL(phJoint2D_ptr)(joint->_joint_node, rb_sys->_cs->_joints);
 }
 
-// ===
-//
-// ===
+// ======
+// Forces
+// ======
 
 void phAdd_Globals_RB_System2D(phRB_System2D* rb_sys) {
 

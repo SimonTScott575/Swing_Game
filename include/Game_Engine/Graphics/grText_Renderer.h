@@ -12,7 +12,7 @@
 
 typedef
 struct grCharacter {
-  grTexture* _texture;
+  grTexture _texture;
 
   int32_t _width;
   int32_t _height;

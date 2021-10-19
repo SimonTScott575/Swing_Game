@@ -16,7 +16,7 @@ struct Player {
   grSprite* sprite;
   grRenderer renderer;
 
-  phCircle_Collider2D* circle_c;
+  phCircle_Collider2D circle_c;
   phRigid_Body2D rb;
 
   Player_Controller pc;

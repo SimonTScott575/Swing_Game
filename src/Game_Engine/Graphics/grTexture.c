@@ -16,66 +16,38 @@
 // Creation/Destruction
 // ====================
 
-grTexture* grCreate_Texture(const char* path) {
+grTexture grTexture_init(const char* path) {
 
-  grImage* image = grCreate_Image(path);
-  if (image == NULL) {
-    GE_DEBUG_LOG("\n%s",
-                 "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture\n"
-                 "        Failed to grCreate_Image.");
-    return NULL;
-  }
+  grImage image = grImage_init(path);
 
-  grTexture* texture = grCreate_Texture_From_Image(image);
+  grTexture texture = grTexture_From_Image_init(&image);
 
-  grDestroy_Image(image);
-
-  #ifdef GE_DEBUG_MODE
-    if (texture == NULL) {
-      GE_DEBUG_LOG("\n%s",
-                   "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture\n"
-                   "        Failed to grCreate_Texture_From_Image.");
-    }
-  #endif
+  grImage_term(&image);
 
   return texture;
 
 }
-grTexture* grCreate_Texture_NULL(int X_pixels, int Y_pixels) {
+grTexture grTexture_Empty_init(int X_pixels, int Y_pixels) {
 
-  grImage image = init_grImage_Data(X_pixels, Y_pixels, 4, grColours.RGBA, NULL);
+  grImage image = grImage_Data_init(X_pixels, Y_pixels, 4, grColours.RGBA, NULL);
 
-  grTexture* texture = grCreate_Texture_From_Image(&image);
-  #ifdef GE_DEBUG_MODE
-    if (texture == NULL) {
-      GE_DEBUG_LOG("\n%s",
-                   "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture_NULL\n"
-                   "        Failed to grCreate_Texture_From_Image.");
-    }
-  #endif
+  grTexture texture = grTexture_From_Image_init(&image);
 
   return texture;
 
 }
 
-grTexture* grCreate_Texture_From_Image(grImage* image) {
+grTexture grTexture_From_Image_init(grImage* image) {
 
-  grTexture* texture = malloc(sizeof(grTexture));
+  grTexture texture = {
+    ._colour_format = image->_colour_format,
+    ._X_pixels = image->_width,
+    ._Y_pixels = image->_height,
+    ._n_channels = image->_n_channels
+  };
 
-  if (texture == NULL) {
-    GE_DEBUG_LOG("\n%s",
-                 "DEBUG : Game_Engine/Graphics/grTexture >> grCreate_Texture_From_Image\n"
-                 "        Failed to malloc grTexture.");
-    return NULL;
-  }
-
-  texture->_colour_format = image->_colour_format;
-  texture->_X_pixels = image->_width;
-  texture->_Y_pixels = image->_height;
-  texture->_n_channels = image->_n_channels;
-
-  glGenTextures(1, &texture->_OpenGL_ID);
-  glBindTexture(GL_TEXTURE_2D, texture->_OpenGL_ID);
+  glGenTextures(1, &texture._OpenGL_ID);
+  glBindTexture(GL_TEXTURE_2D, texture._OpenGL_ID);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -101,10 +73,8 @@ grTexture* grCreate_Texture_From_Image(grImage* image) {
 }
 
 // Removes texture from GPU memory and frees grTexture pointer.
-void grDestroy_Texture(grTexture* texture) {
-  
+void grTexture_term(grTexture* texture) {
+
   glDeleteTextures(1, &texture->_OpenGL_ID);
 
-  free(texture);
-  
 }

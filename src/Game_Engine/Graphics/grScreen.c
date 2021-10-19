@@ -70,7 +70,7 @@ static grScreen grSECOND_SCREEN = {
 static grScreen* grActive_Screen;
 
 // static grShader* grDEFAULT_SCREEN_SHADER;
-static grModel* grDEFAULT_SCREEN_MODEL;
+static grModel grDEFAULT_SCREEN_MODEL;
 
 struct grTests grTests = {
   .ALWAYS = GL_ALWAYS,
@@ -121,7 +121,7 @@ void grInit_Screen() {
     .size_of_vertex = 4*sizeof(float)
   };
 
-  grDEFAULT_SCREEN_MODEL = grCreate_Model_From_Mesh(&mesh); //! NEED destroy
+  grDEFAULT_SCREEN_MODEL = grModel_From_Mesh_init(&mesh); //! NEED destroy
 
 }
 
@@ -159,28 +159,27 @@ grScreen* grGet_Active_Screen() {
 // Creation/Destruction
 // ====================
 
-grScreen* grCreate_Screen(grTexture* colour_texture) {
-  grScreen* screen = malloc(sizeof(grScreen));
+grScreen grScreen_init(grTexture* colour_texture) {
+  grScreen screen = {
 
-  screen->_colour_texture = colour_texture;
+  ._colour_texture = colour_texture,
 
-  screen->_clear_colour[0] = 0;
-  screen->_clear_colour[1] = 0;
-  screen->_clear_colour[2] = 0;
-  screen->_clear_colour[3] = 1;
-  screen->_clear_depth = 1;
-  screen->_clear_stencil = 0;
+  ._clear_colour = {0,0,0,1},
+  ._clear_depth = 1,
+  ._clear_stencil = 0,
 
-  screen->_X_pixels = colour_texture->_X_pixels;
-  screen->_Y_pixels = colour_texture->_Y_pixels;
+  ._X_pixels = colour_texture->_X_pixels,
+  ._Y_pixels = colour_texture->_Y_pixels,
 
-  screen->_colour_mask = 1 | 2 | 4 | 8;
-  screen->_depth_mask = 1;
-  screen->_stencil_mask = 0xFFFFFFFF;
+  ._colour_mask = 1 | 2 | 4 | 8,
+  ._depth_mask = 1,
+  ._stencil_mask = 0xFFFFFFFF,
 
   //... !!! other fields to set to defaults !
 
-  screen->_OpenGL_ENABLED_FLAG = GL_COLOR_BUFFER_BIT;
+  ._OpenGL_ENABLED_FLAG = GL_COLOR_BUFFER_BIT
+
+  };
 
   unsigned int FBO;
   glGenFramebuffers(1, &FBO);
@@ -189,16 +188,14 @@ grScreen* grCreate_Screen(grTexture* colour_texture) {
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colour_texture->_OpenGL_ID, 0);
   glBindFramebuffer(GL_FRAMEBUFFER, grActive_Screen->_OpenGL_ID); //? need this line ?
 
-  screen->_OpenGL_ID = FBO;
+  screen._OpenGL_ID = FBO;
 
   return screen;
 }
 
-void grDestroy_Screen(grScreen* screen) {
-  free(screen);
+void grScreen_term(grScreen* screen) {
+  //TODO: destroy framebuffer
 }
-
-//TODO: grDestroy
 
 // ===
 
@@ -497,8 +494,8 @@ void grBlit(grScreen* screen, grScreen* target_screen, grShader* shader) {
       glBindTexture(GL_TEXTURE_2D, shader->textures[i]->_OpenGL_ID);
     }
 
-    glBindVertexArray(grDEFAULT_SCREEN_MODEL->_OpenGL_IDs.VAO);
-    glDrawElements(GL_TRIANGLES, grDEFAULT_SCREEN_MODEL->indices_length, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(grDEFAULT_SCREEN_MODEL._OpenGL_IDs.VAO);
+    glDrawElements(GL_TRIANGLES, grDEFAULT_SCREEN_MODEL.indices_length, GL_UNSIGNED_INT, 0);
 
     grSet_Active_Screen(prior_current_screen);
 

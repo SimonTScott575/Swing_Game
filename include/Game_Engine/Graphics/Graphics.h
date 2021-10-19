@@ -1,7 +1,7 @@
 #ifndef GR_GRAPHICS_H
 #define GR_GRAPHICS_H
 
-#ifdef GR_INCLUDE_OpenGL
+#ifdef GR_INCLUDE_OPENGL
   #include "../../../extern/glad/glad.h"
   #include "../../../extern/GLFW/glfw3.h"
 #endif
@@ -23,7 +23,5 @@
 #include <Game_Engine/Graphics/grSprite.h>
 
 void grInit();
-
-//... grTerminate
 
 #endif

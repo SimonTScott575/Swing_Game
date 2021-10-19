@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-D_SOURCE_dLList(geScene*, geScene_ptr);
+#include <Game_Engine/ge_common.h>
+
+D_SOURCE_LLIST(geScene*, geScene_ptr);
 
 // ====================
 // Creation/Destruction
@@ -12,14 +14,38 @@ D_SOURCE_dLList(geScene*, geScene_ptr);
 geScene* geCreate_Scene(geLoad_Scene_fn load) {
 
   geScene* scene = malloc(sizeof(geScene));
+  if (scene == NULL) { goto catch_scene_malloc_fail; }
 
   scene->_scene_node = NULL;
 
   scene->_entities = new_dLList(geEntity_ptr)(0, NULL);
+  if (scene->_entities == NULL) { goto catch_entities_malloc_fail; }
   scene->_systems = new_dLList(geSystem_ptr)(0,NULL);
+  if (scene->_systems == NULL) { goto catch_systems_malloc_fail; }
+  
   scene->_is_loaded = false;
 
   scene->_load = load;
+
+  goto no_catch;
+
+  catch_systems_malloc_fail :
+    free(scene->_entities);
+    GE_DEBUG_LOG("\n%s",
+                 "Game_Engine DEBUG : geScene\n"
+                 "                    malloc fail\n");
+  catch_entities_malloc_fail :
+    free(scene);
+    GE_DEBUG_LOG("\n%s",
+                 "Game_Engine DEBUG : geScene\n"
+                 "                    malloc fail\n");
+  catch_scene_malloc_fail :
+    GE_DEBUG_LOG("\n%s",
+                 "Game_Engine DEBUG : geScene\n"
+                 "                    malloc fail\n");
+  return NULL;
+
+  no_catch:
 
   return scene;
 
@@ -52,9 +78,10 @@ void geUnload_Scene(geScene* scene) {
   dNode_LL(geEntity_ptr)* next_entity_node;
   for ( ; entity_node != NULL; entity_node = next_entity_node) {
 
+    next_entity_node = entity_node->next;
+
     geUnload_Entity(entity_node->element);
 
-    next_entity_node = entity_node->next;
     dRemove_LL(geEntity_ptr)(entity_node, scene->_entities); //? TEMP or not ?
 
   }
@@ -63,9 +90,10 @@ void geUnload_Scene(geScene* scene) {
   dNode_LL(geSystem_ptr)* next_system_node;
   for ( ; system_node != NULL; system_node = next_system_node) {
 
+    next_system_node = system_node->next;
+
     geDestroy_System(system_node->element);
 
-    next_system_node = system_node->next;
     dRemove_LL(geSystem_ptr)(system_node, scene->_systems);
 
   }
@@ -171,15 +199,3 @@ geSystem* geGet_Next_System(geSystem* system) {
 
 }
 //TODO: get last/prev
-
-
-
-
-
-// void geAdd_Entity(geEntity* entity, geScene* scene) {
-//   entity->_entity_node = dAppend_LLEntity(entity, scene->_entities);
-// }
-//
-// void geRemove_Entity(geEntity* entity, geScene* scene) {
-//   dRemove_LLEntity(entity->_entity_node, scene->_entities);
-// }

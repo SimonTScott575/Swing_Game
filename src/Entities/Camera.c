@@ -6,7 +6,7 @@ Camera* Create_Camera(mFrame2D* player_frame, float x_length, geScene* scene) {
 
   Camera* camera = malloc(sizeof(Camera));
 
-  camera->_super = geEntity_ctor(&camera->_super);
+  geEntity_ctor(&camera->_super);
   geSet_Sub_Entity(camera, Destroy_Camera_Sub_Entity, &camera->_super);
 
   camera->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);

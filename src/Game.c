@@ -30,7 +30,6 @@ int main() {
   // #########
 
   geWindow* window = geCreate_Window(1200,1200,"Swing"); //TODO: start fullscreen (windowed?)
-  grInit(); //!!!TODO: put this somewhere better, currently needed here for window's screen models needing an OpenGL context (I think)
 
   geGame* game = geCreate_Game(window);
 

@@ -14,7 +14,7 @@ Menu_Text* Create_Menu_Text_With_Resolution(
   Menu_Text* mt = malloc(sizeof(Menu_Text));
   if (mt == NULL) { return NULL; }
 
-  mt->_super = geEntity_ctor(&mt->_super);
+  geEntity_ctor(&mt->_super);
   geSet_Sub_Entity(mt, Destroy_Menu_Text_Sub_Entity, &mt->_super);
 
   if (font_path == NULL) {
@@ -25,10 +25,10 @@ Menu_Text* Create_Menu_Text_With_Resolution(
   mt->text->alignment = GR_ALIGN_CENTRE;
 
   mt->frame = mFrame2D_init((mVector2f){{abs_X,abs_Y}}, 0, (mVector2f){{scale,scale}});
-  mt->shader = grCreate_Shader("../include/Game_Engine/Graphics/Shaders/grText_2D_vert.glsl",
-                               "../include/Game_Engine/Graphics/Shaders/grText_2D_frag.glsl");
+  mt->shader = grShader_init("../include/Game_Engine/Graphics/Shaders/grText_2D_vert.glsl",
+                              "../include/Game_Engine/Graphics/Shaders/grText_2D_frag.glsl");
 
-  mt->text_r = grCreate_Text_Renderer_2D(mt->text, &mt->frame, mt->shader);
+  mt->text_r = grCreate_Text_Renderer_2D(mt->text, &mt->frame, &mt->shader);
   mt->text_r->rel_X = rel_X;
   mt->text_r->rel_Y = rel_Y;
 
@@ -57,7 +57,7 @@ void Destroy_Menu_Text_Sub_Entity(geEntity* entity) {
 
   grDestroy_Font(menu_text->font);
   grDestroy_Text(menu_text->text);
-  grDestroy_Shader(menu_text->shader);
+  grShader_term(&menu_text->shader);
 
   free(menu_text);
 

@@ -6,13 +6,15 @@
 #include "geComponent.h"
 
 typedef struct geEntity geEntity;
-typedef uint32_t geEntity_Layer_Mask;
-typedef uint64_t geEntity_ID;
 
 typedef void (*geDestroy_Entity_fn)(geEntity* entity);
 
-D_HEADER_dLList(geEntity*, geEntity_ptr);
+D_HEADER_LLIST(geEntity*, geEntity_ptr);
 
+typedef uint32_t geEntity_Layer_Mask;
+typedef uint64_t geEntity_ID;
+
+typedef
 struct geEntity {
 
   dNode_LL(geEntity_ptr)* _entity_node;
@@ -27,20 +29,14 @@ struct geEntity {
   void* _sub;
   geDestroy_Entity_fn _destroy;
 
-  bool _deallocate;
-
-};
+} geEntity;
 
 // ==========================
 // Initialization/Termination
 // ==========================
 
-geEntity geEntity_ctor(geEntity* self);
+void geEntity_ctor(geEntity* self);
 void geEntity_dtor(geEntity* entity);
-
-geEntity* geCreate_Entity();
-
-void geDestroy_Entity(geEntity* entity);
 
 void geSet_Sub_Entity(void* sub, geDestroy_Entity_fn destroy, geEntity* entity);
 
@@ -62,9 +58,5 @@ void geRemove_Component(geComponent* component, geEntity* entity);
 
 geComponent* geGet_First_Component(geEntity* entity);
 geComponent* geGet_Next_Component(geComponent* component);
-
-// ===
-
-// geComponent* geFind_Component_By_ID(geComponent_ID id, geEntity* em);
 
 #endif

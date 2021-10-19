@@ -1,5 +1,5 @@
-#ifndef PH_Collision_Solver_H
-#define PH_Collision_Solver_H
+#ifndef PH_COLLISION_SOLVER_H
+#define PH_COLLISION_SOLVER_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -14,11 +14,11 @@
 #include "phJoint.h"
 
 typedef struct phCollision2D phCollision2D;
-typedef struct phCollision_Solver2D phCollision_Solver2D;
 
 typedef uint64_t (*phDetect_Collisions_fn)(phRigid_Body2D* a, phRigid_Body2D* b, phCollision2D* collisions);
 typedef bool (*phRay_Cast_fn)(mVector2f position, mVector2f direction, phCollider2D* c, phCollision2D* collisions);
 
+typedef
 struct phCollision2D {
 
   phRigid_Body2D* rigid_body1;
@@ -33,8 +33,9 @@ struct phCollision2D {
 
   float accum_lambda;
 
-};
+} phCollision2D;
 
+typedef
 struct phCollision_Solver2D {
 
   dLList(phRigid_Body2D_ptr)* _rigid_bodies;
@@ -43,7 +44,7 @@ struct phCollision_Solver2D {
   phCollision2D _collisions[100];
   uint64_t _collisions_count;
 
-};
+} phCollision_Solver2D;
 
 // ==========================
 // Initialization/Termination

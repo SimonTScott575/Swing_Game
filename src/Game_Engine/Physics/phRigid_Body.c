@@ -7,12 +7,12 @@
 
 D_SOURCE_dLList(phRigid_Body2D*, phRigid_Body2D_ptr);
 
-// =============
-// Initalization
-// =============
+// =========================
+// Initalization/Termination
+// =========================
 
 void phRigid_Body2D_ctor(phRigid_Body2D* self, mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider) {
-  
+
   *self = (phRigid_Body2D){
 
     .frame = frame,
@@ -40,7 +40,8 @@ void phRigid_Body2D_ctor(phRigid_Body2D* self, mFrame2D* frame, float mass, floa
   };
 
   geComponent_ctor(&self->_super);
-  
+  geSet_Sub_Component(self, NULL, NULL, &self->_super);
+
 }
 
 // ==============

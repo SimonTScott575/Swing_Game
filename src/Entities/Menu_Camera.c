@@ -7,7 +7,7 @@ Menu_Camera* Create_Menu_Camera(float x_length, geScene* scene) {
   Menu_Camera* mc = malloc(sizeof(Menu_Camera));
   if (mc == NULL) { return NULL; }
 
-  mc->_super = geEntity_ctor(&mc->_super);
+  geEntity_ctor(&mc->_super);
   geSet_Sub_Entity(mc, Destroy_Menu_Camera_Sub_Entity, &mc->_super);
 
   mc->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);

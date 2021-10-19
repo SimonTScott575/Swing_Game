@@ -1,11 +1,5 @@
 #include <Game_Engine/UI/geUI_Renderer.h>
 
-// ======
-// static
-// ======
-
-static void geDestroy_UI_Sub_Renderer(grRenderer* renderer);
-
 // ==========================
 // Initialization/Termination
 // ==========================

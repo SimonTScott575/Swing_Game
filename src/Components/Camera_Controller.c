@@ -52,19 +52,19 @@ void Prepare_Camera_Sub_Camera2D(grCamera2D* camera2D, grScreen* screen) {
   // Glow PP
   mVector2f screen_pos1 = mAdd_V2f(cc->rs->camera->frame->position, (mVector2f){{-x_length/2,-y_length/2}} );
   mVector2f screen_pos2 = mAdd_V2f(cc->rs->camera->frame->position, (mVector2f){{ x_length/2, y_length/2}} );
-  grSet_float2_by_name("screen_pos1", Glow_Shader,  screen_pos1.i[0], screen_pos1.i[1]);
-  grSet_float2_by_name("screen_pos2", Glow_Shader,  screen_pos2.i[0], screen_pos2.i[1]);
+  grSet_float2_by_name("screen_pos1", &Glow_Shader,  screen_pos1.i[0], screen_pos1.i[1]);
+  grSet_float2_by_name("screen_pos2", &Glow_Shader,  screen_pos2.i[0], screen_pos2.i[1]);
 
-  grSet_int_by_name("gem_count", Glow_Shader, g_gems_count);
+  grSet_int_by_name("gem_count", &Glow_Shader, g_gems_count);
   if (g_gems_count > 0) {
-    grSet_float2v_by_name("gem_positions", Glow_Shader, (float*)g_gem_positions, g_gems_count); // g_gems_count); g_gem_positions[0].i
-    grSet_intv_by_name("gems_is_caught", Glow_Shader, g_gems_is_caught, g_gems_count);
+    grSet_float2v_by_name("gem_positions", &Glow_Shader, (float*)g_gem_positions, g_gems_count); // g_gems_count); g_gem_positions[0].i
+    grSet_intv_by_name("gems_is_caught", &Glow_Shader, g_gems_is_caught, g_gems_count);
   }
 
-  grSet_float2_by_name("portal_position", Glow_Shader, g_portal_pos.i[0], g_portal_pos.i[1]);
-  grSet_int_by_name("portal_is_lit", Glow_Shader, g_gems_caught_count >= g_gems_count);
-  grSet_int_by_name("portal_catches_player", Glow_Shader, g_portal_catches_player);
-  grSet_float_by_name("portal_catch_time", Glow_Shader, g_portal_catch_time);
-  grSet_float_by_name("current_time", Glow_Shader, geGet_Active_Game()->time);
+  grSet_float2_by_name("portal_position", &Glow_Shader, g_portal_pos.i[0], g_portal_pos.i[1]);
+  grSet_int_by_name("portal_is_lit", &Glow_Shader, g_gems_caught_count >= g_gems_count);
+  grSet_int_by_name("portal_catches_player", &Glow_Shader, g_portal_catches_player);
+  grSet_float_by_name("portal_catch_time", &Glow_Shader, g_portal_catch_time);
+  grSet_float_by_name("current_time", &Glow_Shader, geGet_Active_Game()->time);
 
 }

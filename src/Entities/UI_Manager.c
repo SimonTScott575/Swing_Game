@@ -11,7 +11,7 @@ UI_Manager* Create_UI_Manager(
   UI_Manager* uim = malloc(sizeof(UI_Manager));
   if (uim == NULL) { return NULL; }
 
-  uim->_super = geEntity_ctor(&uim->_super);
+  geEntity_ctor(&uim->_super);
   geSet_Sub_Entity(uim, Destroy_UI_Manager_Sub_Entity, &uim->_super);
 
   Level_Transitioner_ctor(

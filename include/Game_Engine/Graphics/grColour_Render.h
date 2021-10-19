@@ -4,15 +4,14 @@
 #include <Game_Engine/Graphics/grModel.h>
 #include <Game_Engine/Graphics/grShader.h>
 
-typedef struct grColour_Render grColour_Render;
-
+typedef
 struct grColour_Render {
-  grModel* _model;
-  grShader* _shader;
-};
+  grModel _model;
+  grShader _shader;
+} grColour_Render;
 
-grColour_Render* grCreate_Colour_Render(float colour[4], const grMesh* mesh);
+grColour_Render grColour_Render_init(float colour[4], const grMesh* mesh);
 
-void grDestroy_Colour_Render(grColour_Render* cr);
+void grColour_Render_term(grColour_Render* cr);
 
 #endif

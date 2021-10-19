@@ -3,8 +3,9 @@
 Timer* Create_Timer(grText* text_sec, grText* text_msec, geScene* scene) {
 
   Timer* timer = malloc(sizeof(Timer));
+  if (timer == NULL) { return NULL; }
 
-  timer->_super = geEntity_ctor(&timer->_super);
+  geEntity_ctor(&timer->_super);
   geSet_Sub_Entity(timer, Destroy_Timer_Sub_Entity, &timer->_super);
 
   text_sec->alignment = GR_ALIGN_RIGHT;

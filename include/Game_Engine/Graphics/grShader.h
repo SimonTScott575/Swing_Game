@@ -7,7 +7,7 @@
 
 #include "grTexture.h"
 
-typedef struct grShader grShader;
+typedef
 struct grShader {
   grTexture** textures;
   int* _texture_locations;
@@ -23,11 +23,11 @@ struct grShader {
   int _Projection4x4_location;
 
   uint32_t _OpenGL_ID;
-};
+} grShader;
 
-grShader* grCreate_Shader(const char* vertex_path, const char* fragment_path);
+grShader grShader_init(const char* vertex_path, const char* fragment_path);
 
-void grDestroy_Shader(grShader* shader);
+void grShader_term(grShader* shader);
 
 int grGet_location(const char* name, const grShader* shader);
 int grGet_Texture_index(int32_t location, const grShader* shader);

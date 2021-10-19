@@ -1,9 +1,11 @@
-#ifndef GE_UI
-#define GE_UI
+#ifndef GE_UI_H
+#define GE_UI_H
 
-#include "geButton_UI.h"
 #include "geUI_Element.h"
+#include "geButton_UI.h"
+
 #include "geUI_Renderer.h"
-#include "Defaults/geUI_Manager.h"
+
+#include "geUI_Manager.h"
 
 #endif

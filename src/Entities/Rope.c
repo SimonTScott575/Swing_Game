@@ -5,13 +5,13 @@ Rope* Create_Rope(phRigid_Body2D* source_rb, geScene* scene) {
   Rope* rope = malloc(sizeof(Rope));
   if (rope == NULL) { return NULL; }
 
-  rope->_super = geEntity_ctor(&rope->_super);
+  geEntity_ctor(&rope->_super);
   geSet_Sub_Entity(rope, Destroy_Rope_Sub_Entity, &rope->_super);
 
   rope->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);
 
   rope->sprite = grCreate_Sprite("../Resources/Textures/square_red_256.png",1 ,1);
-  grRenderer_2D_ctor(&rope->renderer, &rope->frame, rope->sprite->_model, rope->sprite->_shader);
+  grRenderer_2D_ctor(&rope->renderer, &rope->frame, &rope->sprite->_model, &rope->sprite->_shader);
 
   phRod_Joint2D_ctor(&rope->rod_j, 1, rope->frame.position, source_rb, mVector2f_ZERO, NULL);
   rope->rod_j._super._super.is_active = false;

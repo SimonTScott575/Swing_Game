@@ -1,7 +1,7 @@
 //TODO: what if phDELTA_T = 0 ?
 
-#ifndef PH_Rigid_Body_H
-#define PH_Rigid_Body_H
+#ifndef PH_RIGID_BODY_H
+#define PH_RIGID_BODY_H
 
 #include <stdbool.h>
 
@@ -18,6 +18,7 @@ typedef struct phRigid_Body2D phRigid_Body2D;
 
 D_HEADER_LLIST(phRigid_Body2D*, phRigid_Body2D_ptr);
 
+typedef
 struct phRigid_Body2D {
 
   geComponent _super;
@@ -46,16 +47,16 @@ struct phRigid_Body2D {
 
   bool _force_applied; //!TODO: should be with RB_System ?
 
-};
+} phRigid_Body2D;
 
-// =============
-// Initalization
-// =============
+// =========================
+// Initalization/Termination
+// =========================
 
 void phRigid_Body2D_ctor(phRigid_Body2D* self, mFrame2D* frame, float mass, float rotational_inertia, phCollider2D* collider);
 
 // ==============
-// Set properties
+// Set Properties
 // ==============
 
 void phSet_Force(mVector2f force, mVector2f position, phRigid_Body2D* rb);

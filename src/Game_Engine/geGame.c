@@ -1,5 +1,7 @@
 #include <Game_Engine/geGame.h>
 
+#include <Game_Engine/ge_common.h>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -20,6 +22,9 @@ static void geWindow_Resize_Callback(geWindow_ID window_ID, int width, int heigh
 geGame* geCreate_Game(geWindow* window) {
 
   geGame* game = malloc(sizeof(geGame));
+  if (game == NULL) {
+    goto catch_game_malloc_fail;
+  }
 
   *game = (geGame){
     ._active_scene = NULL,
@@ -37,9 +42,14 @@ geGame* geCreate_Game(geWindow* window) {
 
     .window = window
   };
-  game->_front_screen = malloc(sizeof(grScreen));
+
+  // set screen data
   game->_back_screen = malloc(sizeof(grScreen));
-  *game->_front_screen = *game->_back_screen = (grScreen){
+  if (game->_back_screen == NULL) { goto catch_back_screen_fail; }
+  game->_front_screen = malloc(sizeof(grScreen));
+  if (game->_front_screen == NULL) { goto catch_front_screen_fail; }
+
+  *game->_front_screen = *game->_back_screen = (grScreen){ //? grScreen_ctor ?
     ._colour_texture = NULL,
 
     ._clear_colour = { 0, 0, 0, 1 },
@@ -79,14 +89,36 @@ geGame* geCreate_Game(geWindow* window) {
   game->_back_screen->_X_pixels = window->_X_pixels;
   game->_back_screen->_Y_pixels = window->_Y_pixels;
 
+  // set callbacks - window resize and input
   glfwSetFramebufferSizeCallback(window->_window_ID, &geWindow_Resize_Callback);
 
   glfwSetKeyCallback(window->_window_ID, geKey_States_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
   glfwSetMouseButtonCallback(window->_window_ID, geMouse_Button_Callback_GLFW); //TODO: make geSet_Input_Callback(geWindow_ID*, callback fn);
 
+  //
   if ( geGet_Active_Game() == NULL ) {
     geSet_Active_Game(game);
   }
+
+  goto no_catch;
+
+  catch_front_screen_fail :
+    free(game->_back_screen);
+    GE_DEBUG_LOG("\n%s",
+                 "Game_Engine DEBUG : geGame\n"
+                 "                    malloc fail\n");
+  catch_back_screen_fail :
+    free(game);
+    GE_DEBUG_LOG("\n%s",
+                 "Game_Engine DEBUG : geGame\n"
+                 "                    malloc fail\n");
+  catch_game_malloc_fail :
+   GE_DEBUG_LOG("\n%s",
+                "Game_Engine DEBUG : geGame\n"
+                "                    malloc fail\n");
+  return NULL;
+
+  no_catch:
 
   return game;
 
@@ -118,22 +150,6 @@ geGame* geGet_Active_Game() {
 }
 
 // ===
-
-void geUnload_Game(geGame* game) { //? NOT used ?
-
-  dNode_LL(geScene_ptr)* scene_node = game->_scenes->start;
-
-  while (scene_node != NULL) {
-
-    geUnload_Scene(scene_node->element); //??? what if scene already unloaded ? as will be the case ...
-
-    scene_node = scene_node->next;
-
-  }
-
-  geDestroy_Game(game); //??? NO
-
-}
 
 void gePlay_Game(geGame* game) {
 
@@ -190,8 +206,6 @@ void gePlay_Game(geGame* game) {
   game->_end_game = false;
 
 }
-
-// ===
 
 void geEnd_Scene(geGame* game) {
 

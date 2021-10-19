@@ -1,5 +1,5 @@
-#ifndef PH_Collider_H
-#define PH_Collider_H
+#ifndef PH_COLLIDER_H
+#define PH_COLLIDER_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -22,9 +22,10 @@ typedef struct phPolygon_Collider2D phPolygon_Collider2D;
 
 D_HEADER_LLIST(phCollider2D*, phCollider2D_ptr);
 
+typedef
 struct phCollider2D {
 
-  geComponent* _super;
+  geComponent _super;
 
   dNode_LL(phCollider2D_ptr)* _cldr_node;
 
@@ -40,7 +41,7 @@ struct phCollider2D {
 
   void* attachment;
 
-};
+} phCollider2D;
 
 struct phAABB_Collider2D {
 
@@ -57,28 +58,17 @@ struct phCircle_Collider2D {
   float radius;
 
 };
-struct phPolygon_Collider2D {
-
-  phCollider2D _super;
-
-  mVector2f* vertices;
-  uint64_t vertices_length;
-  mVector2f* normals;
-
-};
 
 // ==========================
 // Initialization/Termination
 // ==========================
 
-phCollider2D init_phCollider2D(mFrame2D* frame, uint64_t collider_id);
+void phCollider2D_ctor(phCollider2D* self);
 
-phAABB_Collider2D* new_phAABB_Collider2D(mFrame2D* frame, float X_length, float Y_length);
-phCircle_Collider2D* new_phCircle_Collider2D(mFrame2D* frame,  float radius);
+void phAABB_Collider2D_ctor(phAABB_Collider2D* self, mFrame2D* frame, float X_length, float Y_length);
+void phCircle_Collider2D_ctor(phCircle_Collider2D* self, mFrame2D* frame,  float radius);
 
-void del_phCollider2D_Sub_Component(geComponent* component);
-
-void phSet_Sub_Collider2D(void* sub, phCollider2D* collider);
+void phSet_Sub_Collider2D(void* sub, mFrame2D* frame, uint64_t collider_id, phCollider2D* collider);
 
 
 #endif

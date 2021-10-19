@@ -1,5 +1,5 @@
-#ifndef D_File_H
-#define D_File_H
+#ifndef D_FILE_H
+#define D_FILE_H
 
 //NOTE: MUST be in the correct r/w mode for all functions to behave as expected.
 

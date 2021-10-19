@@ -9,7 +9,7 @@ Score* Create_Score(
   Score* score = malloc(sizeof(Score));
   if (score == NULL) { return NULL; }
 
-  score->_super = geEntity_ctor(&score->_super);
+  geEntity_ctor(&score->_super);
   geSet_Sub_Entity(score, Destroy_Score_Sub_Entity, &score->_super);
 
   Score_Counter_ctor(&score->counter, text_num, text_den);

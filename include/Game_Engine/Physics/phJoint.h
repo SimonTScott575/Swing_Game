@@ -9,13 +9,12 @@
 #include "phRigid_Body.h"
 
 typedef struct phJoint2D phJoint2D;
-typedef struct phSpring_Joint2D phSpring_Joint2D;
-typedef struct phRod_Joint2D phRod_Joint2D;
 
 typedef void (*phApply_Joint2D_fn)(phJoint2D* joint);
 
 D_HEADER_LLIST(phJoint2D*, phJoint2D_ptr);
 
+typedef
 struct phJoint2D {
 
   geComponent _super;
@@ -31,8 +30,9 @@ struct phJoint2D {
   void* _sub;
   phApply_Joint2D_fn _apply_joint;
 
-};
+} phJoint2D;
 
+typedef
 struct phSpring_Joint2D {
 
   phJoint2D _super;
@@ -40,7 +40,8 @@ struct phSpring_Joint2D {
   float k;
   float rest_length;
 
-};
+} phSpring_Joint2D;
+typedef
 struct phRod_Joint2D {
 
   phJoint2D _super;
@@ -48,7 +49,7 @@ struct phRod_Joint2D {
   float radial_velocity;
   bool _is_radial_motion;
 
-};
+} phRod_Joint2D;
 
 // ==========================
 // Initialization/Termination

@@ -13,7 +13,7 @@ Level_Selector* Create_Level_Selector(
   Level_Selector* ls = malloc(sizeof(Level_Selector));
   if (ls == NULL) { return NULL; }
 
-  ls->_super = geEntity_ctor(&ls->_super);
+  geEntity_ctor(&ls->_super);
   geSet_Sub_Entity(ls, Destroy_Level_Selector_Sub_Entity, &ls->_super);
 
   Level_Select_Navigator_ctor(

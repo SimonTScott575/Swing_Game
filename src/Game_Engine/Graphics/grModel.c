@@ -12,20 +12,20 @@
 // Initialization/Termination
 // ==========================
 
-grModel* grCreate_Model_From_Mesh(const grMesh* mesh) {
+grModel grModel_From_Mesh_init(const grMesh* mesh) {
 
   // Set model properties
-  grModel* model = malloc(sizeof(grModel));
-  model->indices_length = mesh->indices_length;
+  grModel model;
+  model.indices_length = mesh->indices_length;
 
   // Prepare buffers
-  glGenVertexArrays(1, &model->_OpenGL_IDs.VAO);
-  glGenBuffers(1, &model->_OpenGL_IDs.VBO);
-  glGenBuffers(1, &model->_OpenGL_IDs.EBO);
+  glGenVertexArrays(1, &model._OpenGL_IDs.VAO);
+  glGenBuffers(1, &model._OpenGL_IDs.VBO);
+  glGenBuffers(1, &model._OpenGL_IDs.EBO);
 
-  glBindVertexArray(model->_OpenGL_IDs.VAO);
-  glBindBuffer(GL_ARRAY_BUFFER, model->_OpenGL_IDs.VBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->_OpenGL_IDs.EBO);
+  glBindVertexArray(model._OpenGL_IDs.VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, model._OpenGL_IDs.VBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model._OpenGL_IDs.EBO);
 
   // Send data to GPU
   size_t size_of_vertices = mesh->size_of_vertex * mesh->vertices_data_length;
@@ -43,12 +43,10 @@ grModel* grCreate_Model_From_Mesh(const grMesh* mesh) {
 
 }
 
-void grDestroy_Model(grModel* model) {
+void grModel_term(grModel* model) {
 
   glDeleteVertexArrays(1, &model->_OpenGL_IDs.VAO);
   glDeleteBuffers(1, &model->_OpenGL_IDs.VBO);
   glDeleteBuffers(1, &model->_OpenGL_IDs.EBO);
-
-  free(model);
 
 }

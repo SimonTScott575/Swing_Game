@@ -2,7 +2,9 @@
 
 #include <stdlib.h>
 
-D_SOURCE_dLList(geSystem*, geSystem_ptr);
+#include <Game_Engine/ge_common.h>
+
+D_SOURCE_LLIST(geSystem*, geSystem_ptr);
 
 // ====================
 // Creation/Destruction
@@ -11,6 +13,12 @@ D_SOURCE_dLList(geSystem*, geSystem_ptr);
 geSystem* geCreate_System(void* sub, geUpdate_fn update, geDestroy_fn destroy) {
 
   geSystem* system = malloc(sizeof(geSystem));
+  if (system == NULL) {
+    GE_DEBUG_LOG("%s\n",
+                 "Game_Engine DEBUG : ECS/geSystem\n"
+                 "                    system malloc fail\n");
+    return NULL;
+  }
 
   *system = (geSystem){
 

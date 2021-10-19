@@ -15,7 +15,7 @@
 // static
 // ======
 
-static grModel* gr_text_model = NULL;
+static grModel gr_text_model;
 
 // ==========================
 // Initialization/Termination
@@ -23,19 +23,13 @@ static grModel* gr_text_model = NULL;
 
 void grInit_Text_Renderer() {
 
-  if (gr_text_model == NULL) {
-    gr_text_model = grCreate_Model_From_Mesh(grRect2D_Mesh);
-  }
+  gr_text_model = grModel_From_Mesh_init(grRect2D_Mesh);
 
 }
 
 void grTerminate_Text_Renderer() {
 
-  if (gr_text_model != NULL) {
-    grDestroy_Model(gr_text_model);
-  }
-
-  gr_text_model = NULL;
+  grModel_term(&gr_text_model);
 
 }
 
@@ -71,7 +65,7 @@ grText_Renderer* grCreate_Text_Renderer_2D(grText* text, mFrame2D* frame, grShad
 
   text_r->_renderer_frame = mFrame2D_I;
 
-  grRenderer_2D_ctor(&text_r->_super, &text_r->_renderer_frame, gr_text_model, shader);
+  grRenderer_2D_ctor(&text_r->_super, &text_r->_renderer_frame, &gr_text_model, shader);
   grSet_Sub_Renderer(text_r, grRender_Text_Renderer, grDestroy_Text_Sub_Renderer, &text_r->_super);
 
   return text_r;
@@ -105,10 +99,10 @@ grFont* grCreate_Font(const char* path, int32_t size) {
           continue;
       }
 
-      grImage image = init_grImage_Data(face->glyph->bitmap.width, face->glyph->bitmap.rows, 1, grColours.R, face->glyph->bitmap.buffer);
+      grImage image = grImage_Data_init(face->glyph->bitmap.width, face->glyph->bitmap.rows, 1, grColours.R, face->glyph->bitmap.buffer);
 
       font->_characters[c] = (grCharacter){
-        ._texture = grCreate_Texture_From_Image(&image),
+        ._texture = grTexture_From_Image_init(&image),
         ._width = face->glyph->bitmap.width,
         ._height = face->glyph->bitmap.rows,
         ._bearing_X = face->glyph->bitmap_left,
@@ -154,7 +148,7 @@ void grDestroy_Text_Sub_Renderer(grRenderer* renderer) {
 void grDestroy_Font(grFont* font) {
 
   for (uint32_t i = 0; i < font->_characters_count; i++) {
-    grDestroy_Texture(font->_characters[i]._texture);
+    grTexture_term(&font->_characters[i]._texture);
   }
   free(font->_characters);
 
@@ -190,7 +184,7 @@ void grRender_Text_Renderer(grRenderer* renderer, grCamera2D* camera) {
 
     grCharacter ch = characters[*c];
 
-    grSet_Texture_by_name("grTexture", ch._texture, renderer->shader);
+    grSet_Texture_by_name("grTexture", &ch._texture, renderer->shader);
 
     // set model size
     float width = ch._width;// *frame->scale.i[0];
@@ -218,7 +212,7 @@ void grRender_Text_Renderer(grRenderer* renderer, grCamera2D* camera) {
          1,0
       }
     };
-    glBindBuffer(GL_ARRAY_BUFFER, gr_text_model->_OpenGL_IDs.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, gr_text_model._OpenGL_IDs.VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
     // set renderer frame

@@ -8,8 +8,9 @@ typedef struct geScene geScene;
 
 typedef void (*geLoad_Scene_fn)(geScene*);
 
-D_HEADER_dLList(geScene*, geScene_ptr);
+D_HEADER_LLIST(geScene*, geScene_ptr);
 
+typedef
 struct geScene {
 
   dNode_LL(geScene_ptr)* _scene_node;
@@ -20,27 +21,30 @@ struct geScene {
 
   geLoad_Scene_fn _load;
 
-};
+} geScene;
 
 // ====================
 // Creation/Destruction
 // ====================
 
-geScene* geCreate_Scene();
+geScene* geCreate_Scene(geLoad_Scene_fn load);
 
 void geDestroy_Scene(geScene* scene);
 
 // ===
 
+// Calls the geLoad_Scene_fn
 void geLoad_Scene(geScene* scene);
 
-void geUnload_Scene(geScene* scene); //? remove ? //? put in game ? //? static ?
+// Calls the unload entity/system functions of added entities/systems
+void geUnload_Scene(geScene* scene);
 
+// Updates entities then systems in order added
 void geUpdate_Scene(geScene* scene);
 
-//? end_scene like end_game ?
-
-// ===
+// ========================
+// Entity/System Management
+// ========================
 
 dNode_LL(geEntity_ptr)* geAdd_Entity(geEntity* entity, geScene* scene);
 dNode_LL(geEntity_ptr)* geAdd_Entity_Before(geEntity* new_entity, geEntity* entity2, geScene* scene);

@@ -8,6 +8,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <Game_Engine/ge_common.h>
 #include <Game_Engine/geWindow.h>
 
 // ======
@@ -28,6 +29,12 @@ static void grDestroy_Rendering_System2D_void(void* arg) {
 grRendering_System2D* grCreate_Rendering_System2D(grCamera2D* camera) {
 
   grRendering_System2D* rs = malloc(sizeof(grRendering_System2D));
+  if (rs == NULL) {
+    GE_DEBUG_LOG("%s\n"
+                 "Game_Engine DEBUG : Graphics/grRendering_System\n"
+                 "                    rendering system malloc fail\n");
+    return NULL;
+  }
 
   *rs = (grRendering_System2D){
     ._super = geCreate_System(rs, grRender_Rendering_System2D_void, grDestroy_Rendering_System2D_void),
@@ -35,6 +42,7 @@ grRendering_System2D* grCreate_Rendering_System2D(grCamera2D* camera) {
     ._renderers = new_dLList(grRenderer_ptr)(0,NULL),
     .post_process = NULL
   };
+  //TODO: handle super/renderers fail
 
   return rs;
 

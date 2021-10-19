@@ -2,15 +2,15 @@
 
 #include <stdio.h>
 
-D_SOURCE_dLList(geEntity*, geEntity_ptr);
+D_SOURCE_LLIST(geEntity*, geEntity_ptr);
 
 // ==========================
 // Initialization/Termination
 // ==========================
 
-geEntity geEntity_ctor(geEntity* self) {
+void geEntity_ctor(geEntity* self) {
 
-  return (geEntity){
+  *self = (geEntity){
     ._entity_node = NULL,
 
     .is_active = true,
@@ -19,8 +19,6 @@ geEntity geEntity_ctor(geEntity* self) {
     .ID = 0,
 
     ._components = new_dLList(geComponent_ptr)(0,NULL),
-
-    ._deallocate = false,
 
     ._sub = NULL,
     ._destroy = NULL
@@ -33,29 +31,6 @@ void geEntity_dtor(geEntity* entity) {
 
   if (entity->_destroy != NULL) {
     entity->_destroy(entity);
-  }
-
-}
-
-geEntity* geCreate_Entity() {
-
-  geEntity* entity = malloc(sizeof(geEntity));
-
-  *entity = geEntity_ctor(entity);
-  entity->_deallocate = true;
-
-  return entity;
-
-}
-
-void geDestroy_Entity(geEntity* entity) {
-
-  bool deallocate = entity->_deallocate;
-
-  geEntity_dtor(entity);
-
-  if (deallocate) {
-    free(entity);
   }
 
 }
@@ -82,14 +57,14 @@ void geUnload_Entity(geEntity* entity) {
   dNode_LL(geComponent_ptr)* next_component_node;
   for ( ; component_node != NULL; component_node = next_component_node) {
 
-    geDestroy_Component(component_node->element);
+    geComponent_dtor(component_node->element);
 
     next_component_node = component_node->next;
     dRemove_LL(geComponent_ptr)(component_node, entity->_components);
 
   }
 
-  geDestroy_Entity(entity);
+  geEntity_dtor(entity);
 
 }
 

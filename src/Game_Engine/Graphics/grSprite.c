@@ -6,7 +6,7 @@ grSprite* grCreate_Sprite(char* path, float width, float height) {
 
   grSprite* sprite = malloc(sizeof(grSprite));
 
-  sprite->_texture = grCreate_Texture(path);
+  sprite->_texture = grTexture_init(path);
 
   float hw = width/2;
   float hh = height/2;
@@ -31,11 +31,11 @@ grSprite* grCreate_Sprite(char* path, float width, float height) {
     .size_of_vertex = 4*sizeof(float)
   };
 
-  sprite->_model = grCreate_Model_From_Mesh(&mesh);
+  sprite->_model = grModel_From_Mesh_init(&mesh);
 
-  sprite->_shader = grCreate_Shader("../include/Game_Engine/Graphics/Shaders/grTexture_2D_vert.glsl",
-                                    "../include/Game_Engine/Graphics/Shaders/grTexture_2D_frag.glsl"); //!!!TEMP paths...?
-  grSet_Texture_by_name("grTexture", sprite->_texture, sprite->_shader);
+  sprite->_shader = grShader_init("../include/Game_Engine/Graphics/Shaders/grTexture_2D_vert.glsl",
+                                  "../include/Game_Engine/Graphics/Shaders/grTexture_2D_frag.glsl"); //!!!TEMP paths...?
+  grSet_Texture_by_name("grTexture", &sprite->_texture, &sprite->_shader);
 
   return sprite;
 
@@ -43,9 +43,9 @@ grSprite* grCreate_Sprite(char* path, float width, float height) {
 
 void grDestroy_Sprite(grSprite* sprite) {
 
-  grDestroy_Texture(sprite->_texture);
-  grDestroy_Model(sprite->_model);
-  grDestroy_Shader(sprite->_shader);
+  grTexture_term(&sprite->_texture);
+  grModel_term(&sprite->_model);
+  grShader_term(&sprite->_shader);
 
   free(sprite);
 

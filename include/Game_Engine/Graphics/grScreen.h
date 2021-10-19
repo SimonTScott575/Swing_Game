@@ -7,10 +7,10 @@
 #include "grShader.h"
 #include "grTexture.h"
 
-typedef struct grScreen grScreen;
 typedef uint32_t grTest;
 typedef uint32_t grAction;
 
+typedef
 struct grScreen { //TODO: should store depth/stencil buffers too
   grTexture* _colour_texture;
 
@@ -36,7 +36,7 @@ struct grScreen { //TODO: should store depth/stencil buffers too
 
   uint32_t _OpenGL_ENABLED_FLAG;
   uint32_t _OpenGL_ID;
-};
+} grScreen;
 
 struct grTests {
   grTest ALWAYS;
@@ -82,8 +82,8 @@ grScreen* grGet_Active_Screen();
 // Creation/Destruction
 // ====================
 
-grScreen* grCreate_Screen(grTexture* colour_texture);
-void grDestroy_Screen(grScreen* screen);
+grScreen grScreen_init(grTexture* colour_texture);
+void grScreen_term(grScreen* screen);
 
 // ===
 

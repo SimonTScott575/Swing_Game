@@ -151,29 +151,29 @@
 // Getters
 // =======
 
-bool geKey_Down_Stroke(geGame* game, int key) {
-  return game->input_states.states[key] & GE_KEY_DOWN_STROKE;
+bool geKey_Down_Stroke(geGame* game, int kb_key) {
+  return game->input_states.states[kb_key] & GE_KEY_DOWN_STROKE;
 }
-bool geKey_Up_Stroke(geGame* game, int key) {
-  return game->input_states.states[key] & GE_KEY_UP_STROKE;
-}
-
-bool geMouse_Button_Down_Stroke(geGame* game, int button) {
-  return game->input_states.mouse_states[button] & GE_KEY_DOWN_STROKE;
-}
-bool geMouse_Button_Up_Stroke(geGame* game, int button) {
-  return game->input_states.mouse_states[button] & GE_KEY_UP_STROKE;
+bool geKey_Up_Stroke(geGame* game, int kb_key) {
+  return game->input_states.states[kb_key] & GE_KEY_UP_STROKE;
 }
 
-bool geKey_Down(geGame* game, int key) {
-  return glfwGetKey(game->window->_window_ID, key) == GLFW_PRESS;
+bool geMouse_Button_Down_Stroke(geGame* game, int mouse_key) {
+  return game->input_states.mouse_states[mouse_key] & GE_KEY_DOWN_STROKE;
 }
-bool geKey_Up(geGame* game, int key) {
-  return glfwGetKey(game->window->_window_ID, key) == GLFW_RELEASE;
+bool geMouse_Button_Up_Stroke(geGame* game, int mouse_key) {
+  return game->input_states.mouse_states[mouse_key] & GE_KEY_UP_STROKE;
 }
-bool geMouse_Down(geGame* game, int button) {
-  return glfwGetMouseButton(game->window->_window_ID, button) == GLFW_PRESS;
+
+bool geKey_Down(geGame* game, int kb_key) {
+  return glfwGetKey(game->window->_window_ID, kb_key) == GLFW_PRESS;
 }
-bool geMouse_Up(geGame* game, int button) {
-  return glfwGetMouseButton(game->window->_window_ID, button) == GLFW_RELEASE;
+bool geKey_Up(geGame* game, int kb_key) {
+  return glfwGetKey(game->window->_window_ID, kb_key) == GLFW_RELEASE;
+}
+bool geMouse_Down(geGame* game, int mouse_key) {
+  return glfwGetMouseButton(game->window->_window_ID, mouse_key) == GLFW_PRESS;
+}
+bool geMouse_Up(geGame* game, int mouse_key) {
+  return glfwGetMouseButton(game->window->_window_ID, mouse_key) == GLFW_RELEASE;
 }

@@ -9,70 +9,51 @@
 
 D_SOURCE_LLIST(phCollider2D*, phCollider2D_ptr);
 
-// ==============
-// Initialization
-// ==============
+// ==========================
+// Initialization/Termination
+// ==========================
 
-phCollider2D init_phCollider2D(mFrame2D* frame, uint64_t collider_id) {
-  return (phCollider2D){
-    ._super = NULL,
-
+void phCollider2D_ctor(phCollider2D* self) {
+  *self = (phCollider2D){
     ._cldr_node = NULL,
-    .frame = frame,
+    .frame = NULL,
 
     ._save_collisions = false,
     ._n_collisions = 0,
     ._collisions = NULL,
     ._max_collisions = 0,
 
-    ._collider_ID = collider_id,
     ._sub = NULL,
     .attachment = NULL
   };
+  geComponent_ctor(&self->_super);
+  geSet_Sub_Component(self, NULL, NULL, &self->_super);
 }
 
-phAABB_Collider2D* new_phAABB_Collider2D(mFrame2D* frame, float X_length, float Y_length) {
+void phAABB_Collider2D_ctor(phAABB_Collider2D* self, mFrame2D* frame, float X_length, float Y_length) {
 
-  phAABB_Collider2D* aabb = malloc(sizeof(phAABB_Collider2D));
-  *aabb = (phAABB_Collider2D){
+  *self = (phAABB_Collider2D){
     .X_length = X_length,
     .Y_length = Y_length
   };
 
-  aabb->_super = init_phCollider2D(frame, PH_AABB_COLLIDER);
-  phSet_Sub_Collider2D(aabb, &aabb->_super);
-
-  aabb->_super._super = geCreate_Component();
-  geSet_Sub_Component(&aabb->_super, NULL, del_phCollider2D_Sub_Component, aabb->_super._super);
-
-  return aabb;
+  phCollider2D_ctor(&self->_super);
+  phSet_Sub_Collider2D(self, frame, PH_AABB_COLLIDER, &self->_super);
 
 }
-phCircle_Collider2D* new_phCircle_Collider2D(mFrame2D* frame,  float radius) {
+void phCircle_Collider2D_ctor(phCircle_Collider2D* self, mFrame2D* frame,  float radius) {
 
-  phCircle_Collider2D* circle = malloc(sizeof(phCircle_Collider2D));
-  *circle = (phCircle_Collider2D){
+  *self = (phCircle_Collider2D){
     .radius = radius
   };
 
-  circle->_super = init_phCollider2D(frame, PH_CIRCLE_COLLIDER);
-  phSet_Sub_Collider2D(circle, &circle->_super);
-
-  circle->_super._super = geCreate_Component();
-  geSet_Sub_Component(&circle->_super, NULL, del_phCollider2D_Sub_Component, circle->_super._super);
-
-  return circle;
+  phCollider2D_ctor(&self->_super);
+  phSet_Sub_Collider2D(self, frame, PH_CIRCLE_COLLIDER, &self->_super);
 
 }
 
-void del_phCollider2D_Sub_Component(geComponent* component) {
-
-  phCollider2D* collider = component->_sub;
-
-  free(collider->_sub); //!!! geomtry vertices/normals not freed for polygon
-
-}
-
-void phSet_Sub_Collider2D(void* sub, phCollider2D* collider) { //! preferably should have _destroy
+void phSet_Sub_Collider2D(void* sub, mFrame2D* frame, uint64_t collider_id, phCollider2D* collider) { //! preferably should have _destroy
   collider->_sub = sub;
+  collider->frame = frame;
+  collider->_collider_ID = collider_id;
 }

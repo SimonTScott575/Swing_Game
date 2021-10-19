@@ -1,5 +1,5 @@
-#ifndef PH_RB_System_H
-#define PH_RB_System_H
+#ifndef PH_RB_SYSTEM_H
+#define PH_RB_SYSTEM_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -12,10 +12,7 @@
 #include "phRigid_Body.h"
 #include "phCollision_Solver.h"
 
-//? D_HEADER_dLList(phCollision2D, phCollision2D);
-
-typedef struct phRB_System2D phRB_System2D;
-
+typedef
 struct phRB_System2D {
 
   geSystem* _super;
@@ -25,7 +22,7 @@ struct phRB_System2D {
 
   phCollision_Solver2D* _cs;
 
-};
+} phRB_System2D;
 
 // ==========================
 // Initialization/Termination

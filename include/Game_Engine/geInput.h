@@ -6,6 +6,7 @@
 #include <Game_Engine/geInput_States.h>
 #include <Game_Engine/geGame.h>
 
+// kb_key's
 #define GE_KB_UNKNOWN   -1
 #define GE_KB_SPACE   32
 #define GE_KB_APOSTROPHE   39 /* ' */
@@ -129,6 +130,7 @@
 #define GE_KB_MENU   348
 #define GE_KB_LAST  GE_KB_MENU
 
+// mouse_key's
 #define GE_MOUSE_1   0
 #define GE_MOUSE_2   1
 #define GE_MOUSE_3   2
@@ -142,14 +144,18 @@
 #define GE_MOUSE_RIGHT  GE_MOUSE_2
 #define GE_MOUSE_MIDDLE  GE_MOUSE_3
 
-bool geKey_Down_Stroke(geGame* game, int key);
-bool geKey_Up_Stroke(geGame* game, int key);
-bool geMouse_Button_Down_Stroke(geGame* game, int button);
-bool geMouse_Button_Up_Stroke(geGame* game, int button);
+// returns true if corresponding key was pressed down on last input poll after
+// which it return false even if key is still held down, else returns false
+bool geKey_Down_Stroke(geGame* game, int kb_key);
+bool geKey_Up_Stroke(geGame* game, int kb_key);
+bool geMouse_Button_Down_Stroke(geGame* game, int mouse_key);
+bool geMouse_Button_Up_Stroke(geGame* game, int mouse_key);
 
-bool geKey_Down(geGame* game, int key);
-bool geKey_Up(geGame* game, int key);
-bool geMouse_Down(geGame* game, int button);
-bool geMouse_Up(geGame* game, int button);
+// returns true if key is down on last input poll (continues to return true so
+// long as pressed down), else returns false
+bool geKey_Down(geGame* game, int kb_key);
+bool geKey_Up(geGame* game, int kb_key);
+bool geMouse_Down(geGame* game, int mouse_key);
+bool geMouse_Up(geGame* game, int mouse_key);
 
 #endif

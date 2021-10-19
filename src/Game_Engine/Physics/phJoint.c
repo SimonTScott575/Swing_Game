@@ -4,9 +4,9 @@
 
 D_SOURCE_LLIST(phJoint2D*, phJoint2D_ptr);
 
-// ==============
-// Initialization
-// ==============
+// ==========================
+// Initialization/Termination
+// ==========================
 
 void phJoint2D_ctor(phJoint2D* self, mVector2f position1, phRigid_Body2D* rb1, mVector2f position2, phRigid_Body2D* rb2) {
 
@@ -78,7 +78,6 @@ void phApply_Joint2D(phJoint2D* joint) {
   }
 }
 
-#include <stdio.h> //DEBUG
 void phApply_Spring_Joint2D(phJoint2D* joint) {
 
   phSpring_Joint2D* spring = joint->_sub;
@@ -130,7 +129,7 @@ void phApply_Rod_Joint2D(phJoint2D* joint) {
   // invert
   float det = K.i[0][0]*K.i[1][1] - K.i[1][0]*K.i[0][1];
   if (det < 0.001) {
-    printf("DET == 0\n");
+    //TODO: raise error
     return;
   }
   float a = K.i[0][0];

@@ -6,9 +6,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-// static void geDestroy_UI_Element_void(void* uie) {
-//   geDestroy_UI_Element(uie);
-// }
+// ==========================
+// Initialization/Termination
+// ==========================
 
 void geButton_UI_ctor(geButton_UI* self, float x_length, float y_length, mFrame2D* frame) {
 
@@ -21,6 +21,8 @@ void geButton_UI_ctor(geButton_UI* self, float x_length, float y_length, mFrame2
   geSet_Sub_UI_Element(self, geUpdate_Button_UI, NULL, &self->_super);
 
 }
+
+// ===
 
 void geUpdate_Button_UI(geUI_Element* uie, float x_length, float mouse_X, float mouse_Y, geWindow* window) {
 

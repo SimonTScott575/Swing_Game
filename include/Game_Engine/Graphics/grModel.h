@@ -5,7 +5,7 @@
 
 #include "grMesh.h"
 
-typedef struct grModel grModel;
+typedef
 struct grModel {
   uint32_t indices_length;
 
@@ -14,16 +14,16 @@ struct grModel {
     unsigned int VBO;
     unsigned int EBO;
   } _OpenGL_IDs;
-};
+} grModel;
 
 // ==========================
 // Initialization/Termination
 // ==========================
 
 // Uploads mesh to GPU RAM.
-grModel* grCreate_Model_From_Mesh(const grMesh* meshes);
+grModel grModel_From_Mesh_init(const grMesh* meshes);
 
 // Frees all model data from CPU/GPU RAM.
-void grDestroy_Model(grModel* model);
+void grModel_term(grModel* model);
 
 #endif

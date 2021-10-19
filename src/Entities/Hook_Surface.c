@@ -7,26 +7,26 @@ Hook_Surface* Create_Hook_Surface(mVector2f position, mVector2f scale, geScene* 
   Hook_Surface* hs = malloc(sizeof(Hook_Surface));
   if (hs == NULL) { return NULL; }
 
-  hs->_super = geEntity_ctor(&hs->_super);
+  geEntity_ctor(&hs->_super);
   geSet_Sub_Entity(hs, Destroy_Hook_Surface_Sub_Entity, &hs->_super);
   hs->_super.layer_mask = HOOK_SURFACE_LAYER;
 
   hs->frame = mFrame2D_init(position, 0, scale);
 
-  hs->cr = grCreate_Colour_Render(
+  hs->cr = grColour_Render_init(
     (float[4]){226/256.0, 113/256.0, 29/256.0, 1},
     grRect2D_Mesh
   );
-  grRenderer_2D_ctor(&hs->renderer, &hs->frame, hs->cr->_model, hs->cr->_shader);
+  grRenderer_2D_ctor(&hs->renderer, &hs->frame, &hs->cr._model, &hs->cr._shader);
 
-  hs->aabb_c = new_phAABB_Collider2D(&hs->frame, 1,1);
-  phRigid_Body2D_ctor(&hs->rb, &hs->frame, 1, 0.1, &hs->aabb_c->_super);
+  phAABB_Collider2D_ctor(&hs->aabb_c, &hs->frame, 1,1);
+  phRigid_Body2D_ctor(&hs->rb, &hs->frame, 1, 0.1, &hs->aabb_c._super);
   hs->rb.is_static = true;
   hs->rb.is_static_rotation = true;
   hs->rb.restitution = 0.25;
 
   geAdd_Component(&hs->renderer._super, &hs->_super);
-  geAdd_Component(hs->aabb_c->_super._super, &hs->_super);
+  geAdd_Component(&hs->aabb_c._super._super, &hs->_super);
   geAdd_Component(&hs->rb._super, &hs->_super);
 
   geAdd_Entity(&hs->_super, scene);
@@ -39,7 +39,7 @@ void Destroy_Hook_Surface_Sub_Entity(geEntity* entity) {
 
   Hook_Surface* hs = entity->_sub;
 
-  grDestroy_Colour_Render(hs->cr);
+  grColour_Render_term(&hs->cr);
 
   free(hs);
 

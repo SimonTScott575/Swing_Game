@@ -10,9 +10,6 @@ int geInit() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  grInit_Types();
-  grInit_Colours();
-
   return check;
 
 }
@@ -23,7 +20,7 @@ void geTerminate() {
 
 }
 
-void geProcess_Events() { //? better word than proccess ?
+void geProcess_Events() {
 
   geSet_Input_States_ZERO( &geGet_Active_Game()->input_states );
 

@@ -30,7 +30,6 @@ void Level_Transitioner_ctor(
   };
 
   geComponent_ctor(&self->_super);
-
   geSet_Sub_Component(self, Update_Level_Transitioner, NULL, &self->_super);
 
   memcpy(self->end_ui1_arr, end_ui1_arr, END_UI1_LENGTH*sizeof(geEntity*));

@@ -17,7 +17,7 @@ struct Portal {
   Portal_Renderer pr;
   grRenderer renderer;
 
-  phCircle_Collider2D* collider;
+  phCircle_Collider2D collider;
   phRigid_Body2D rb;
 
   Portal_Catcher pc;

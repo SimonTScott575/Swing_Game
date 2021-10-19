@@ -201,22 +201,3 @@ int32_t dStart_Line(FILE* file) {
 
   return -1;
 }
-
-// void dClear_Line(FILE* file) {
-//
-//   D_RESET_RW(file);
-//
-//   char start_pos = ftell(file);
-//
-//   uint64_t length_of_line = dLength_Of_Line(file);
-//
-//   char c = fgetc(file);
-//   while ( c != '\r' && c != '\n' && c != EOF ) {
-//
-//     fputc('\0', file);
-//
-//   }
-//
-//   D_RESET_RW(file);
-//
-// }

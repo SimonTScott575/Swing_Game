@@ -11,10 +11,10 @@ struct Hook_Surface {
 
   mFrame2D frame;
 
-  grColour_Render* cr;
+  grColour_Render cr;
   grRenderer renderer;
 
-  phAABB_Collider2D* aabb_c;
+  phAABB_Collider2D aabb_c;
   phRigid_Body2D rb;
 
 };
