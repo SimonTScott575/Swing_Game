@@ -4,7 +4,7 @@ Swing is a small time trial based game.
 
 ## How To Play
 
-Download the Swing_Game folder, unzip/extract and double click the shortcut called "Swing".
+Download the Swing_Game folder and unzip/extract.  Open the folder called "bin" and double click Swing.exe.
 
 *Alternative CMake compilation instructions coming soon.*
 
