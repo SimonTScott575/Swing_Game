@@ -1,6 +1,9 @@
 #include "Menu_Text.h"
 
+#include <string.h>
 #include <stdbool.h>
+
+#include "../Resource_Manager.h"
 
 Menu_Text* Create_Menu_Text_With_Resolution(
   const char* contents,
@@ -17,10 +20,12 @@ Menu_Text* Create_Menu_Text_With_Resolution(
   geEntity_ctor(&mt->_super);
   geSet_Sub_Entity(mt, Destroy_Menu_Text_Sub_Entity, &mt->_super);
 
-  if (font_path == NULL) {
-    font_path = "../Resources/Fonts/Fira/FiraSans-Heavy.ttf";
+  if (font_path == NULL || !strcmp(MAIN_FONT_PATH, font_path) && MAIN_FONT_RES == res) {
+    mt->font = g_main_font;
+  } else {
+    mt->font = grCreate_Font(font_path, res);
   }
-  mt->font = grCreate_Font(font_path, res);
+
   mt->text = grCreate_Text(contents, mt->font);
   mt->text->alignment = GR_ALIGN_CENTRE;
 
@@ -47,7 +52,7 @@ Menu_Text* Create_Menu_Text(
   float scale,
   geScene* scene) {
 
-  return Create_Menu_Text_With_Resolution(contents, font_path,  rel_X, rel_Y, abs_X, abs_Y, scale, 256, scene);
+  return Create_Menu_Text_With_Resolution(contents, font_path,  rel_X, rel_Y, abs_X, abs_Y, scale, MAIN_FONT_RES, scene);
 
 }
 
@@ -55,7 +60,9 @@ void Destroy_Menu_Text_Sub_Entity(geEntity* entity) {
 
   Menu_Text* menu_text = entity->_sub;
 
-  grDestroy_Font(menu_text->font);
+  if (menu_text->font != g_main_font) {
+    grDestroy_Font(menu_text->font);
+  }
   grDestroy_Text(menu_text->text);
   grShader_term(&menu_text->shader);
 

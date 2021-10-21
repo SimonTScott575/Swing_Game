@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include <windows.h> // ONLY used ot hide console, see below
+
 #include <Game_Engine/Game_Engine.h>
 
 #include "Scenes/Main_Menu.h"
@@ -14,10 +16,17 @@
 #include "Scenes/Level_8.h"
 #include "Scenes.h"
 #include "Glow.h"
+#include "Resource_Manager.h"
 
 #include "Scenes/Level_Builder.h"
 
+#define RES_X_START 800
+#define RES_Y_START 600
+
 int main() {
+
+  // Hides console
+  FreeConsole();
 
   // ######################
   // Library Initialization
@@ -29,7 +38,7 @@ int main() {
   // Load Game
   // #########
 
-  geWindow* window = geCreate_Window(1200,1200,"Swing"); //TODO: start fullscreen (windowed?)
+  geWindow* window = geCreate_Window(RES_X_START,RES_Y_START,"Swing"); //TODO: start fullscreen (windowed?)
 
   geGame* game = geCreate_Game(window);
 
@@ -63,7 +72,8 @@ int main() {
     geAdd_Scene(level_order[i], game);
   }
 
-  Init_Glow_PP(1200,1200);
+  Init_Glow_PP(RES_X_START,RES_Y_START);
+  Init_Resource_Manager();
 
   // #########
   // Game Loop
@@ -75,6 +85,7 @@ int main() {
   // Clean Up
   // ########
 
+  Terminate_Resource_Manager();
   for (int i = 0; i < LEVELS_COUNT; i++) {
     geDestroy_Scene(level_order[i]);
   }
@@ -89,7 +100,9 @@ int main() {
   // Fin
   // ###
 
-  printf("\nDEBUG : ENDING GAME SUCCESSFULLY\n");
+  #ifdef DEBUG_MODE
+    printf("\nDEBUG : ENDING GAME SUCCESSFULLY\n");
+  #endif
 
   return 0;
 
