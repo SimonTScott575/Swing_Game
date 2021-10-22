@@ -11,7 +11,7 @@ void Rope_Controller_ctor(
   phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j
 ) {
 
-  frame->scale.i[0] = 0.1;
+  frame->scale.i[0] = 0.15;
   renderer->_super.is_active = false;
 
   *self = (Rope_Controller){

@@ -9,12 +9,12 @@ Rope* Create_Rope(phRigid_Body2D* source_rb, geScene* scene) {
   geSet_Sub_Entity(rope, Destroy_Rope_Sub_Entity, &rope->_super);
 
   rope->frame = mFrame2D_init(mVector2f_ZERO, 0, mVector2f_ONE);
-  rope->hook_f = mFrame2D_init(mVector2f_ZERO, 0, (mVector2f){{0.4,0.4}});
+  rope->hook_f = mFrame2D_init(mVector2f_ZERO, 0, (mVector2f){{0.15,0.15}});
 
   rope->sprite = grCreate_Sprite("../Resources/Textures/square_red_256.png",1 ,1);
   grRenderer_2D_ctor(&rope->renderer, &rope->frame, &rope->sprite->_model, &rope->sprite->_shader);
 
-  rope->hook_sprite = grCreate_Sprite("../Resources/Textures/circle_orange_256.png",1,1);
+  rope->hook_sprite = grCreate_Sprite("../Resources/Textures/circle_red_256.png",1,1);
   grRenderer_2D_ctor(&rope->hook_r, &rope->hook_f, &rope->hook_sprite->_model, &rope->hook_sprite->_shader);
   rope->hook_r._super.is_active = false;
 

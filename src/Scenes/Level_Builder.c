@@ -90,6 +90,11 @@ void Build_Level(float x_offset, Level_Builder* builder, geScene* scene) {
   // Set
   // ===
 
+  if (builder->as_scene) {
+    // dAppend_LL(grRenderer_ptr)(&rope->renderer, rs->_renderers);
+    // dAppend_LL(grRenderer_ptr)(&rope->hook_r, rs->_renderers);
+  }
+
   //
   Build_Level_Basics_Set(rs, builder);
 
@@ -104,6 +109,7 @@ void Build_Level(float x_offset, Level_Builder* builder, geScene* scene) {
 
     dAppend_LL(grRenderer_ptr)(&rope->renderer, rs->_renderers);
     dAppend_LL(grRenderer_ptr)(&rope->hook_r, rs->_renderers);
+
 
     phAdd_Rigid_Body2D(&builder->player->rb, rb_sys);
     phAdd_Rigid_Body2D(&builder->portal->rb, rb_sys);
