@@ -15,6 +15,10 @@ struct Rope {
   grSprite* sprite;
   grRenderer renderer;
 
+  mFrame2D hook_f;
+  grSprite* hook_sprite;
+  grRenderer hook_r;
+
   phRod_Joint2D rod_j;
   phSpring_Joint2D spring_j;
   Rope_Controller rc;

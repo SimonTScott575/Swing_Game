@@ -20,13 +20,4 @@ The game is written in C with OpenGL, the standard library and a small number of
 
  - **freetype:** produces images of text from a given file format such as ttf or otf.
 
-The following libraries were written for this project:
-
- - Rendering engine
-
- - Physics engine
-
- - Data structures library
-
- - Maths library
- 
+A game engine library was written using the above including a basic rendering engine, physics engine, template based data structures and a vector and matrix maths library.

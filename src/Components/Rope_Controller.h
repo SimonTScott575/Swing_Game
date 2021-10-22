@@ -14,6 +14,8 @@ struct Rope_Controller {
 
   mFrame2D* frame;
   grRenderer* renderer;
+  mFrame2D* hook_f;
+  grRenderer* hook_r;
 
   grCamera2D* camera2D;
 
@@ -36,36 +38,13 @@ struct Rope_Controller {
 
 } Rope_Controller;
 
-void Rope_Controller_ctor(Rope_Controller* self, mFrame2D* frame, grRenderer* renderer, phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j);
+void Rope_Controller_ctor(
+  Rope_Controller* self,
+  mFrame2D* frame, mFrame2D* hook_f,
+  grRenderer* renderer, grRenderer* hook_r,
+  phRod_Joint2D* rod_j, phSpring_Joint2D* spring_j
+);
 void Update_Rope_Controller(geComponent* component);
 void Destroy_Rope_Controller_Sub_Component(geComponent* component);
 
 #endif
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-// typedef
-// struct Rope_Controller {
-//
-//   geComponent* _super;
-//
-//   mFrame2D* frame;
-//   grRenderer* renderer;
-//
-//   grCamera2D* camera2D;
-//
-//   bool is_hitting;
-//   bool rod_phase;
-//   bool spring_phase;
-//   mVector2f dest_pos;
-//
-//   phRod_Joint2D* rod_j;
-//   phSpring_Joint2D* spring_j;
-//
-//   phRigid_Body2D* dest_rb;
-//
-//   phRB_System2D* rb_sys;
-//
-//   float r_v;
-//
-// } Rope_Controller;
