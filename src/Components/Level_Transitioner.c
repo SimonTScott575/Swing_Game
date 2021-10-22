@@ -126,6 +126,11 @@ void Update_Level_Transitioner(geComponent* component) {
     lt->clock->is_ended = true;
   }
 
+  if (geKey_Down(geGet_Active_Game(), GE_KB_ESCAPE)) {
+    geSet_Next_Scene(g_level_select_menu, geGet_Active_Game());
+    geEnd_Scene(geGet_Active_Game());
+  }
+
 }
 
 void On_Click_Back_Button(geUI_Element* uie) {
