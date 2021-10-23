@@ -73,7 +73,7 @@ void Build_Level_1_Entities(Level_Builder* builder) {
       builder->scene
     );
     builder->instruction_2 = Create_Menu_Text(
-      "2) LEFT CLICK + A/D",
+      "2) PRESS A/D",
       "../Resources/Fonts/Fira/FiraSans-Heavy.ttf",
       0,0,
       5,6,
