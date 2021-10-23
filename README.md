@@ -1,7 +1,13 @@
-# Swing
+# *Swing*
 
-Swing is a small time trial based game.
+*Swing* is a small time trial based game.
 
+*System requirements:*
+
+ - *Operating system:* Windows 10 64-bit
+ - *Processor:* x86-64
+ - OpenGL 3.3 or later
+ 
 ## How To Play
 
 Download the Swing_Game folder and unzip/extract.  Open the folder called "bin" and double click Swing.exe.
