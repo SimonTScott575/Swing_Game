@@ -56,7 +56,7 @@ geWindow* geCreate_Window(int width, int height, char* name) {
   };
 
   if (geActive_Window == NULL) {
-    geSet_Active_Window(window); //TEMP
+    geSet_Active_Window(window);
   }
 
   grInit();

@@ -13,6 +13,9 @@ struct Portal_Catcher {
   float radius;
   bool is_caught;
 
+  mVector2f last_vel;
+  phRigid_Body2D* player_rb;
+
   phCollider2D* collider;
   phRigid_Body2D* rb;
   phCollision2D collisions[10];

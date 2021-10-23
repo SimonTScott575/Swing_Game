@@ -26,7 +26,7 @@
 int main() {
 
   // Hides console
-  FreeConsole();
+  // FreeConsole();
 
   // ######################
   // Library Initialization
