@@ -2,6 +2,8 @@
 
 *Swing* is a small time trial based game.
 
+![](https://github.com/SimonTScott575/Swing_Game/blob/master/Resources/Demo.gif)
+
 *System requirements:*
 
  - *Operating system:* Windows 10 64-bit
