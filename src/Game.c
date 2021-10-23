@@ -25,9 +25,6 @@
 
 int main() {
 
-  // Hides console
-  // FreeConsole();
-
   // ######################
   // Library Initialization
   // ######################
@@ -86,6 +83,7 @@ int main() {
   // ########
 
   Terminate_Resource_Manager();
+  Terminate_Glow_PP();
   for (int i = 0; i < LEVELS_COUNT; i++) {
     geDestroy_Scene(level_order[i]);
   }

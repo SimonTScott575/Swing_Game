@@ -27,6 +27,14 @@ void Init_Glow_PP(int x, int y) {
 
 }
 
+void Terminate_Glow_PP() {
+
+  grShader_term(&Glow_Shader);
+  grTexture_term(&Glow_Texture);
+  grScreen_term(&Glow_Screen);
+
+}
+
 void Glow_PP(grScreen* screen) {
 
   if (   g_glow_screen_x != geGet_Active_Game()->window->_X_pixels
