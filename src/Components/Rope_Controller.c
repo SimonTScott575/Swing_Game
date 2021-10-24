@@ -44,17 +44,17 @@ void Update_Rope_Controller(geComponent* component) {
 
   if ( !rc->is_hitting ) {
 
-    if ( glfwGetMouseButton(geGet_Active_Window()->_window_ID, GLFW_MOUSE_BUTTON_1) ) {
+    if ( geMouse_Down(geGet_Active_Game(), GE_MOUSE_1) ) {
 
       mVector2f mouse_pos;
-      double mouse_X;
-      double mouse_Y;
-      glfwGetCursorPos(geGet_Active_Window()->_window_ID, &mouse_X, &mouse_Y);
+      int mouse_X;
+      int mouse_Y;
+      geGet_Cursor_Position(geGet_Active_Window(), &mouse_X, &mouse_Y);
       float camera_X_length = rc->camera2D->_X_length;
-      float camera_Y_length = camera_X_length * geGet_Active_Window()->_Y_pixels/geGet_Active_Window()->_X_pixels;
+      float camera_Y_length = camera_X_length * geGet_Active_Window()->_Y_pixels/(float)geGet_Active_Window()->_X_pixels;
       mouse_pos = (mVector2f){{
-        camera_X_length * ( mouse_X/geGet_Active_Window()->_X_pixels - 0.5 ),
-        camera_Y_length * ( (1 - mouse_Y/geGet_Active_Window()->_Y_pixels) - 0.5 )
+        camera_X_length * ( (float)mouse_X/geGet_Active_Window()->_X_pixels - 0.5 ),
+        camera_Y_length * ( (1 - (float)mouse_Y/geGet_Active_Window()->_Y_pixels) - 0.5 )
       }};
       mouse_pos = mAdd_V2f(rc->camera2D->frame->position, mouse_pos);
 
@@ -67,7 +67,7 @@ void Update_Rope_Controller(geComponent* component) {
 
   } else {
 
-    if ( !glfwGetMouseButton(geGet_Active_Window()->_window_ID, GLFW_MOUSE_BUTTON_1) ) {
+    if ( !geMouse_Down(geGet_Active_Game(), GE_MOUSE_1) ) {
 
       rc->renderer->_super.is_active = false;
       rc->hook_r->_super.is_active = false;
@@ -168,8 +168,8 @@ void Update_Rope_Controller(geComponent* component) {
     }
 
     // input
-    int climb_sign =   glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_W)
-                     - glfwGetKey(geGet_Active_Game()->window->_window_ID, GLFW_KEY_S);
+    int climb_sign =   geKey_Down(geGet_Active_Game(), GE_KB_W)
+                     - geKey_Down(geGet_Active_Game(), GE_KB_S);
 
     if ( climb_sign ) {
 

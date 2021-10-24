@@ -44,6 +44,8 @@ void geSet_Active_Window(geWindow* window);
 
 // ===
 
+void geGet_Cursor_Position(geWindow* window, int* pos_pixel_x, int* pos_pixel_y);
+
 // Set window should close property as true (retrive with geGet_Window_Should_Close)
 void geSet_Window_Should_Close(geWindow* window, bool val);
 

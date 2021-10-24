@@ -1,7 +1,6 @@
 #ifndef PLAYER_CONTROLLER_H
 #define PLAYER_CONTROLLER_H
 
-#define GE_INCLUDE_GLFW
 #include <Game_Engine/Game_Engine.h>
 
 typedef struct Player_Controller Player_Controller;

@@ -50,10 +50,9 @@ geWindow* geCreate_Window(int width, int height, char* name) {
   }
   *window = (geWindow){
     ._window_ID = window_ID,
-    ._X_pixels = width,
-    ._Y_pixels = height,
     .cursor_position_fns = new_dLList(geCursor_Position_fn)(0,NULL)
   };
+  glfwGetFramebufferSize(window->_window_ID, &window->_X_pixels, &window->_Y_pixels);
 
   if (geActive_Window == NULL) {
     geSet_Active_Window(window);
@@ -84,6 +83,21 @@ void geSet_Active_Window(geWindow* window) {
 }
 
 // ===
+
+void geGet_Cursor_Position(geWindow* window, int* pos_pixel_x, int* pos_pixel_y) {
+
+  int size_screen_x;
+  int size_screen_y;
+  glfwGetWindowSize(window->_window_ID, &size_screen_x, &size_screen_y);
+
+  double pos_screen_x;
+  double pos_screen_y;
+  glfwGetCursorPos(window->_window_ID, &pos_screen_x, &pos_screen_y);
+
+  *pos_pixel_x = window->_X_pixels * (pos_screen_x/size_screen_x);
+  *pos_pixel_y = window->_Y_pixels * (pos_screen_y/size_screen_y);
+
+}
 
 #if GLFW_TRUE != 1
   #error GLFW_TRUE not set to 1
